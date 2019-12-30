@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp2.1;net472</TargetFrameworks>
+    <ApplicationIcon>Assets\avalonia-logo.ico</ApplicationIcon>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <AvaloniaResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Assets\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.9.0-preview4" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.0-preview4" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0-preview4" />
+  </ItemGroup>
+</Project>

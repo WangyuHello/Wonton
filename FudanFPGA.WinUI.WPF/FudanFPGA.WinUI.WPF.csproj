@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>netcoreapp3.0;net472</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0531" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.0.0-alpha0257" />
+  </ItemGroup>
+
+</Project>
