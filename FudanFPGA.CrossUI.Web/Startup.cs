@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
+using FudanFPGA.Common;
+using FudanFPGA.CrossUI.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -30,6 +32,8 @@ namespace FudanFPGA.CrossUI.Web
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSingleton<FPGAManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,21 +69,10 @@ namespace FudanFPGA.CrossUI.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions {Frame = false}));
-
-            var menu = new MenuItem[]
-            {
-                new MenuItem()
-                {
-                    Label = "込込", Submenu = new MenuItem[]
-                    {
-                        new MenuItem() {Label = "込込込"}
-                    }
-                }
-            };
-
-            Electron.Menu.SetApplicationMenu(menu);
+#if RELEASE
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions { Frame = false, Width = 1200, Height = 800 }));
+            ElectronIPC.Initialize();
+#endif
         }
     }
 }

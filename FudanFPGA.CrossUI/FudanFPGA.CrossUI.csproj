@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp2.1;net472</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;</TargetFrameworks>
     <ApplicationIcon>Assets\avalonia-logo.ico</ApplicationIcon>
     <StartupObject />
   </PropertyGroup>
@@ -16,8 +16,11 @@
     <AvaloniaResource Include="Assets\*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.0-preview4" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.0-preview4" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0-preview4" />
+    <PackageReference Include="Avalonia" Version="0.9.1" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.1" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FudanFPGA.Common\FudanFPGA.Common.csproj" />
   </ItemGroup>
 </Project>

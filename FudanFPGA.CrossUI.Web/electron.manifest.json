@@ -5,8 +5,8 @@
   },
   "singleInstance": false,
   "build": {
-    "appId": "com.FudanFPGA.CrossUI.Web.app",
-    "productName": "FudanFPGA.CrossUI.Web",
+    "appId": "edu.FudanFPGA.CrossUI.Web.app",
+    "productName": "FudanFPGA",
     "copyright": "Copyright © 2019",
     "buildVersion": "1.0.0",
     "compression": "maximum",

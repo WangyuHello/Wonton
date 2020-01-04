@@ -21,8 +21,13 @@ namespace FudanFPGA.CrossUI.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>()
-                        .UseElectron(args);
+                    webBuilder
+#if DEBUG
+                        
+#else
+                        .UseElectron(args)
+#endif
+                        .UseStartup<Startup>();
                 });
     }
 }

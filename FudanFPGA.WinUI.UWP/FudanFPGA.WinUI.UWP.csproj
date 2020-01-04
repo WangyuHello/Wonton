@@ -154,6 +154,12 @@
       <Version>6.2.9</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FudanFPGA.Common\FudanFPGA.Common.csproj">
+      <Project>{4b9c3f45-d566-4967-befb-74b6dca4ef9c}</Project>
+      <Name>FudanFPGA.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

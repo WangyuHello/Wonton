@@ -1,22 +1,89 @@
 ﻿.myTitle {
-    -webkit-app-region: drag;
-    height: 80px;
-    background-color: #495A80;
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
+    align-items: stretch;
+}
+
+.titleBar {
+    -webkit-app-region: drag;
+    background-color: #495A80;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.navMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.navMenu a {
+    margin-left: 10px;
+    color: white;
 }
 
 .titleName {
-    font-size: 20px;
+    font-size: 22px;
     color: white;
-    margin: 30px;
+    margin-left: 10px;
+}
+
+.no-drag {
+    -webkit-app-region: no-drag;
 }
 
 .clickTitle {
     -webkit-app-region: no-drag;
-    margin: 30px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: flex-start;
 }
+
+.btn-min {
+    color: white;
+    border-radius: 0px;
+    height: 30px;
+    width: 44px;
+    padding: 0px;
+}
+
+.btn-min:hover {
+    background-color: white;
+}
+
+.btn-max {
+    color: white;
+    border-radius: 0px;
+    height: 30px;
+    width: 44px;
+    padding: 0px;
+}
+
+.btn-max:hover {
+    background-color: white;
+}
+
+.btn-close {
+    color: white;
+    border-radius: 0px;
+    height: 30px;
+    width: 44px;
+    padding: 0px;
+}
+
+.btn-close:hover {
+    background-color: red;
+}
+
