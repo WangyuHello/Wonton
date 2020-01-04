@@ -1,0 +1,12 @@
+.FramelessBtn {
+    border-width: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+.FramelessBtn:focus,
+.FramelessBtn:active:focus
+{
+    outline: none;
+    box-shadow:none;
+}

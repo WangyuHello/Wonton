@@ -1,0 +1,160 @@
+.myTitle {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.titleBar {
+    -webkit-app-region: drag;
+    -webkit-user-select: none;
+    background-color: #495A80;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.pjTitle {
+    margin-top: 8px;
+    color: white;
+}
+
+.navMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.navMenu a {
+    margin-left: 10px;
+    color: white;
+}
+
+.titleName {
+    font-size: 19px;
+    color: white;
+    margin-left: 10px;
+}
+
+.no-drag {
+    -webkit-app-region: no-drag;
+}
+
+.clickTitle {
+    -webkit-app-region: no-drag;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: flex-start;
+}
+
+@font-face {
+    font-family: 'codicon';
+    src: url('./Resource/codicon.ttf');
+}
+
+.btn-min {
+    color: white;
+    border-radius: 0px;
+    height: 30px;
+    width: 46px;
+    padding: 0px;
+    font: normal normal normal 16px/1 codicon;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: default;
+}
+
+.btn-min:hover {
+    background-color: #3B4968;
+    color: white;
+}
+
+.btn-min:active {
+    background-color: #2C364C;
+    color: white;
+}
+
+.btn-max {
+    color: white;
+    border-radius: 0px;
+    height: 30px;
+    width: 46px;
+    padding: 0px;
+    box-shadow: none;
+    border-color: transparent;
+    outline-width: 0;
+    outline-color: transparent;
+    font: normal normal normal 16px/1 codicon;
+    display: inline-block;
+    text-shadow: none;
+    cursor: default;
+}
+
+.btn-max:hover {
+    background-color: #3B4968;
+    outline: none;
+    box-shadow: none;
+    color: white;
+}
+
+.btn-max:active {
+    background-color: #2C364C;
+    color: white;
+}
+
+.btn-max:focus,
+.btn-max:active:focus,
+.btn-min:focus,
+.btn-min:active:focus,
+.btn-close:focus,
+.btn-close:active:focus
+{
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-close {
+    color: white;
+    border-radius: 0px;
+    height: 30px;
+    width: 46px;
+    padding: 0px;
+    box-shadow: none;
+    border-color: transparent;
+    outline-width: 0;
+    outline-color: transparent;
+    font-size: 16px;
+    font: normal normal normal 16px/1 codicon;
+    text-decoration: none;
+    text-rendering: auto;
+    display: inline-block;
+    text-shadow: none;
+    cursor: default;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+}
+
+.btn-close:hover {
+    background-color: red;
+    color: white;
+}
+
+.systemIcon {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0;
+    display: inline-block;
+    margin: 0 auto;
+    height: 100%;
+    padding-top: 6px;
+}
+
