@@ -1,0 +1,30 @@
+.myToggleButton {
+    border-width: 2px;
+    border-radius: 30px;
+    outline: none;
+    box-shadow: none;
+    width: 60px;
+    height: 60px;
+    padding: 2px;
+}
+
+.myToggleButton:hover {
+    background-color: transparent;
+    color: #6c757d;
+    outline: none;
+    box-shadow: none;
+    border-width: 2px;
+}
+
+.myToggleButton:focus,
+.myToggleButton.focus,
+.myToggleButton:active,
+.myToggleButton.active,
+.myToggleButton:active:focus
+.myToggleButton.active:focus
+.myToggleButton.active.focus
+{
+    outline: none;
+    box-shadow: none;
+
+}

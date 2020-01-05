@@ -178,7 +178,7 @@ export class Title extends Component {
 
         let isMac = is.macOS(); //如果再MacOS上，要添加红绿灯按钮
 
-        let titleLeftMargin = isMac ? "120px" : "20px";
+        let titleLeftMargin = isMac ? "80px" : "20px";
 
         return (
             <div className="titleBar">

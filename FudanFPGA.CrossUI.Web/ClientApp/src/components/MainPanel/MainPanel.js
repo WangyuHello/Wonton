@@ -7,6 +7,7 @@ import { DeviceItem } from '../DeviceItem/DeviceItem';
 import { faStore, faStoreAlt } from '@fortawesome/free-solid-svg-icons';
 import { LED } from '../Devices/LED/LED';
 import { HButton } from '../Devices/HButton/HButton';
+import { DeviceLayout } from '../Devices/DeviceLayout';
 
 import './MainPanel.css';
 
@@ -17,13 +18,13 @@ export class MainPanel extends PureComponent {
     render() {
 
         const layout = [
-            { i: 'i1', x:0,y:0,w:3,h:3},
-            { i: 'i2', x:3,y:0,w:3,h:3},
-            { i: 'i3', x:6,y:0,w:3,h:3},
-            { i: 'i4', x: 9, y: 0,w:3,h:3},
-            { i: 'i5', x: 12, y: 0,w:3,h:3},
-            { i: 'i6', x: 15, y: 0,w:3,h:3},
-            { i: 'i7', x: 18, y: 0,w:3,h:3}
+            { i: 'i1', x: 0,  y: 0,w:3,h:4},
+            { i: 'i2', x: 3,  y: 0,w:3,h:4},
+            { i: 'i3', x: 6,  y: 0,w:3,h:4},
+            { i: 'i4', x: 9,  y: 0,w:3,h:4},
+            { i: 'i5', x: 12, y: 0,w:3,h:4},
+            { i: 'i6', x: 15, y: 0,w:3,h:4},
+            { i: 'i7', x: 18, y: 0,w:3,h:4}
         ];
 
 
@@ -40,25 +41,39 @@ export class MainPanel extends PureComponent {
                 <main id='panel-content' >
                     <ReactGridLayout layout={layout} cols={24} rowHeight={24}>
                         <div key="i1" className='grid-base'>
-                            <LED instance={"i1"} input={[1]}/>
+                            <DeviceLayout instance={"i1"}>
+                                <LED instance={"i1"} input={[1]}/>
+                            </DeviceLayout>
                         </div>
                         <div key="i2" className='grid-base'>
-                            <LED instance={"i2"} input={[1]}/>
+                            <DeviceLayout instance={"i2"}>
+                                <LED instance={"i2"} input={[1]}/>
+                            </DeviceLayout>
                         </div>
                         <div key="i3" className='grid-base'>
-                            <LED instance={"i3"} input={[1]}/>
+                            <DeviceLayout instance={"i3"}>
+                                <LED instance={"i3"} input={[1]}/>
+                            </DeviceLayout>
                         </div>
                         <div key="i4" className='grid-base'>
-                            <LED instance={"i4"} input={[1]} />
+                            <DeviceLayout instance={"i4"}>
+                                <LED instance={"i4"} input={[1]}/>
+                            </DeviceLayout>
                         </div>
                         <div key="i5" className='grid-base'>
-                            <LED instance={"i5"} input={[1]} />
+                            <DeviceLayout instance={"i5"}>
+                                <LED instance={"i5"} input={[1]}/>
+                            </DeviceLayout>
                         </div>
                         <div key="i6" className='grid-base'>
-                            <LED instance={"i6"} input={[1]} />
+                            <DeviceLayout instance={"i6"}>
+                                <LED instance={"i6"} input={[1]}/>
+                            </DeviceLayout>
                         </div>
                         <div key="i7" className='grid-base'>
-                            <HButton instance={'i7'} />
+                            <DeviceLayout instance={'i7'}>
+                                <HButton instance={'i7'} />
+                            </DeviceLayout>
                         </div>
                     </ReactGridLayout>
                 </main>

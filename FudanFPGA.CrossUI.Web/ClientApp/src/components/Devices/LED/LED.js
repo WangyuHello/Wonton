@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import FPGAManager, { manager } from '../../Service/FPGAManager';
 
+import ledOn from './led_on.svg';
+import ledOff from './led_off.svg';
+
 export class LED extends Component {
     
     inputPorts = ['input1']
@@ -29,9 +32,9 @@ export class LED extends Component {
 
         let on = this.state.inputs[0] == 1 ? true : false;
 
-        return (
+        return (      
             <div>
-                LED {on ? "亮" : "灭"} {this.props.instance}
+                <img src={on ? ledOn : ledOff}></img>
             </div>
         );
     }
