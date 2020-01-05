@@ -156,32 +156,41 @@ export class Title extends Component {
         const response = await fetch('/api/window/minimize');
     }
 
+    systemButtons = <div className="clickTitle">
+                              <a className="btn btn-min" href="#" onClick={this.ClickMin}>
+                                  <img src={minimize} />
+                              </a>
+                              <a className="btn btn-max" href="#" onClick={this.ClickMaxRestore}>
+                                  <img src={maximize} />
+                              </a>
+                              <a className="btn btn-close" href="#" onClick={this.ClickClose}>
+                                  <img src={close} />
+                              </a>
+                          </div>;
 
     render() {
 
         const isRunning = this.state.isRunning;
         const runHz = this.state.runHz === 0 ? "" : this.state.runHz;
         const bitf = this.state.bitfile == "" ? "未指定Bit文件" : this.state.bitfile;
-        
+
+        let isMac = false; //如果再MacOS上，要添加红绿灯按钮
+        if (isElectron()) {
+            isMac = (process.platform === 'darwin');
+        }
+
+        let titleLeftMargin = isMac ? "120px" : "20px";
 
         return (
             <div className="titleBar">
                 <div className="myTitle">
-                    <div style={{display: 'flex', alignItems:'center' ,marginLeft: '30px', marginTop: '10px'}}>
-                        <FontAwesomeIcon style={{width:'28px', height:'28px', color: 'white'}} icon={faServer}/>
+                    <div style={{ display: 'flex', alignItems: 'center', marginLeft: titleLeftMargin, marginTop: '10px'}}>
+                        <FontAwesomeIcon style={{width:'22px', height:'22px', color: 'white'}} icon={faServer}/>
                         <div className="titleName">复旦FPGA</div>
                     </div>
-                    <div className="clickTitle">
-                        <a className="btn btn-min" href="#" onClick={this.ClickMin}>
-                            <img src={minimize} />
-                        </a>
-                        <a className="btn btn-max" href="#" onClick={this.ClickMaxRestore}>
-                            <img src={maximize} />
-                        </a>
-                        <a className="btn btn-close" href="#" onClick={this.ClickClose}>
-                            <img src={close} />
-                        </a>
-                    </div>
+
+                    {isMac ? <div /> : this.systemButtons}
+                    
                 </div>
                 <div className="navMenu">
                     <div style={{display: "flex", alignItems: 'stretch'}}>
