@@ -5,6 +5,7 @@ import { faCog, faMicrochip, faPlay, faStop, faServer, faSquareFull, faTimes } f
 import './Title.css'
 import FPGAManager, { manager } from './Service/FPGAManager';
 import isElectron from 'is-electron';
+import is from 'electron-is';
 import os from 'os'
 
 import maximize from './Resource/maximize.svg';
@@ -175,10 +176,7 @@ export class Title extends Component {
         const runHz = this.state.runHz === 0 ? "" : this.state.runHz;
         const bitf = this.state.bitfile == "" ? "未指定Bit文件" : this.state.bitfile;
 
-        let isMac = false; //如果再MacOS上，要添加红绿灯按钮
-        if (isElectron()) {
-            isMac = (os.platform() === 'darwin');
-        }
+        let isMac = is.macOS(); //如果再MacOS上，要添加红绿灯按钮
 
         let titleLeftMargin = isMac ? "120px" : "20px";
 
