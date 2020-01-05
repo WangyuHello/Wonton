@@ -6,6 +6,7 @@ import { Device } from '../Device/Device';
 import { DeviceItem } from '../DeviceItem/DeviceItem';
 import { faStore, faStoreAlt } from '@fortawesome/free-solid-svg-icons';
 import { LED } from '../Devices/LED/LED';
+import { HButton } from '../Devices/HButton/HButton';
 
 import './MainPanel.css';
 
@@ -16,12 +17,13 @@ export class MainPanel extends PureComponent {
     render() {
 
         const layout = [
-            {i: 'i1', x:0,y:0,w:3,h:3},
-            {i: 'i2', x:3,y:0,w:3,h:3},
-            {i: 'i3', x:6,y:0,w:3,h:3},
+            { i: 'i1', x:0,y:0,w:3,h:3},
+            { i: 'i2', x:3,y:0,w:3,h:3},
+            { i: 'i3', x:6,y:0,w:3,h:3},
             { i: 'i4', x: 9, y: 0,w:3,h:3},
             { i: 'i5', x: 12, y: 0,w:3,h:3},
-            { i: 'i6', x: 15, y: 0,w:3,h:3}
+            { i: 'i6', x: 15, y: 0,w:3,h:3},
+            { i: 'i7', x: 18, y: 0,w:3,h:3}
         ];
 
 
@@ -54,6 +56,9 @@ export class MainPanel extends PureComponent {
                         </div>
                         <div key="i6" className='grid-base'>
                             <LED instance={"i6"} input={[1]} />
+                        </div>
+                        <div key="i7" className='grid-base'>
+                            <HButton instance={'i7'} />
                         </div>
                     </ReactGridLayout>
                 </main>

@@ -70,7 +70,7 @@ namespace FudanFPGA.CrossUI.Web
                 }
             });
 #if RELEASE
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions { Frame = false, Width = 1200, Height = 800 }));
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions { TitleBarStyle = TitleBarStyle.hidden ,Frame = false, Width = 1200, Height = 800 }));
             ElectronIPC.Initialize();
 #endif
         }

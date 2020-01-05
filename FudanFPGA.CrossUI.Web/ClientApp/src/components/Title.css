@@ -60,7 +60,7 @@
 }
 
 .btn-min:hover {
-    background-color: white;
+    background-color: #3B4968;
 }
 
 .btn-max {
@@ -69,10 +69,27 @@
     height: 30px;
     width: 44px;
     padding: 0px;
+    box-shadow: transparent;
+    border-color: transparent;
+    outline-width: 0;
+    outline-color: transparent;
 }
 
 .btn-max:hover {
-    background-color: white;
+    background-color: #3B4968;
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-max:focus,
+.btn-max:active:focus,
+.btn-min:focus,
+.btn-min:active:focus,
+.btn-close:focus,
+.btn-close:active:focus
+{
+    outline: none;
+    box-shadow: none;
 }
 
 .btn-close {

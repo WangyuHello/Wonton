@@ -6,6 +6,11 @@ import './Title.css'
 import FPGAManager, { manager } from './Service/FPGAManager';
 import isElectron from 'is-electron';
 
+import maximize from './Resource/maximize.svg';
+import minimize from './Resource/minimize.svg';
+import restore from './Resource/restore.svg';
+import close from './Resource/close.svg';
+
 
 export class Title extends Component {
 
@@ -39,12 +44,26 @@ export class Title extends Component {
     }
 
     ClickRun = async () => {
-        this.setState((prevState) => {
-            return {
-                isRunning : !prevState.isRunning,
-            }
-        }, () => {});
 
+        if (this.state.isRunning) {      
+
+            this.setState((prevState) => {
+                return {
+                    isRunning : !prevState.isRunning,
+                }
+            }, () => {});
+        } else {
+            this.setState((prevState) => {
+                return {
+                    isRunning : !prevState.isRunning,
+                }
+            }, () => {});
+
+            await this.RunFPGA();
+        }
+    }
+
+    RunFPGA = async () => {
         // ipcRenderer.send('working-status',true);
         await fetch('/api/window/working-state?state=1');
 
@@ -59,17 +78,13 @@ export class Title extends Component {
         manager.MapPorts(12, 'i4', 0);
         manager.MapPorts(11, 'i5', 0);
         manager.MapPorts(10, 'i6', 0);
+        manager.MapInputPorts('i7', 0, 0, 0);
 
-        let write = [0, 0, 0, 0];
 
-        for (var i = 0; i < 80; i++) {
-            if (i < 2) {
-                write[0] = 0;
-            } else {
-                write[0] = 1;
-            }
-
-            let r = await manager.WriteReadData(write);
+        while (this.state.isRunning)
+        {            
+            // let r = await manager.WriteReadData(write);
+            let r = await manager.WriteReadData2();
 
             var hr_out = r[0] & 0x000F;
             var min_out = (r[0] & 0x03F0) >> 4;
@@ -79,7 +94,7 @@ export class Title extends Component {
             var alarm = (r[1] & 0x0400) >> 10;
 
             console.log(
-                `"[${i}] hr_out[${hr_out}] min_out[${min_out}] sec_out[${sec_out}] hr_alarm[${hr_alarm}] min_alarm[${
+                `"hr_out[${hr_out}] min_out[${min_out}] sec_out[${sec_out}] hr_alarm[${hr_alarm}] min_alarm[${
                 min_alarm}] alarm[${alarm}]"`);
 
             manager.Cycle();
@@ -157,12 +172,14 @@ export class Title extends Component {
                         <div className="titleName">复旦FPGA</div>
                     </div>
                     <div className="clickTitle">
-                        <a className="btn btn-min" href="#" onClick={this.ClickMin}>-</a>
+                        <a className="btn btn-min" href="#" onClick={this.ClickMin}>
+                            <img src={minimize} />
+                        </a>
                         <a className="btn btn-max" href="#" onClick={this.ClickMaxRestore}>
-                            <FontAwesomeIcon icon={faSquareFull}/>
+                            <img src={maximize} />
                         </a>
                         <a className="btn btn-close" href="#" onClick={this.ClickClose}>
-                            <FontAwesomeIcon icon={faTimes}/>
+                            <img src={close} />
                         </a>
                     </div>
                 </div>

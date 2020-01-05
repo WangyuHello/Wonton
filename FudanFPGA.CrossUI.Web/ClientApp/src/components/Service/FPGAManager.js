@@ -6,13 +6,17 @@ export default class FPGAManager {
 
     subscribedInstances = {}
     hardwarePortsMap = {}
+    inputPortsMap = {}
 
     hardwareValues = []
     hardwarePorts = {}
 
+    inputValues = []
+
     constructor() {
         this.subscribedInstances = new Map();
         this.hardwarePortsMap = new Map();
+        this.inputPortsMap = new Map();
     }
 
     Update = () => {
@@ -30,8 +34,27 @@ export default class FPGAManager {
         this.hardwarePortsMap.set(hardwarePortIndex, {instance: instance, index: instancePortIndex});
     }
 
+    MapInputPorts = (instance, instancePortIndex ,inputIndex, defaultValue) => {
+        let map = this.inputPortsMap.get(instance);
+        map[instancePortIndex] = inputIndex;
+        this.inputPortsMap.set(instance, map);
+        this.inputValues[inputIndex] = defaultValue;
+    }
+
+    Register = (instance, inputCount) => {
+        this.inputPortsMap.set(instance, new Array(inputCount).fill(0));
+    }
+
     Subscribe = (instance, portlist, update) => {
         this.subscribedInstances.set(instance, {data: new Array(portlist.length).fill(0), refresh: update});
+    }
+
+    UpdateInput = (instance, inputs) => {
+        let inputMap = this.inputPortsMap.get(instance);
+        inputs.forEach((data, index, arr) => {
+            let inputDex = inputMap[index];
+            this.inputValues[inputDex] = data;
+        });
     }
 
     Cycle = () => {
@@ -63,6 +86,8 @@ export default class FPGAManager {
         this.writeCount = writeCount;
         this.readCount = readCount;
         this.hardwareValues = new Array(readCount*16).fill(0);
+        this.inputValues = new Array(writeCount*16).fill(0);
+        this.tempi16WriteData = new Array(writeCount).fill(0);
         const response = await fetch('/api/fpga/initio?writeCount='+writeCount+'&readCount='+readCount);
         const data = await response.json();
         console.log(data.message);
@@ -76,6 +101,23 @@ export default class FPGAManager {
                 this.hardwareValues[index*16 + dind] = (i16data >> dind) & 1;
             }
         });
+    }
+
+    tempi16WriteData = [];
+
+    GenWriteData = () => {
+        //从bit数组生成i16数组
+        this.tempi16WriteData.fill(0);
+        this.inputValues.forEach((data, index, arr) => {
+            let shift = index >> 4; // /16
+            let shift2 = index & 15; // 取最后4位
+            this.tempi16WriteData[shift] = this.tempi16WriteData[shift] | (data << shift2);
+        });
+    }
+
+    WriteReadData2 = async () => {
+        this.GenWriteData();
+        return await this.WriteReadData(this.tempi16WriteData);
     }
 
     WriteReadData = async (writeData) => {
