@@ -18,13 +18,13 @@ export class MainPanel extends PureComponent {
     render() {
 
         const layout = [
-            { i: 'i1', x: 0,  y: 0,w:3,h:4},
-            { i: 'i2', x: 3,  y: 0,w:3,h:4},
-            { i: 'i3', x: 6,  y: 0,w:3,h:4},
-            { i: 'i4', x: 9,  y: 0,w:3,h:4},
-            { i: 'i5', x: 12, y: 0,w:3,h:4},
-            { i: 'i6', x: 15, y: 0,w:3,h:4},
-            { i: 'i7', x: 18, y: 0,w:3,h:4}
+            { i: 'i1', x: 0,  y: 0,w:3,h:3},
+            { i: 'i2', x: 3,  y: 0,w:3,h:3},
+            { i: 'i3', x: 6,  y: 0,w:3,h:3},
+            { i: 'i4', x: 9,  y: 0,w:3,h:3},
+            { i: 'i5', x: 12, y: 0,w:3,h:3},
+            { i: 'i6', x: 15, y: 0,w:3,h:3},
+            { i: 'i7', x: 18, y: 0,w:3,h:3}
         ];
 
 
