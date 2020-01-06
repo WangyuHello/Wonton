@@ -8,14 +8,26 @@ import './HButton.css'
 
 export class HButton extends Component {
     
-    outputPorts = ['output1']
+    outputPorts = ['输出1']
+
+    static defaultProps = {
+        name: '按钮',
+        ports: ['输出1'],
+        portsDirs: ['输出']
+    }
 
     state = {
         outputs: [0]
     }
 
     componentDidMount() {
-        manager.Register(this.props.instance, 1);
+        manager.Register(this.props.instance, this.state.outputs.length);
+        manager.RegisterProjectPorts(this.props.instance, this.state.outputs.length);
+    }
+
+    componentWillUnmount() {
+        manager.UnRegister(this.props.instance);
+        manager.UnRegisterProjectPorts(this.props.instance);
     }
 
     ButtonClick = (event) => {

@@ -1,12 +1,12 @@
 ﻿import React, { Component } from 'react';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faMicrochip, faPlay, faStop, faServer, faSquareFull, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faMicrochip, faPlay, faStop, faServer, faSquareFull, faTimes, faFolderPlus, faSave, faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons'
 import './Title.css'
 import FPGAManager, { manager } from './Service/FPGAManager';
 import isElectron from 'is-electron';
 import is from 'electron-is';
-import os from 'os'
+import os from 'os';
 
 import maximize from './Resource/maximize.svg';
 import minimize from './Resource/minimize.svg';
@@ -21,24 +21,46 @@ export class Title extends Component {
         isProgrammToggle: false,
         runHz: 10,
         bitfile: '',
-        isFileModalOpen: false
+        isFileModalOpen: false,
+        isNewModalOpen: false
     }
 
     OpenFileModal = (event) => {
-        this.setState((prevState) => {
-            return {
-                isFileModalOpen : !prevState.isFileModalOpen,
-            }
-        });
+        // this.setState((prevState) => {
+        //     return {
+        //         isFileModalOpen : !prevState.isFileModalOpen,
+        //     }
+        // });
+
+        var inputObj = document.createElement('input');
+        inputObj.setAttribute('id','_ef');
+        inputObj.setAttribute('type','file');
+        inputObj.setAttribute('accept','.bit');
+        inputObj.setAttribute('style','visibility:hidden');
+        document.body.appendChild(inputObj);
+        inputObj.addEventListener("change",this.OnBitfileChange);
+        inputObj.click();
     }
 
     OnBitfileChange = (event) => {
-        console.log(event.target.files[0]);
+        // console.log(event.target.files[0]);
+        // if (isElectron()) {
+        //     this.setState({ bitfile: event.target.files[0].path });
+        // } else {
+        //     this.setState({ bitfile: event.target.files[0].name });
+        // }
+        let inputObj = document.getElementById("_ef");
+
         if (isElectron()) {
-            this.setState({ bitfile: event.target.files[0].path });
+            this.setState({ bitfile: inputObj.files[0].path });
         } else {
-            this.setState({ bitfile: event.target.files[0].name });
+            this.setState({ bitfile: inputObj.files[0].name });
         }
+
+        console.log(`Open bit file: ${inputObj.files[0].name}`);
+
+        inputObj.removeEventListener("change",function(){});
+        document.body.removeChild(inputObj);
     }
 
     FreqChange = (event) => {
@@ -72,16 +94,7 @@ export class Title extends Component {
         await manager.InitIO(4, 4);
         await manager.IoOpen();
 
-        console.log(this.state.runHz);
-
-        manager.MapPorts(15, 'i1', 0);
-        manager.MapPorts(14, 'i2', 0);
-        manager.MapPorts(13, 'i3', 0);
-        manager.MapPorts(12, 'i4', 0);
-        manager.MapPorts(11, 'i5', 0);
-        manager.MapPorts(10, 'i6', 0);
-        manager.MapInputPorts('i7', 0, 0, 0);
-
+        console.log(`Run Frequency: ${this.state.runHz}`);
 
         while (this.state.isRunning)
         {            
@@ -170,6 +183,43 @@ export class Title extends Component {
                               </a>
                           </div>;
 
+    New = (event) => {
+        this.setState((prevState) => {
+            return {
+                isNewModalOpen: !prevState.isNewModalOpen
+            }
+        })
+    }
+
+    OnNewfileChange = (event) => {
+
+    }
+
+    Open = (event) => {
+        //手动操作DOM的脏方法
+        var inputObj = document.createElement('input');
+        inputObj.setAttribute('id','_ef');
+        inputObj.setAttribute('type','file');
+        inputObj.setAttribute('style','visibility:hidden');
+        document.body.appendChild(inputObj);
+        inputObj.addEventListener("change",this.OnOpenfileChange);
+        inputObj.click();
+    }
+
+    OnOpenfileChange = (event) => {
+        let inputObj = document.getElementById("_ef");
+        let file = inputObj.files[0].name;
+
+        console.log(`Open project file: ${file}`);
+
+        inputObj.removeEventListener("change",function(){});
+        document.body.removeChild(inputObj);
+    }
+
+    Save = (event) => {
+
+    }
+
     render() {
 
         const isRunning = this.state.isRunning;
@@ -192,15 +242,41 @@ export class Title extends Component {
                     
                 </div>
                 <div className="navMenu">
-                    <div style={{display: "flex", alignItems: 'stretch'}}>
+                    <div style={{display: "flex", alignItems: 'center'}}>
                         <div style={{width: "50px"}}/>
-                        <div style={{color: 'white', display: 'inline-block', verticalAlign: 'bottom', fontSize:'18px'}}>器件库</div>
+                        <div style={{color: 'white', fontSize:'18px', marginBottom:"-2px"}}>器件库</div>
+                        <div style={{width: "30px"}}></div>
+                        <ButtonGroup size="sm">
+                            <Button onClick={this.New}>
+                                <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+                            </Button>
+                            <Button onClick={this.Open}>
+                                <FontAwesomeIcon icon={faFolderOpen}></FontAwesomeIcon>
+                            </Button>
+                            <Button onClick={this.Save}>
+                                <FontAwesomeIcon icon={faSave}></FontAwesomeIcon>
+                            </Button>
+                        </ButtonGroup>
+
+                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.New}>
+                                <ModalHeader toggle={this.New} >新建工程</ModalHeader>
+                                <ModalBody>
+                                    <div>项目地址</div>
+                                    <Input type='file' accept='.xml' onChange={this.OnNewfileChange}></Input>
+                                    <div>引脚约束文件</div>
+                                    <Input type='file' accept='.xml' onChange={this.OnNewfileChange}></Input>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="primary" onClick={this.New}>确定</Button>
+                                    <Button color="secondary" onClick={this.New}>关闭</Button>
+                                </ModalFooter>
+                        </Modal>
                     </div>
 
                     <div style={{display: "flex"}} className="no-drag">
                         <div>
                             <InputGroup>
-                                <Input style={{width: "100px"}} placeholder="频率" value={runHz} onChange={this.FreqChange}/>
+                                <Input style={{width: "100px"}} placeholder="频率" value={runHz} type="number" onChange={this.FreqChange}/>
                                 <InputGroupAddon addonType="append">
                                     <InputGroupText>Hz</InputGroupText>
                                 </InputGroupAddon>

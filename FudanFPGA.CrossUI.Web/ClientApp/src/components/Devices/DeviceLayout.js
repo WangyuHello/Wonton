@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import './DeviceLayout.css';
 
 export class DeviceLayout extends Component {
+
+    OnSettingClick = (event, instance) => {
+        this.props.OnSettingClick(event, instance);
+    }
+
+    OnRemoveClick = (event, instance) => {
+        this.props.OnRemoveClick(event, instance);
+    }
 
     render() {
         return (
@@ -12,12 +22,12 @@ export class DeviceLayout extends Component {
                     <div>{this.props.instance}</div>
                     <div style={{display: "flex"}}>
                         <div>
-                            <Button outline color='secondary' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", borderWidth:"0px" }}>
+                            <Button outline color='secondary' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", borderWidth:"0px",marginTop:"-4px" }} className="FramelessBtn" onClick={this.OnSettingClick.bind(this, this.props.children)}>
                                 <FontAwesomeIcon icon={faCog}/>
                             </Button>
                         </div>
                         <div>
-                            <Button outline color='danger' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", marginLeft:"4px", borderWidth:"0px" }}>
+                            <Button outline color='danger' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", marginLeft:"4px", borderWidth:"0px",marginTop:"-4px" }} className="FramelessBtn" onClick={this.OnRemoveClick.bind(this, this.props.children)}>
                                 <FontAwesomeIcon icon={faTimes}/>
                             </Button>
                         </div>
