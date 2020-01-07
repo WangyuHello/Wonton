@@ -8,22 +8,44 @@ import _ from 'lodash';
 
 import './MainPanel.css';
 import { manager } from '../Service/FPGAManager';
+import { pjManager } from "../Service/ProjectManager";
 import { Gallery } from './Gallery';
 
 const ReactGridLayout = WidthProvider(RGL);
 
 export class MainPanel extends PureComponent {
 
+    //从Manager获取数据
+    async componentWillMount() {
+        let data = await pjManager.GetPanelData();
+        this.setState({
+            layout: data.layout,
+            instanceCounter: data.layout.length
+        });
+    }
+
     componentDidMount() {
         //for test
-        manager.MapOutputPorts("sec_out[5]", 'i1', 0);
-        manager.MapOutputPorts("sec_out[4]", 'i2', 0);
-        manager.MapOutputPorts("sec_out[3]", 'i3', 0);
-        manager.MapOutputPorts("sec_out[2]", 'i4', 0);
-        manager.MapOutputPorts("sec_out[1]", 'i5', 0);
-        manager.MapOutputPorts("sec_out[0]", 'i6', 0);
-        manager.MapInputPorts('i7', 0, "rst_n", 0);
+        // manager.MapOutputPorts("sec_out[5]", 'i1', 0);
+        // manager.MapOutputPorts("sec_out[4]", 'i2', 0);
+        // manager.MapOutputPorts("sec_out[3]", 'i3', 0);
+        // manager.MapOutputPorts("sec_out[2]", 'i4', 0);
+        // manager.MapOutputPorts("sec_out[1]", 'i5', 0);
+        // manager.MapOutputPorts("sec_out[0]", 'i6', 0);
+        // manager.MapInputPorts('i7', 0, "rst_n", 0);
+
+        // pjManager.RegisterRefreshMainPanel(this.OnRefresh);
+
+        //for test
+        // pjManager.layout = this.state.layout;
     }
+
+    // OnRefresh = (data) => {
+    //     this.setState({
+    //         layout: data.layout,
+    //         instanceCounter: data.layout.length
+    //     });
+    // }
 
     OnSettingClick = (event) => {
         let connMap = this.GenerateSettingTable(event);
@@ -145,16 +167,22 @@ export class MainPanel extends PureComponent {
 
         console.log(`Add instance: ${name} at (${nextX}, ${nextY})`);
 
+        let newLayout = this.state.layout.concat({
+            i: 'i' + insCounter, device: name, x: nextX, 
+             y: nextY,w:3,h:3, minW:3, minH:3
+        });
+
+        //更新当前状态和PJManager中的值
+        pjManager.layout = newLayout;
+
         this.setState({
-            layout: this.state.layout.concat({
-                i: 'i' + insCounter, device: name, x: nextX, 
-                 y: nextY,w:3,h:3, minW:3, minH:3
-            }),
+            layout: newLayout,
             instanceCounter: insCounter
         })
     }
 
     GenLayoutDevices = (layout) => {
+        console.log(layout);
         return _.map(layout, el => {
         
             let dev = <div></div>
@@ -183,13 +211,13 @@ export class MainPanel extends PureComponent {
         instanceCounter: 7,
         projectConnections: new Map(),
         layout: [
-            { i: 'i1', device:'LED', x: 0,  y: 0,w:3,h:3, minW:3, minH:3},
-            { i: 'i2', device:'LED', x: 3,  y: 0,w:3,h:3, minW:3, minH:3},
-            { i: 'i3', device:'LED', x: 6,  y: 0,w:3,h:3, minW:3, minH:3},
-            { i: 'i4', device:'LED', x: 9,  y: 0,w:3,h:3, minW:3, minH:3},
-            { i: 'i5', device:'LED', x: 12, y: 0,w:3,h:3, minW:3, minH:3},
-            { i: 'i6', device:'LED', x: 15, y: 0,w:3,h:3, minW:3, minH:3},
-            { i: 'i7', device:'HButton', x: 18, y: 0,w:3,h:3, minW:3, minH:3}
+            // { i: 'i1', device:'LED', x: 0,  y: 0,w:3,h:3, minW:3, minH:3},
+            // { i: 'i2', device:'LED', x: 3,  y: 0,w:3,h:3, minW:3, minH:3},
+            // { i: 'i3', device:'LED', x: 6,  y: 0,w:3,h:3, minW:3, minH:3},
+            // { i: 'i4', device:'LED', x: 9,  y: 0,w:3,h:3, minW:3, minH:3},
+            // { i: 'i5', device:'LED', x: 12, y: 0,w:3,h:3, minW:3, minH:3},
+            // { i: 'i6', device:'LED', x: 15, y: 0,w:3,h:3, minW:3, minH:3},
+            // { i: 'i7', device:'HButton', x: 18, y: 0,w:3,h:3, minW:3, minH:3}
         ]
     }
     

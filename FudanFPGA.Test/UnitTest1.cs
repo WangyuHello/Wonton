@@ -1,6 +1,9 @@
 using System;
 using System.Diagnostics;
+using System.Xml;
+using System.Xml.Linq;
 using FudanFPGA.Common;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace FudanFPGA.Test
@@ -47,6 +50,18 @@ namespace FudanFPGA.Test
 
             b.IoClose();
 
+        }
+
+        [Fact]
+        void TestXml()
+        {
+            XmlDocument xml = new XmlDocument();
+            XDocument x = new XDocument();
+
+            xml.Load(@"E:\Downloads\VeriCommSDK-2019-11-22 ’µΩ\VeriCommSDK\Example\Alarm_Clock\FDP3P7\FDE\src\AlarmClock.xml");
+
+            XmlNode design = xml.SelectSingleNode("design");
+            var json = JsonConvert.SerializeXmlNode(design);
         }
     }
 }

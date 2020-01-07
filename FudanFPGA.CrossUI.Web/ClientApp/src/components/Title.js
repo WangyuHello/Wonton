@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faMicrochip, faPlay, faStop, faServer, faSquareFull, faTimes, faFolderPlus, faSave, faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons'
 import './Title.css'
 import FPGAManager, { manager } from './Service/FPGAManager';
+import { pjManager } from './Service/ProjectManager';
 import isElectron from 'is-electron';
 import is from 'electron-is';
-import os from 'os';
+import path from 'path';
 
 import maximize from './Resource/maximize.svg';
 import minimize from './Resource/minimize.svg';
@@ -22,45 +23,67 @@ export class Title extends Component {
         runHz: 10,
         bitfile: '',
         isFileModalOpen: false,
-        isNewModalOpen: false
+        isNewModalOpen: false,
+        isOpenModalOpen: false
     }
 
-    OpenFileModal = (event) => {
-        // this.setState((prevState) => {
-        //     return {
-        //         isFileModalOpen : !prevState.isFileModalOpen,
-        //     }
-        // });
+    //从Manager获取初始值
+    async componentWillMount() {
+        let data = await pjManager.GetTitleData();
+        this.setState({
+            bitfile: data.bitfile
+        });
+    }
 
-        var inputObj = document.createElement('input');
-        inputObj.setAttribute('id','_ef');
-        inputObj.setAttribute('type','file');
-        inputObj.setAttribute('accept','.bit');
-        inputObj.setAttribute('style','visibility:hidden');
-        document.body.appendChild(inputObj);
-        inputObj.addEventListener("change",this.OnBitfileChange);
-        inputObj.click();
+    // componentDidMount() {
+    //     pjManager.RegisterRefreshTitle(this.OnRefresh);
+    // }
+
+    // OnRefresh = (data) => {
+    //     this.setState({
+    //         bitfile: data.bitfile
+    //     });
+    // }
+
+    OpenFileModal = (event) => {
+        this.setState((prevState) => {
+            return {
+                isFileModalOpen : !prevState.isFileModalOpen,
+            }
+        });
+
+        // var inputObj = document.createElement('input');
+        // inputObj.setAttribute('id','_ef');
+        // inputObj.setAttribute('type','file');
+        // inputObj.setAttribute('accept','.bit');
+        // inputObj.setAttribute('style','visibility:hidden');
+        // document.body.appendChild(inputObj);
+        // inputObj.addEventListener("change",this.OnBitfileChange);
+        // inputObj.click();
     }
 
     OnBitfileChange = (event) => {
-        // console.log(event.target.files[0]);
-        // if (isElectron()) {
-        //     this.setState({ bitfile: event.target.files[0].path });
-        // } else {
-        //     this.setState({ bitfile: event.target.files[0].name });
-        // }
-        let inputObj = document.getElementById("_ef");
-
+        console.log(event.target.files[0]);
         if (isElectron()) {
-            this.setState({ bitfile: inputObj.files[0].path });
+            let path = event.target.files[0].path;
+            pjManager.bitfile = path
+            this.setState({ bitfile: path });
         } else {
-            this.setState({ bitfile: inputObj.files[0].name });
+            pjManager.bitfile = "E:\\Documents\\Repo\\ProjectFDB\\FudanFPGAInterface\\FudanFPGA.Test\\AlarmClock_fde_dc.bit";
+            this.setState({ bitfile: "E:\\Documents\\Repo\\ProjectFDB\\FudanFPGAInterface\\FudanFPGA.Test\\AlarmClock_fde_dc.bit" });
         }
+        // let inputObj = document.getElementById("_ef");
 
-        console.log(`Open bit file: ${inputObj.files[0].name}`);
+        // if (isElectron()) {
+        //     this.setState({ bitfile: inputObj.files[0].path });
+        // } else {
+        //     this.setState({ bitfile: inputObj.files[0].name });
+        // }
 
-        inputObj.removeEventListener("change",function(){});
-        document.body.removeChild(inputObj);
+        // console.log(`Open bit file: ${inputObj.files[0].name}`);
+
+        // inputObj.removeEventListener("change",function(){});
+        // document.body.removeChild(inputObj);
     }
 
     FreqChange = (event) => {
@@ -132,13 +155,7 @@ export class Title extends Component {
     }
 
     ClickProgram = async () => {
-        if (isElectron()) {
-            await manager.Program(this.state.bitfile);
-        } else {
-            await manager.Program("E:\\Documents\\Repo\\ProjectFDB\\FudanFPGAInterface\\FudanFPGA.Test\\AlarmClock_fde_dc.bit");
-        }
-        
-        
+        await manager.Program(this.state.bitfile);
     }
 
     ClickProgrammToggle = () => {
@@ -183,7 +200,7 @@ export class Title extends Component {
                               </a>
                           </div>;
 
-    New = (event) => {
+    NewPjToggle = (event) => {
         this.setState((prevState) => {
             return {
                 isNewModalOpen: !prevState.isNewModalOpen
@@ -191,33 +208,92 @@ export class Title extends Component {
         })
     }
 
-    OnNewfileChange = (event) => {
+    NewPj = async (event) => {
+        await pjManager.NewProject(this.state.pjdir,this.state.pjName,this.state.iofile);
+        window.location.reload(true);
+    }
+
+    OnNewPjDirChange = (event) => {
+        console.log(`New Project Dir: ${event.target.value}`);
+        let path = event.target.value;
+        this.setState({ pjdir: path });
+    }
+
+    OnNewPjNameChange = (event) => {
+        console.log(`New Project Name: ${event.target.value}`);
+        this.setState({
+            pjName: event.target.value
+        })
+    }
+
+    OnNewPjIOfileChange = async (event) => {
+        if (isElectron()) {
+            let path = event.target.files[0].path;
+            this.setState({ iofile: path });
+        } else {
+            let path = "E:\\Downloads\\VeriCommSDK-2019-11-22收到\\VeriCommSDK\\Example\\Alarm_Clock\\FDP3P7\\FDE\\src\\AlarmClock.xml";
+            this.setState({ iofile: path });
+        }
+
+        // if (isElectron()) {
+            
+        // } else {
+        //     await pjManager.ReadProjectIO("E:\\Downloads\\VeriCommSDK-2019-11-22收到\\VeriCommSDK\\Example\\Alarm_Clock\\FDP3P7\\FDE\\src\\AlarmClock.xml");
+        // }
 
     }
 
-    Open = (event) => {
-        //手动操作DOM的脏方法
-        var inputObj = document.createElement('input');
-        inputObj.setAttribute('id','_ef');
-        inputObj.setAttribute('type','file');
-        inputObj.setAttribute('style','visibility:hidden');
-        document.body.appendChild(inputObj);
-        inputObj.addEventListener("change",this.OnOpenfileChange);
-        inputObj.click();
+    OpenPjToggle = (event) => {
+        this.setState((prevState) => {
+            return {
+                isOpenModalOpen: !prevState.isOpenModalOpen
+            }
+        })
+    }
+
+    // Open = (event) => {
+    //     //手动操作DOM的脏方法
+    //     var inputObj = document.createElement('input');
+    //     inputObj.setAttribute('id','_ef');
+    //     inputObj.setAttribute('type','file');
+    //     inputObj.setAttribute('style','visibility:hidden');
+    //     document.body.appendChild(inputObj);
+    //     inputObj.addEventListener("change",this.OnOpenfileChange);
+    //     inputObj.click();
+    // }
+
+    OpenPj = async (event) => {
+        //将新的项目地址存储在后台进程
+        pjManager.projectFile = this.state.openPjName;
+        await pjManager.SetProjectFile();
+
+        //刷新页面,重新载入项目
+        window.location.reload(true);
     }
 
     OnOpenfileChange = (event) => {
-        let inputObj = document.getElementById("_ef");
-        let file = inputObj.files[0].name;
+        // let inputObj = document.getElementById("_ef");
+
+        let file = "E:\\Downloads\\VeriCommSDK-2019-11-22收到\\VeriCommSDK\\Example\\Alarm_Clock\\FDP3P7\\FDE\\src\\AlarClock.hwproj";
+        if (isElectron()) {
+            file = event.target.files[0].path;
+        } else {
+            
+        }
 
         console.log(`Open project file: ${file}`);
+        this.setState({
+            openPjName: file
+        })
 
-        inputObj.removeEventListener("change",function(){});
-        document.body.removeChild(inputObj);
+        // inputObj.removeEventListener("change",function(){});
+        // document.body.removeChild(inputObj);
+
+
     }
 
-    Save = (event) => {
-
+    Save = async (event) => {
+        await pjManager.WriteProjectFile();
     }
 
     render() {
@@ -246,11 +322,11 @@ export class Title extends Component {
                         <div style={{width: "50px"}}/>
                         <div style={{color: 'white', fontSize:'18px', marginBottom:"-2px"}}>器件库</div>
                         <div style={{width: "30px"}}></div>
-                        <ButtonGroup size="sm">
-                            <Button onClick={this.New}>
+                        <ButtonGroup size="sm" className="no-drag">
+                            <Button onClick={this.NewPjToggle}>
                                 <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
                             </Button>
-                            <Button onClick={this.Open}>
+                            <Button onClick={this.OpenPjToggle}>
                                 <FontAwesomeIcon icon={faFolderOpen}></FontAwesomeIcon>
                             </Button>
                             <Button onClick={this.Save}>
@@ -258,17 +334,30 @@ export class Title extends Component {
                             </Button>
                         </ButtonGroup>
 
-                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.New}>
-                                <ModalHeader toggle={this.New} >新建工程</ModalHeader>
+                        <Modal isOpen={this.state.isOpenModalOpen} toggle={this.OpenPjToggle}>
+                            <ModalHeader toggle={this.OpenPjToggle}>打开工程</ModalHeader>
+                            <ModalBody>
+                                <Input type='file' accept='.hwproj' onChange={this.OnOpenfileChange}></Input>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" onClick={this.OpenPj}>确定</Button>
+                                <Button color="secondary" onClick={this.OpenPjToggle}>关闭</Button>
+                            </ModalFooter>
+                        </Modal>
+
+                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle}>
+                                <ModalHeader toggle={this.NewPjToggle} >新建工程</ModalHeader>
                                 <ModalBody>
+                                    <div>项目名称</div>
+                                    <Input onChange={this.OnNewPjNameChange}></Input>
                                     <div>项目地址</div>
-                                    <Input type='file' accept='.xml' onChange={this.OnNewfileChange}></Input>
+                                    <Input onChange={this.OnNewPjDirChange}></Input>
                                     <div>引脚约束文件</div>
-                                    <Input type='file' accept='.xml' onChange={this.OnNewfileChange}></Input>
+                                    <Input type='file' accept='.xml' onChange={this.OnNewPjIOfileChange}></Input>
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="primary" onClick={this.New}>确定</Button>
-                                    <Button color="secondary" onClick={this.New}>关闭</Button>
+                                    <Button color="primary" onClick={this.NewPj}>确定</Button>
+                                    <Button color="secondary" onClick={this.NewPjToggle}>关闭</Button>
                                 </ModalFooter>
                         </Modal>
                     </div>

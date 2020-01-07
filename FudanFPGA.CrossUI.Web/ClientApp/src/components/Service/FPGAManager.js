@@ -5,10 +5,10 @@ export default class FPGAManager {
     writeCount = 0
     readCount = 0
 
-    subscribedInstances = {} //响应输出的Instance i1 => {data: [0], refresh: 回调函数}
-    hardwarePortsMap = {} //输出端口映射 32 => {instance: "i2", index: 0}
-    inputPortsMap = {} //输入端口映射 i1 => [31]
-    projectInstancePortsMap = {} // i1 => ["sec_out[0]"]
+    subscribedInstances = new Map() //响应输出的Instance i1 => {data: [0], refresh: 回调函数}
+    hardwarePortsMap = new Map() //输出端口映射 32 => {instance: "i2", index: 0}
+    inputPortsMap = new Map() //输入端口映射 i1 => [31]
+    projectInstancePortsMap = new Map() // i1 => ["sec_out[0]"] 包含输入输出
 
     hardwareValues = [] //输出数据 [0,0,0,0,......0] 64位
 
@@ -109,8 +109,11 @@ export default class FPGAManager {
     }
 
     Register = (instance, inputCount) => {
-        this.inputPortsMap.set(instance, new Array(inputCount).fill(0));
-        console.log(`Registered Instance: ${instance}, inputCount: ${inputCount}`);
+        if (this.inputPortsMap.has(instance)) {
+            console.log(`Already Registered Instance: ${instance}, inputCount: ${inputCount}`);
+        } else {
+            this.inputPortsMap.set(instance, new Array(inputCount).fill(0));
+        }
     }
 
     UnRegister = (instance) => {
@@ -119,8 +122,13 @@ export default class FPGAManager {
     }
 
     RegisterProjectPorts = (instance, count) => {
-        this.projectInstancePortsMap.set(instance, new Array(count).fill(""));
-        console.log(`Registered Instance for Project: ${instance}, inputCount: ${count}`);
+        if (this.projectInstancePortsMap.has(instance)) {
+            //已经从项目文件中回复
+            console.log(`Already Registered Instance for Project: ${instance}`);
+        } else {
+            this.projectInstancePortsMap.set(instance, new Array(count).fill(""));
+            console.log(`Registered Instance for Project: ${instance}, inputCount: ${count}`);
+        }
     }
 
     UnRegisterProjectPorts = (instance) => {

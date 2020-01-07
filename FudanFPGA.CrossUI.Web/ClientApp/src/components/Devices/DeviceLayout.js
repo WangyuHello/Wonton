@@ -16,6 +16,9 @@ export class DeviceLayout extends Component {
     }
 
     render() {
+
+
+
         return (
             <div style={{height: "100%", display:"flex", flexDirection: "column", justifyContent:"space-between"}}>
                 <div style={{display:"flex", justifyContent:"space-between", marginLeft: "10px", marginRight: "4px"}}>
@@ -38,7 +41,7 @@ export class DeviceLayout extends Component {
                     {this.props.children}
                     <div></div>
                 </div>
-                <div></div>
+                <div style={{display:"flex", justifyContent:"flex-start", marginLeft: "10px"}}></div>
             </div>
         );
     }

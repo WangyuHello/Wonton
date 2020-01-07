@@ -8,6 +8,8 @@ namespace FudanFPGA.Common
     {
         public FPGABoard Board { get; private set; }
 
+        public string CurrentProjectFile { get; set; }
+
         public FPGAManager()
         {
             Board = new FPGABoard();
