@@ -3,7 +3,7 @@
   "splashscreen": {
     "imageFile": ""
   },
-  "singleInstance": false,
+  "singleInstance": true,
   "build": {
     "appId": "edu.FudanFPGA.CrossUI.Web.app",
     "productName": "FudanFPGA",
@@ -27,6 +27,12 @@
         "filter": ["**/*"]
       },
       "**/*"
-    ]
+    ],
+    "win": {
+      "target": ["nsis", "zip"]
+    },
+    "mac": {
+      "target": ["dmg", "zip"]
+    }
   }
 }
