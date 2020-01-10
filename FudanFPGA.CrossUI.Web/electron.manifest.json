@@ -29,10 +29,12 @@
       "**/*"
     ],
     "win": {
-      "target": ["nsis", "zip"]
+      "icon": "./bin/ClientApp/build/chip.ico",
+      "target": ["zip"]
     },
     "mac": {
-      "target": ["dmg", "zip"]
+      "icon": "./bin/ClientApp/build/chip.icns",
+      "target": ["zip"]
     }
   }
 }

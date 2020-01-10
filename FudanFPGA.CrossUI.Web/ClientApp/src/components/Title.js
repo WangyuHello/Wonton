@@ -7,7 +7,7 @@ import FPGAManager, { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
 import isElectron from 'is-electron';
 import is from 'electron-is';
-import path from 'path';
+// import { ipcRenderer } from "electron";
 
 import maximize from './Resource/maximize.svg';
 import minimize from './Resource/minimize.svg';

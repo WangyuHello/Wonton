@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
@@ -71,8 +72,30 @@ namespace FudanFPGA.CrossUI.Web
             });
 #if RELEASE
             Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions { TitleBarStyle = TitleBarStyle.hiddenInset ,Frame = false, Width = 1000, Height = 650 }));
+            SetMenu();
             ElectronIPC.Initialize();
 #endif
+        }
+
+        public void SetMenu()
+        {
+            var menu = new []
+            {
+                new MenuItem
+                {
+                    Label = "°ïÖú",
+                    Role = MenuRole.help,
+                    Submenu = new []
+                    {
+                        new MenuItem
+                        {
+                            Label = "¹ØÓÚ"
+                        }
+                    }
+                } 
+            };
+
+            Electron.Menu.SetApplicationMenu(menu);
         }
     }
 }
