@@ -83,13 +83,13 @@ namespace FudanFPGA.CrossUI.Web
             {
                 new MenuItem
                 {
-                    Label = "°ïÖú",
+                    Label = "å¸®åŠ©",
                     Role = MenuRole.help,
                     Submenu = new []
                     {
                         new MenuItem
                         {
-                            Label = "¹ØÓÚ"
+                            Label = "å…³äºŽ"
                         }
                     }
                 } 

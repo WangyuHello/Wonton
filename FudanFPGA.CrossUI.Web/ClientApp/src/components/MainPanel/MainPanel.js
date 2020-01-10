@@ -1,4 +1,4 @@
-﻿import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import RGL, { WidthProvider } from "react-grid-layout";
 import { LED } from '../Devices/LED/LED';
 import { HButton } from '../Devices/HButton/HButton';
