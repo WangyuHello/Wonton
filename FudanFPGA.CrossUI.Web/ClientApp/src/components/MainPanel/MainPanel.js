@@ -48,11 +48,25 @@ export class MainPanel extends PureComponent {
     // }
 
     OnSettingClick = (event) => {
-        let connMap = this.GenerateSettingTable(event);
+        // let connMap = this.GenerateSettingTable(event);
+        // this.setState((prevState) => {
+        //     return {
+        //         isSettingModalOpen : !prevState.isSettingModalOpen,
+        //         projectConnections : connMap
+        //     }
+        // });
+        let insName = event.props.instance;
+        let ports = event.props.ports;
+        let portsDirs = event.props.portsDirs;
+        let conns = manager.GetProjectInstanceMappingAll(insName);
+
         this.setState((prevState) => {
             return {
                 isSettingModalOpen : !prevState.isSettingModalOpen,
-                projectConnections : connMap
+                selectedDevice: insName,
+                selectedDevicePorts: ports,
+                selectedDevicePortsDirection: portsDirs,
+                selectedDevicePortsConnection: conns
             }
         });
     }
@@ -67,8 +81,13 @@ export class MainPanel extends PureComponent {
 
     OnRemoveClick = (event, instance) => {
         console.log(`Remove device: ${instance}`);
+
+        let newLayout = _.reject(this.state.layout, {i: instance});
+        //更新当前状态和PJManager中的值
+        pjManager.layout = newLayout;
+
         this.setState({
-            layout: _.reject(this.state.layout, {i: instance})
+            layout: newLayout
         });
     }
 
@@ -87,6 +106,7 @@ export class MainPanel extends PureComponent {
         this.setState({
             projectConnections: prevConnectionMap
         });
+        
     }
 
     GenPortsSelects = (instance, index, direction) => { 
@@ -182,7 +202,7 @@ export class MainPanel extends PureComponent {
     }
 
     GenLayoutDevices = (layout) => {
-        console.log(layout);
+        // console.log(layout);
         return _.map(layout, el => {
         
             let dev = <div></div>
@@ -206,6 +226,72 @@ export class MainPanel extends PureComponent {
         });
     }
 
+    OnPortChange2 = (event, index, direction, instance, connections) =>　{
+        connections[index] = event.target.value;
+
+        if (direction === "输出") { //组件的输入接硬件的输出
+            manager.MapInputPorts(instance, index, event.target.value, 0); //TODO 默认初始值为0
+        } else {
+            manager.MapOutputPorts(event.target.value, instance, index);
+        }
+
+        this.setState({
+            selectedDevicePortsConnection: connections
+        });
+
+        this.forceUpdate();
+    }
+
+    GenPortsSelects2 = (instance, index, direction, connections) => { 
+        let projectPorts = direction === "输出" ? manager.GetProjectInputPorts() : manager.GetProjectOutputPorts(); //组件的输入接硬件的输出
+
+        let selected = connections[index];
+
+        return <Input type="select" bsSize="sm" key={index} value={selected} onChange={(e) => this.OnPortChange2(e, index, direction, instance, connections)}>
+            <option>请选择</option>
+            {
+                projectPorts.map((value, index) => {
+                    return <option key={index} >
+                        {value}
+                    </option>
+                    
+                })
+            }
+        </Input>
+    }
+
+    GenerateSettingTable2 = (selectedDevice, selectedDevicePorts, selectedDevicePortsDirection, selectedDevicePortsConnection) => {
+        return <Table hover>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>组件端口</th>
+                    <th>I/O</th>
+                    <th>硬件端口</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    selectedDevicePorts.map((item, index) => {
+                        return <tr key={index}>
+                            <th scope="row">{index + 1}</th>
+                            <td>{item}</td>
+                            <td>{selectedDevicePortsDirection[index]}</td>
+                            <td>{this.GenPortsSelects2(selectedDevice, index, selectedDevicePortsDirection[index], selectedDevicePortsConnection)}</td>
+                        </tr>
+                    })
+                }
+
+            </tbody>
+        </Table>
+    }
+
+    OnLayoutChange = (layout) => {
+        // console.log(layout);
+        //此处的Layout不含device信息
+        pjManager.layoutNoDevice = layout;
+    }
+
     state = {
         isSettingModalOpen: false,
         instanceCounter: 7,
@@ -218,7 +304,11 @@ export class MainPanel extends PureComponent {
             // { i: 'i5', device:'LED', x: 12, y: 0,w:3,h:3, minW:3, minH:3},
             // { i: 'i6', device:'LED', x: 15, y: 0,w:3,h:3, minW:3, minH:3},
             // { i: 'i7', device:'HButton', x: 18, y: 0,w:3,h:3, minW:3, minH:3}
-        ]
+        ],
+        selectedDevice: "", // "i1"  被选中的Instance名称
+        selectedDevicePorts: [], // [输入1,  ...] 选中Instance的所有端口
+        selectedDevicePortsDirection: [], // [input, ...]
+        selectedDevicePortsConnection: [] // [sec_out[0], ...]
     }
     
     render() {
@@ -227,14 +317,17 @@ export class MainPanel extends PureComponent {
             <div id="outer-container">
                 <Gallery OnAdd={this.OnAdd}></Gallery>
                 <main id='panel-content' >
-                    <ReactGridLayout cols={24} rowHeight={24} compactType={null}>
+                    <ReactGridLayout cols={24} rowHeight={24} compactType={null} onLayoutChange={this.OnLayoutChange}>
                         {this.GenLayoutDevices(this.state.layout)}
                     </ReactGridLayout>
                 </main>
                 <Modal isOpen={this.state.isSettingModalOpen} toggle={this.OnSettingModalToggle}>
                     <ModalHeader toggle={this.OnSettingModalToggle} >设置</ModalHeader>
                     <ModalBody>
-                        {this.SettingTable}
+                        {
+                        /* {this.SettingTable} */
+                        this.GenerateSettingTable2(this.state.selectedDevice, this.state.selectedDevicePorts, this.state.selectedDevicePortsDirection, this.state.selectedDevicePortsConnection)
+                        }
                     </ModalBody>
                 </Modal>
             </div>

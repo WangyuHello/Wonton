@@ -148,16 +148,17 @@ export class Title extends Component {
             // let r = await manager.WriteReadData(write);
             let r = await manager.WriteReadData2();
 
-            var hr_out = r[0] & 0x000F;
-            var min_out = (r[0] & 0x03F0) >> 4;
-            var sec_out = (r[0] & 0xFC00) >> 10;
-            var hr_alarm = r[1] & 0x000F;
-            var min_alarm = (r[1] & 0x03F0) >> 4;
-            var alarm = (r[1] & 0x0400) >> 10;
+            // For Test
+            // var hr_out = r[0] & 0x000F;
+            // var min_out = (r[0] & 0x03F0) >> 4;
+            // var sec_out = (r[0] & 0xFC00) >> 10;
+            // var hr_alarm = r[1] & 0x000F;
+            // var min_alarm = (r[1] & 0x03F0) >> 4;
+            // var alarm = (r[1] & 0x0400) >> 10;
 
-            console.log(
-                `"hr_out[${hr_out}] min_out[${min_out}] sec_out[${sec_out}] hr_alarm[${hr_alarm}] min_alarm[${
-                min_alarm}] alarm[${alarm}]"`);
+            // console.log(
+            //     `"hr_out[${hr_out}] min_out[${min_out}] sec_out[${sec_out}] hr_alarm[${hr_alarm}] min_alarm[${
+            //     min_alarm}] alarm[${alarm}]"`);
 
             manager.Cycle();
 

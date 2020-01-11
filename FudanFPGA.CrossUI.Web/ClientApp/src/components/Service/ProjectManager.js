@@ -1,12 +1,16 @@
 import { manager } from './FPGAManager';
+import _ from 'lodash';
 
 export default class ProjectManager {
 
-    projectFile = "E:\\Downloads\\VeriCommSDK-2019-11-22收到\\VeriCommSDK\\Example\\Alarm_Clock\\FDP3P7\\FDE\\src\\AlarClock.hwproj"
-    bitfile = "E:\\Documents\\Repo\\ProjectFDB\\FudanFPGAInterface\\FudanFPGA.Test\\AlarmClock_fde_dc.bit"
+    // projectFile = "E:\\Downloads\\VeriCommSDK-2019-11-22收到\\VeriCommSDK\\Example\\Alarm_Clock\\FDP3P7\\FDE\\src\\AlarClock.hwproj"
+    projectFile = ""
+    // bitfile = "E:\\Documents\\Repo\\ProjectFDB\\FudanFPGAInterface\\FudanFPGA.Test\\AlarmClock_fde_dc.bit"
+    bitfile = ""
 
     projectInfo = {}
     layout = []
+    layoutNoDevice = []
 
     OnRefreshTitle = null
     OnRefreshMainPanel = null
@@ -44,7 +48,7 @@ export default class ProjectManager {
         if (res.message === "") {
             return;
         }
-        console.log(res);
+        // console.log(res);
         this.projectInfo = JSON.parse(res.message);
         this.projectFile = res.projectPath;
         console.log(`Project Path: ${this.projectFile}`);
@@ -114,15 +118,35 @@ export default class ProjectManager {
         manager.projectOutputPorts.length = 0;
     }
 
+    MergeLayoutDevice = (mylayout, mylayoutNoDevice) => {
+        //mylayout 中包含Device信息,但是长宽不对
+        //mylayoutNoDevice 中包含正确长宽信息,但是不含Device
+        
+        return _.map(mylayout, (ele) => {
+            let ind = _.findIndex(mylayoutNoDevice, se => se.i === ele.i);
+            let noDevEle = mylayoutNoDevice[ind];
+
+            ele.x = noDevEle.x;
+            ele.y = noDevEle.y;
+            ele.w = noDevEle.w;
+            ele.h = noDevEle.h;
+
+            return ele;
+        });
+    }
+
     WriteProjectFile = async () => {
         let filename = this.projectFile;
         console.log(`Project File: ${filename}`);
+
+        let mergedLayout = this.MergeLayoutDevice(this.layout, this.layoutNoDevice);
+
         this.projectInfo = {
             "subscribedInstances": this.mapToObj(manager.subscribedInstances),
             "hardwarePortsMap": this.mapToObj(manager.hardwarePortsMap),
             "inputPortsMap": this.mapToObj(manager.inputPortsMap),
             "projectInstancePortsMap": this.mapToObj(manager.projectInstancePortsMap),
-            "layout": this.layout,
+            "layout": mergedLayout,
             "projectPortsMap": this.mapToObj(manager.projectPortsMap),
             "bitfile": this.bitfile,
         }
