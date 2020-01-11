@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FudanFPGA.CrossUI.Web.Controllers
 {
-#if RELEASE
     [Route("api/[controller]")]
     [ApiController]
     public class WindowController : ControllerBase
@@ -45,10 +44,9 @@ namespace FudanFPGA.CrossUI.Web.Controllers
                     mainWindow.SetProgressBar(-1, new ProgressBarOptions { Mode = ProgressBarMode.none });
                     break;
                 case 1:
-                    mainWindow.SetProgressBar(0.5, new ProgressBarOptions { Mode = ProgressBarMode.indeterminate });
+                    mainWindow.SetProgressBar(2, new ProgressBarOptions { Mode = ProgressBarMode.indeterminate });
                     break;
             }
         }
     }
-#endif
 }

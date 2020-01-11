@@ -13,12 +13,12 @@ namespace FudanFPGA.CrossUI.Web.Services
         {
             Electron.IpcMain.On("working-status", (args) =>
             {
-                if (args is bool)
+                if (args is bool b)
                 {
-                    if ((bool)args)
+                    if (b)
                     {
                         var mainWindow = Electron.WindowManager.BrowserWindows.First();
-                        mainWindow.SetProgressBar(0, new ProgressBarOptions{Mode = ProgressBarMode.indeterminate});
+                        mainWindow.SetProgressBar(2, new ProgressBarOptions{Mode = ProgressBarMode.indeterminate});
                     }
                     else
                     {
@@ -28,7 +28,7 @@ namespace FudanFPGA.CrossUI.Web.Services
                 }
             });
 
-            Electron.IpcMain.On("window-status", (args) =>
+            Electron.IpcMain.On("window-status", async (args) =>
             {
                 var state = (string) args;
                 var mainWindow = Electron.WindowManager.BrowserWindows.First();
@@ -38,12 +38,28 @@ namespace FudanFPGA.CrossUI.Web.Services
                         mainWindow.Minimize();
                         break;
                     case "maximize":
-                        mainWindow.Maximize();
+                        if (await mainWindow.IsMaximizedAsync())
+                        {
+                            mainWindow.Restore();
+                        }
+                        else
+                        {
+                            mainWindow.Maximize();
+                        }
                         break;
                     case "restore":
                         mainWindow.Restore();
                         break;
                 }
+            });
+
+            Electron.IpcMain.On("dev-tools", o =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                mainWindow.WebContents.OpenDevTools(new OpenDevToolsOptions
+                {
+                    Mode = DevToolsMode.detach
+                });
             });
         }
     }

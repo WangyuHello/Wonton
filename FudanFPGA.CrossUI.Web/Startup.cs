@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using FudanFPGA.Common;
+using FudanFPGA.CrossUI.Web.Rpc;
+using FudanFPGA.CrossUI.Web.RPC;
 using FudanFPGA.CrossUI.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +37,7 @@ namespace FudanFPGA.CrossUI.Web
             });
 
             services.AddSingleton<FPGAManager>();
+            services.AddGrpc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +62,7 @@ namespace FudanFPGA.CrossUI.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapGrpcService<FPGARpcService>();
             });
 
             app.UseSpa(spa =>
@@ -70,11 +74,22 @@ namespace FudanFPGA.CrossUI.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-#if RELEASE
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions { TitleBarStyle = TitleBarStyle.hiddenInset ,Frame = false, Width = 1000, Height = 650 }));
+
+            Task.Run(async () =>
+            {
+                var window = await Electron.WindowManager.CreateWindowAsync(
+                    new BrowserWindowOptions
+                    {
+                        TitleBarStyle = TitleBarStyle.hiddenInset, 
+                        Frame = false, 
+                        Width = 1000, 
+                        Height = 650
+                    });
+                SetWindow(window);
+            });
+
             SetMenu();
             ElectronIPC.Initialize();
-#endif
         }
 
         public void SetMenu()
@@ -96,6 +111,18 @@ namespace FudanFPGA.CrossUI.Web
             };
 
             Electron.Menu.SetApplicationMenu(menu);
+        }
+
+        public void SetWindow(BrowserWindow window)
+        {
+            window.OnMaximize += () =>
+            {
+                Electron.IpcMain.Send(window, "window-state-maximize", 1);
+            };
+            window.OnUnmaximize += () =>
+            {
+                Electron.IpcMain.Send(window, "window-state-unmaximize", 0);
+            };
         }
     }
 }

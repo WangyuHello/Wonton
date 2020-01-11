@@ -7,7 +7,8 @@ import FPGAManager, { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
 import isElectron from 'is-electron';
 import is from 'electron-is';
-// import { ipcRenderer } from "electron";
+import { ipcRenderer } from "electron";
+
 
 import maximize from './Resource/maximize.svg';
 import minimize from './Resource/minimize.svg';
@@ -24,7 +25,30 @@ export class Title extends Component {
         bitfile: '',
         isFileModalOpen: false,
         isNewModalOpen: false,
-        isOpenModalOpen: false
+        isOpenModalOpen: false,
+        isMaximized: false,
+        isSettingDropdownOpen: false
+    }
+
+    constructor(props) {
+        super(props);
+
+        ipcRenderer.on('window-state-maximize', this.onWindowStateMaximize);
+        ipcRenderer.on('window-state-unmaximize', this.onWindowStateUnMaximize);
+    }
+
+    onWindowStateMaximize = (event, arg) => {
+        console.log("maximized");
+        this.setState({
+            isMaximized: true
+        });
+    }
+
+    onWindowStateUnMaximize = (event, arg) => {
+        console.log("unmaximized");
+        this.setState({
+            isMaximized: false
+        });
     }
 
     //从Manager获取初始值
@@ -111,8 +135,8 @@ export class Title extends Component {
     }
 
     RunFPGA = async () => {
-        // ipcRenderer.send('working-status',true);
-        await fetch('/api/window/working-state?state=1');
+        ipcRenderer.send('working-status',true);
+        // await fetch('/api/window/working-state?state=1');
 
         await manager.InitIO(4, 4);
         await manager.IoOpen();
@@ -146,8 +170,8 @@ export class Title extends Component {
         }
 
         await manager.IoClose();
-        // ipcRenderer.send('working-status',false);
-        await fetch('/api/window/working-state?state=0');
+        ipcRenderer.send('working-status',false);
+        // await fetch('/api/window/working-state?state=0');
     }
 
     sleep = (time) => {
@@ -172,33 +196,14 @@ export class Title extends Component {
     }
 
     ClickMaxRestore = async () => {
-        // const browserWindow = remote.getCurrentWindow();
-        // const isMax = browserWindow.isMaximized();
-        // if (isMax) {
-        //     browserWindow.restore();
-        // } else {
-        //     browserWindow.maximize();
-        // }
-        const response = await fetch('/api/window/maximize');
+        ipcRenderer.send('window-status', 'maximize');
+        // const response = await fetch('/api/window/maximize');
     }
 
     ClickMin = async () => {
-        // const browserWindow = remote.getCurrentWindow();
-        // browserWindow.minimize();
-        const response = await fetch('/api/window/minimize');
+        ipcRenderer.send('window-status', 'minimize');
+        // const response = await fetch('/api/window/minimize');
     }
-
-    systemButtons = <div className="clickTitle">
-                              <a className="btn btn-min" href="#" onClick={this.ClickMin}>
-                                  <img src={minimize} />
-                              </a>
-                              <a className="btn btn-max" href="#" onClick={this.ClickMaxRestore}>
-                                  <img src={maximize} />
-                              </a>
-                              <a className="btn btn-close" href="#" onClick={this.ClickClose}>
-                                  <img src={close} />
-                              </a>
-                          </div>;
 
     NewPjToggle = (event) => {
         this.setState((prevState) => {
@@ -296,6 +301,18 @@ export class Title extends Component {
         await pjManager.WriteProjectFile();
     }
 
+    SettingToggle = (event) => {
+        this.setState((prevState) => {
+            return {
+                isSettingDropdownOpen: !prevState.isSettingDropdownOpen
+            }
+        })
+    }
+
+    DevToolsToggle = (event) => {
+        ipcRenderer.send('dev-tools');
+    }
+
     render() {
 
         const isRunning = this.state.isRunning;
@@ -314,7 +331,21 @@ export class Title extends Component {
                         <div className="titleName">复旦FPGA</div>
                     </div>
 
-                    {isMac ? <div /> : this.systemButtons}
+                    {isMac ? <div /> : 
+                    <div className="clickTitle">
+                        <a className="btn btn-min" href="#" onClick={this.ClickMin}>
+                            <span className="systemIcon">&#xE921;</span>
+                        </a>
+                        <a className="btn btn-max" href="#" onClick={this.ClickMaxRestore}>
+                            {/* <img src={this.state.isMaximized ? restore : maximize} /> */}
+                            {this.state.isMaximized ? <span className="systemIcon">&#xE923;</span> : <span className="systemIcon">&#xE922;</span>}
+                        </a>
+                        <a className="btn btn-close" href="#" onClick={this.ClickClose}>
+                            {/* <img src={close} /> */}
+                            <span className="systemIcon">&#xE8BB;</span>
+                        </a>
+                    </div>
+                    }
                     
                 </div>
                 <div className="navMenu">
@@ -380,8 +411,8 @@ export class Title extends Component {
                     <div style={{display: "flex"}} className="no-drag">
                         <div>
                             <ButtonGroup >
-                                <Button >
-                                    <div style={{display:'flex', alignItems: 'center'}} onClick={this.ClickProgram}>
+                                <Button onClick={this.ClickProgram}>
+                                    <div style={{display:'flex', alignItems: 'center'}} >
                                         <FontAwesomeIcon icon={faMicrochip}/>
                                         <div style={{marginLeft: '8px'}}>Program</div>
                                     </div>
@@ -416,12 +447,25 @@ export class Title extends Component {
                         </div>
                         
                         <div style={{width: "20px"}}/>
-                        <Button className="no-drag">
-                            <div style={{display:'flex', alignItems: 'center'}}>
-                                <FontAwesomeIcon icon={faCog}/>
-                                <div style={{marginLeft: '4px'}}>设置</div>
-                            </div>
-                        </Button>
+                        <ButtonGroup className="no-drag">
+                            <Button onClick={this.SettingToggle}>
+                                <div style={{display:'flex', alignItems: 'center'}}>
+                                    <FontAwesomeIcon icon={faCog}/>
+                                    <div style={{marginLeft: '4px'}}>设置</div>
+                                </div>
+                            </Button>
+                            <ButtonDropdown  isOpen={this.state.isSettingDropdownOpen} toggle={this.SettingToggle}>
+                                <DropdownToggle caret>
+
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    <DropdownItem onClick={this.DevToolsToggle}>
+                                        开发者工具
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </ButtonDropdown>
+                        </ButtonGroup>
+
                         <div style={{width: "20px"}}/>
                     </div>
                 </div>

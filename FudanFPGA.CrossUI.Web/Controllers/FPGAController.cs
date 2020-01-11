@@ -51,7 +51,7 @@ namespace FudanFPGA.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
-#if RELEASE
+#if !RELEASE
                 Electron.Notification.Show(new NotificationOptions("复旦FPGA","Program失败"));
 #endif
                 return new FPGAResponse()
@@ -60,7 +60,7 @@ namespace FudanFPGA.CrossUI.Web.Controllers
                     Status = false
                 };
             }
-#if RELEASE
+#if !RELEASE
             Electron.Notification.Show(new NotificationOptions("复旦FPGA", "Program成功"));
 #endif
             return new FPGAResponse()
@@ -193,6 +193,8 @@ namespace FudanFPGA.CrossUI.Web.Controllers
         public async Task<FPGAResponse> WriteJson([FromQuery]string filename, [FromBody]ProjectInfo data)
         {
             await System.IO.File.WriteAllTextAsync(filename, data.data);
+
+            Electron.Notification.Show(new NotificationOptions("复旦FPGA", "已保存"));
 
             return new FPGAResponse()
             {

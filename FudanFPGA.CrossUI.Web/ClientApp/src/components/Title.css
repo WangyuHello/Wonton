@@ -9,6 +9,7 @@
 
 .titleBar {
     -webkit-app-region: drag;
+    -webkit-user-select: none;
     background-color: #495A80;
     height: 100px;
     display: flex;
@@ -55,30 +56,54 @@
     color: white;
     border-radius: 0px;
     height: 30px;
-    width: 44px;
+    width: 46px;
     padding: 0px;
+    font-size: 10px;
+    font-family: Segoe MDL2 Assets;
+    font-style: normal;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: default;
 }
 
 .btn-min:hover {
     background-color: #3B4968;
+    color: white;
+}
+
+.btn-min:active {
+    background-color: #2C364C;
+    color: white;
 }
 
 .btn-max {
     color: white;
     border-radius: 0px;
     height: 30px;
-    width: 44px;
+    width: 46px;
     padding: 0px;
-    box-shadow: transparent;
+    box-shadow: none;
     border-color: transparent;
     outline-width: 0;
     outline-color: transparent;
+    font-size: 10px;
+    font-family: Segoe MDL2 Assets;
+    font-style: normal;
+    display: inline-block;
+    text-shadow: none;
+    cursor: default;
 }
 
 .btn-max:hover {
     background-color: #3B4968;
     outline: none;
     box-shadow: none;
+    color: white;
+}
+
+.btn-max:active {
+    background-color: #2C364C;
+    color: white;
 }
 
 .btn-max:focus,
@@ -96,11 +121,28 @@
     color: white;
     border-radius: 0px;
     height: 30px;
-    width: 44px;
+    width: 46px;
     padding: 0px;
+    font-size: 10px;
+    font-family: Segoe MDL2 Assets;
+    font-style: normal;
+    /* -webkit-font-smoothing: antialiased; */
+    text-shadow: none;
+    box-shadow: none;
+    cursor: default;
 }
 
 .btn-close:hover {
     background-color: red;
+    color: white;
+}
+
+.systemIcon {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width:.2px;
+    display: inline-block;
+    margin: 0 auto;
+    height: 100%;
+    padding-top: 6px;
 }
 
