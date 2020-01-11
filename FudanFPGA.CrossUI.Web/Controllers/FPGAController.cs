@@ -51,18 +51,14 @@ namespace FudanFPGA.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
-#if !RELEASE
                 Electron.Notification.Show(new NotificationOptions("复旦FPGA","Program失败"));
-#endif
                 return new FPGAResponse()
                 {
                     Message = e.Message,
                     Status = false
                 };
             }
-#if !RELEASE
             Electron.Notification.Show(new NotificationOptions("复旦FPGA", "Program成功"));
-#endif
             return new FPGAResponse()
             {
                 Message = "成功",
