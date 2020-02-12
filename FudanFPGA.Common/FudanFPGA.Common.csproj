@@ -9,10 +9,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\SharpVLFD\SharpVLFD\SharpVLFD.csproj" />
+    <PackageReference Include="SharpVLFD" Version="0.2.0" />
   </ItemGroup>
 
 </Project>

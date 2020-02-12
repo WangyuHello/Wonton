@@ -5,6 +5,7 @@ import { faCog, faMicrochip, faPlay, faStop, faServer, faSquareFull, faTimes, fa
 import './Title.css'
 import FPGAManager, { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
+import { Start } from "./Start";
 import isElectron from 'is-electron';
 import is from 'electron-is';
 import { ipcRenderer } from "electron";
@@ -27,7 +28,9 @@ export class Title extends Component {
         isNewModalOpen: false,
         isOpenModalOpen: false,
         isMaximized: false,
-        isSettingDropdownOpen: false
+        isSettingDropdownOpen: false,
+        pjName: '',
+        isStartModalOpen: false
     }
 
     constructor(props) {
@@ -55,7 +58,9 @@ export class Title extends Component {
     async componentWillMount() {
         let data = await pjManager.GetTitleData();
         this.setState({
-            bitfile: data.bitfile
+            bitfile: data.bitfile,
+            pjName: data.pjName,
+            isStartModalOpen: !data.projectInitialize
         });
     }
 
@@ -237,7 +242,7 @@ export class Title extends Component {
             let path = event.target.files[0].path;
             this.setState({ iofile: path });
         } else {
-            let path = "E:\\Downloads\\VeriCommSDK-2019-11-22收到\\VeriCommSDK\\Example\\Alarm_Clock\\FDP3P7\\FDE\\src\\AlarmClock.xml";
+            let path = "F:\\Repo\\FudanFPGAInterface\\FudanFPGA.Test\\AlarmClock.xml";
             this.setState({ iofile: path });
         }
 
@@ -280,7 +285,7 @@ export class Title extends Component {
     OnOpenfileChange = (event) => {
         // let inputObj = document.getElementById("_ef");
 
-        let file = "E:\\Downloads\\VeriCommSDK-2019-11-22收到\\VeriCommSDK\\Example\\Alarm_Clock\\FDP3P7\\FDE\\src\\AlarClock.hwproj";
+        let file = "F:\\Repo\\FudanFPGAInterface\\FudanFPGA.Test\\haha.hwproj";
         if (isElectron()) {
             file = event.target.files[0].path;
         } else {
@@ -321,29 +326,41 @@ export class Title extends Component {
         const bitf = this.state.bitfile == "" ? "未指定Bit文件" : this.state.bitfile;
 
         let isMac = is.macOS(); //如果再MacOS上，要添加红绿灯按钮
+        // isMac = true;
 
         let titleLeftMargin = isMac ? "80px" : "20px";
 
         return (
             <div className="titleBar">
+
+                <Modal isOpen={this.state.isStartModalOpen} centered>
+                    <ModalHeader>开始</ModalHeader>
+                    <ModalBody>
+                        <Start onOpen={this.OpenPjToggle} onNew={this.NewPjToggle}></Start>
+                    </ModalBody>
+                </Modal>
+
                 <div className="myTitle">
-                    <div style={{ display: 'flex', alignItems: 'center', marginLeft: titleLeftMargin, marginTop: '10px'}}>
-                        <FontAwesomeIcon style={{width:'22px', height:'22px', color: 'white'}} icon={faServer}/>
+                    <div style={{ display: 'flex', alignItems: 'top', marginLeft: titleLeftMargin, marginTop: '8px'}}>
+                        <FontAwesomeIcon style={{width:'20px', height:'20px', color: 'white', marginTop: "5px"}} icon={faServer}/>
                         <div className="titleName">复旦FPGA</div>
                     </div>
+
+                    <div className="pjTitle">{this.state.pjName}</div>
 
                     {isMac ? <div /> : 
                     <div className="clickTitle">
                         <a className="btn btn-min" href="#" onClick={this.ClickMin}>
-                            <span className="systemIcon">&#xE921;</span>
+                            {/* <span className="systemIcon">&#xE921;</span> */}
+                            <span className="systemIcon">&#xeaba;</span>
                         </a>
                         <a className="btn btn-max" href="#" onClick={this.ClickMaxRestore}>
                             {/* <img src={this.state.isMaximized ? restore : maximize} /> */}
-                            {this.state.isMaximized ? <span className="systemIcon">&#xE923;</span> : <span className="systemIcon">&#xE922;</span>}
+                            {this.state.isMaximized ? <span className="systemIcon">&#xeabb;</span> : <span className="systemIcon">&#xeab9;</span>}
                         </a>
                         <a className="btn btn-close" href="#" onClick={this.ClickClose}>
                             {/* <img src={close} /> */}
-                            <span className="systemIcon">&#xE8BB;</span>
+                            <span className="systemIcon">&#xeab8;</span>
                         </a>
                     </div>
                     }
@@ -366,7 +383,7 @@ export class Title extends Component {
                             </Button>
                         </ButtonGroup>
 
-                        <Modal isOpen={this.state.isOpenModalOpen} toggle={this.OpenPjToggle}>
+                        <Modal isOpen={this.state.isOpenModalOpen} toggle={this.OpenPjToggle} >
                             <ModalHeader toggle={this.OpenPjToggle}>打开工程</ModalHeader>
                             <ModalBody>
                                 <Input type='file' accept='.hwproj' onChange={this.OnOpenfileChange}></Input>

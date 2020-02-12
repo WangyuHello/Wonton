@@ -8,7 +8,7 @@
     "appId": "edu.FudanFPGA.CrossUI.Web.app",
     "productName": "FudanFPGA",
     "copyright": "Copyright © 2019",
-    "buildVersion": "1.0.1",
+    "buildVersion": "1.0.2",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"
@@ -17,24 +17,24 @@
       {
         "from": "./bin",
         "to": "bin",
-        "filter": ["**/*"]
+        "filter": [ "**/*" ]
       }
     ],
     "files": [
       {
         "from": "./ElectronHostHook/node_modules",
         "to": "ElectronHostHook/node_modules",
-        "filter": ["**/*"]
+        "filter": [ "**/*" ]
       },
       "**/*"
     ],
     "win": {
       "icon": "./bin/ClientApp/build/chip.ico",
-      "target": ["zip"]
+      "target": [ "zip" ]
     },
     "mac": {
       "icon": "./bin/ClientApp/build/chip.icns",
-      "target": ["zip"]
+      "target": [ "zip" ]
     }
   }
 }

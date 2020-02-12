@@ -7,6 +7,8 @@ export default class ProjectManager {
     projectFile = ""
     // bitfile = "E:\\Documents\\Repo\\ProjectFDB\\FudanFPGAInterface\\FudanFPGA.Test\\AlarmClock_fde_dc.bit"
     bitfile = ""
+    projectName = "未命名.hwproj"
+    projectInitialize = false
 
     projectInfo = {}
     layout = []
@@ -33,28 +35,43 @@ export default class ProjectManager {
 
     GetTitleData = async () => {
         if (this.initialzed) {
-            return {bitfile: this.bitfile};
+            return {
+                bitfile: this.bitfile,
+                pjName: this.projectName,
+                projectInitialize: this.projectInitialize
+            };
         } else {
             await this.Initialize();
-            return {bitfile: this.bitfile};
+            return {
+                bitfile: this.bitfile,
+                pjName: this.projectName,
+                projectInitialize: this.projectInitialize
+            };
         }
     }
 
+    //初始化程序
+    //从Host拿去数据
     Initialize = async () => {
         //载入存储在后台进程中的项目文件
-        const response = await fetch('/api/fpga/readjson');
+        const response = await fetch('/api/fpga/init');
         const res = await response.json();
 
-        if (res.message === "") {
+        //没有初始化项目文件,则显示开始屏幕
+        if (res.status === false) {
+            this.projectName = ""
+            this.projectInitialize = false;
             return;
         }
         // console.log(res);
         this.projectInfo = JSON.parse(res.message);
         this.projectFile = res.projectPath;
         console.log(`Project Path: ${this.projectFile}`);
+        this.projectInitialize = true;
         
         this.layout = this.projectInfo['layout'];
         this.bitfile = this.projectInfo['bitfile'];
+        this.projectName = this.projectInfo['projectName'];
         manager.subscribedInstances = this.objToMap(this.projectInfo['subscribedInstances']);
         manager.hardwarePortsMap = this.objToMap(this.projectInfo['hardwarePortsMap']);
         manager.inputPortsMap = this.objToMap(this.projectInfo['inputPortsMap']);
@@ -77,24 +94,24 @@ export default class ProjectManager {
         const res = await response.json();
     }
 
-    ReadProjectFile = async () => {
-        let filename = this.projectFile;
+    // ReadProjectFile = async () => {
+    //     let filename = this.projectFile;
 
-        const response = await fetch('/api/fpga/readjson?filename=' + filename);
-        const res = await response.json();
-        this.projectInfo = JSON.parse(res.message);
-        this.projectFile = res.projectpath;
-        this.layout = this.projectInfo['layout'];
-        this.bitfile = this.projectInfo['bitfile'];
-        manager.subscribedInstances = this.objToMap(this.projectInfo['subscribedInstances']);
-        manager.hardwarePortsMap = this.objToMap(this.projectInfo['hardwarePortsMap']);
-        manager.inputPortsMap = this.objToMap(this.projectInfo['inputPortsMap']);
-        manager.projectInstancePortsMap = this.objToMap(this.projectInfo['projectInstancePortsMap']);
-        manager.projectPortsMap = this.objToMap(this.projectInfo['projectPortsMap']);
-        //清空
-        manager.projectInputPorts.length = 0;
-        manager.projectOutputPorts.length = 0;
-    }
+    //     const response = await fetch('/api/fpga/readjson?filename=' + filename);
+    //     const res = await response.json();
+    //     this.projectInfo = JSON.parse(res.message);
+    //     this.projectFile = res.projectpath;
+    //     this.layout = this.projectInfo['layout'];
+    //     this.bitfile = this.projectInfo['bitfile'];
+    //     manager.subscribedInstances = this.objToMap(this.projectInfo['subscribedInstances']);
+    //     manager.hardwarePortsMap = this.objToMap(this.projectInfo['hardwarePortsMap']);
+    //     manager.inputPortsMap = this.objToMap(this.projectInfo['inputPortsMap']);
+    //     manager.projectInstancePortsMap = this.objToMap(this.projectInfo['projectInstancePortsMap']);
+    //     manager.projectPortsMap = this.objToMap(this.projectInfo['projectPortsMap']);
+    //     //清空
+    //     manager.projectInputPorts.length = 0;
+    //     manager.projectOutputPorts.length = 0;
+    // }
 
     ReadProjectIO = async (filename) => {
         const response = await fetch('/api/fpga/readxmltojson?filename=' + filename);
@@ -149,6 +166,7 @@ export default class ProjectManager {
             "layout": mergedLayout,
             "projectPortsMap": this.mapToObj(manager.projectPortsMap),
             "bitfile": this.bitfile,
+            "projectName": this.projectName
         }
 
         let transmit = {data: JSON.stringify(this.projectInfo, null, 4)};

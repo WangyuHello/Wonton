@@ -151,14 +151,17 @@ namespace FudanFPGA.CrossUI.Web.Controllers
             };
         }
 
-        [HttpGet("readjson")]
-        public async Task<FPGAResponse> ReadJson(string filename)
+        /// <summary>
+        /// 初始化程序
+        /// 如果CurrentProjectFile提供了hwproj文件路径,则读取这个文件并把数据返回给UI
+        /// 如果CurrentProjectFile没有提供hwproj文件路径则不读取文件,UI显示开始页面
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        [HttpGet("init")]
+        public async Task<FPGAResponse> Init()
         {
-            if (string.IsNullOrEmpty(filename))
-            {
-                //初始化
-                filename = _manager.CurrentProjectFile;
-            }
+            var filename = _manager.CurrentProjectFile;
 
             if (string.IsNullOrEmpty(filename))
             {
@@ -166,7 +169,7 @@ namespace FudanFPGA.CrossUI.Web.Controllers
                 return new FPGAResponse()
                 {
                     Message = "",
-                    Status = true
+                    Status = false
                 };
             }
 
@@ -247,6 +250,7 @@ namespace FudanFPGA.CrossUI.Web.Controllers
             pj.Add("projectPortsMap", jports);
 
             pj.Add("bitfile", "");
+            pj.Add("projectName", projectname);
 
             var json = pj.ToString();
             await System.IO.File.WriteAllTextAsync(fullpath, json);

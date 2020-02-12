@@ -75,14 +75,15 @@ namespace FudanFPGA.CrossUI.Web
                 }
             });
 
+#if RELEASE
             Task.Run(async () =>
             {
                 var window = await Electron.WindowManager.CreateWindowAsync(
                     new BrowserWindowOptions
                     {
-                        TitleBarStyle = TitleBarStyle.hiddenInset, 
-                        Frame = false, 
-                        Width = 1000, 
+                        TitleBarStyle = TitleBarStyle.hiddenInset,
+                        Frame = false,
+                        Width = 1000,
                         Height = 650
                     });
                 SetWindow(window);
@@ -90,6 +91,7 @@ namespace FudanFPGA.CrossUI.Web
 
             SetMenu();
             ElectronIPC.Initialize();
+#endif
         }
 
         public void SetMenu()

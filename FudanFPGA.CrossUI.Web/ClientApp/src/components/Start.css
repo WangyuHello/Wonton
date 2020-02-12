@@ -1,0 +1,18 @@
+.twocolumn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+.recent {
+    display: flex;
+    flex-direction: column;
+}
