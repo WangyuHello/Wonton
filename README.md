@@ -32,13 +32,13 @@
     dotnet tool install -g ElectronNET.CLI
     ```
 
-4. 在*FudanFPGA.CrossUI.Web*目录运行
+4. 在 FudanFPGA.CrossUI.Web 目录运行
 
     ```powershell
     dotnet build -c Release
     ```
 
-5. 在*FudanFPGA.CrossUI.Web\ClientApp*目录运行
+5. 在 FudanFPGA.CrossUI.Web\ClientApp 目录运行，此步骤可能需要较长时间，视网络状况。
 
     ```powershell
     npm i
@@ -48,7 +48,7 @@
 
     ![webpack](./Imgs/target.png)
 
-7. 在 *FudanFPGA.CrossUI.Web* 目录运行
+7. 在 FudanFPGA.CrossUI.Web 目录运行，此步骤可能需要较长时间，视网络状况。
 
     编译macOS版本
     ```powershell
@@ -63,7 +63,7 @@
 
 ### 非首次编译
 
-1. 在 *FudanFPGA.CrossUI.Web* 目录运行
+1. 在 FudanFPGA.CrossUI.Web 目录运行
 
     编译macOS版本
     ```powershell
