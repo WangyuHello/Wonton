@@ -19,9 +19,17 @@ dotnet tool install -g ElectronNET.CLI
 dotnet build -c Release
 ```
 
-5. 修改 FudanFPGA.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` 然后保存
+5. 在*FudanFPGA.CrossUI.Web\ClientApp*目录运行
 
-6. 在 *FudanFPGA.CrossUI.Web* 目录运行
+```powershell
+npm i
+```
+
+6. 修改 FudanFPGA.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` 然后保存
+
+![avatar](./Imgs/target.png)
+
+7. 在 *FudanFPGA.CrossUI.Web* 目录运行
 
 ```powershell
 electronize build /target osx /package-json .\ClientApp\electron.package.json
@@ -32,4 +40,4 @@ electronize build /target osx /package-json .\ClientApp\electron.package.json
 ```powershell
 electronize build /target win /package-json .\ClientApp\electron.package.json
 ```
-7. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
+8. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
