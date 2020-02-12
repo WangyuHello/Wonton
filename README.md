@@ -31,12 +31,12 @@ npm i
 
 7. 在 *FudanFPGA.CrossUI.Web* 目录运行
 
+编译macOS版本
 ```powershell
-~/.dotnet/tools/electronize build /target osx /package-json .\ClientApp\electron.package.json
+~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
 ```
 
-或者
-
+或者，编译Windows版本
 ```powershell
 ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
 ```
