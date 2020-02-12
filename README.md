@@ -32,12 +32,12 @@ npm i
 7. 在 *FudanFPGA.CrossUI.Web* 目录运行
 
 ```powershell
-electronize build /target osx /package-json .\ClientApp\electron.package.json
+~/.dotnet/tools/electronize build /target osx /package-json .\ClientApp\electron.package.json
 ```
 
 或者
 
 ```powershell
-electronize build /target win /package-json .\ClientApp\electron.package.json
+~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
 ```
 8. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
