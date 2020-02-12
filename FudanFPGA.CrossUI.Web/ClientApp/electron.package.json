@@ -19,6 +19,6 @@
         "@types/socket.io":"^2.1.4",
         "tslint":"^5.20.1",
         "typescript":"^3.7.4",
-        "electron":"^7.1.2"
+        "electron":"7.1.2"
     }
 }

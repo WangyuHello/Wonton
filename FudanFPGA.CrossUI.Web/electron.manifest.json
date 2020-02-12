@@ -7,7 +7,7 @@
   "build": {
     "appId": "edu.FudanFPGA.CrossUI.Web.app",
     "productName": "FudanFPGA",
-    "copyright": "Copyright © 2019",
+    "copyright": "Copyright © 2019 Wang Yu",
     "buildVersion": "1.0.2",
     "compression": "maximum",
     "directories": {
