@@ -5,6 +5,8 @@
 
 # 编译步骤
 
+## 首次编译
+
 1. 安装NodeJS
 2. 安装dotnet
 3. 安装ElectronNET
@@ -41,3 +43,18 @@ npm i
 ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
 ```
 8. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
+
+## 非首次编译
+
+1. 在 *FudanFPGA.CrossUI.Web* 目录运行
+
+编译macOS版本
+```powershell
+~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
+```
+
+或者，编译Windows版本
+```powershell
+~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
+```
+2. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
