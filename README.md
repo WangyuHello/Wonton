@@ -28,10 +28,10 @@
 
     需 >= 3.1 版本，请勿安装 Runtime 版本
 
-3. 安装 ElectronNET 
+3. 在 FudanFPGA.CrossUI.Web 目录运行
 
     ```powershell
-    dotnet tool install -g ElectronNET.CLI
+    dotnet tool install --tool-path tools ElectronNET.CLI
     ```
 
 4. 在 FudanFPGA.CrossUI.Web 目录运行
@@ -70,12 +70,12 @@
 
     编译 Windows 版本
     ```powershell
-    C:\Users\<用户名>\.dotnet\tools\electronize.exe build /target win /package-json .\ClientApp\electron.package.json
+    .\tools\electronize build /target win /package-json .\ClientApp\electron.package.json
     ```
 
     或者，编译 macOS 版本
-    ```powershell
-    ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
+    ```bash
+    ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
 9. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
 
@@ -85,12 +85,12 @@
 
     编译 Windows 版本
     ```powershell
-    C:\Users\<用户名>\.dotnet\tools\electronize.exe build /target win /package-json .\ClientApp\electron.package.json
+    .\tools\electronize build /target win /package-json .\ClientApp\electron.package.json
     ```
 
     或者，编译 macOS 版本
-    ```powershell
-    ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
+    ```bash
+    ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
 2. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
 
