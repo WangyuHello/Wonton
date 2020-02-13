@@ -1,13 +1,10 @@
-# FudanFPGAInterface
+# 馄饨
 
-为复旦微电子FPGA课程量身打造的教学辅助软件。支持Windows和macOS操作系统。
+**民以食为天**
+
+![wonton](./Imgs/wonton.jpg)
 
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
-
-![win](./Imgs/win.png)
-
-![mac](./Imgs/mac.png)
-
 
 # 编译指南
 
@@ -44,6 +41,18 @@
     macOS
     ```bash
     ./tools/dotnet-cake
+    ```
+
+    **如果是海外用户**
+
+    Windows
+    ```powershell
+    .\tools\dotnet-cake -useMagic="false"
+    ```
+
+    macOS
+    ```bash
+    ./tools/dotnet-cake -useMagic="false"
     ```
 
 5. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下

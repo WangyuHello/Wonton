@@ -1,12 +1,10 @@
-# FudanFPGAInterface
+# Wonton
 
-A teaching assistant software tailored for FPGA courses at Fudan Microelectronics. Windows and macOS operating systems are supported.
+**民以食为天**
+
+![wonton](./Imgs/wonton.jpg)
 
 Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
-
-![win](./Imgs/win.png)
-
-![mac](./Imgs/mac.png)
 
 
 # Compilation Guide

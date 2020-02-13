@@ -2,6 +2,7 @@
 #addin nuget:?package=Cake.Npm&version=0.17.0
 
 var target = Argument("target", "Build");
+var useMagic = Argument("useMagic", "true");
 
 var isMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
 var isWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
@@ -11,6 +12,8 @@ var elec_args = "";
 var elec_cache_dir = "";
 var elec_bin = "";
 var elec_name = "";
+
+var npm_reg = "https://registry.npm.taobao.org";
 
 if(isMac) 
 {
@@ -38,7 +41,7 @@ Task("Build")
     Information("开始构建");
 
     Information("安装 ElectronNET.CLI");
-    DoInDirectory("FudanFPGA.CrossUI.Web", () => {
+    DoInDirectory("Wonton.CrossUI.Web", () => {
         StartProcess("dotnet", new ProcessSettings { Arguments = "tool install --tool-path tools ElectronNET.CLI" });
 
         // DotNetCoreTool(".", "install", "ElectronNET.CLI", new DotNetCoreToolSettings{ ToolPath = "tools" });
@@ -46,16 +49,21 @@ Task("Build")
     });
 
     Information("npm install");
-    DoInDirectory(System.IO.Path.Combine("FudanFPGA.CrossUI.Web", "ClientApp"), () => {
+    DoInDirectory(System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp"), () => {
+        var npm = new NpmInstallSettings();
+        if(useMagic == "true") 
+        {
+            npm.Registry = new Uri(npm_reg);
+        }
         NpmInstall();
     });
 
     Information("开始构建C# Host程序");
-    DotNetCoreBuild("FudanFPGA.CrossUI.Web", new DotNetCoreBuildSettings { Configuration = "Release" });
+    DotNetCoreBuild("Wonton.CrossUI.Web", new DotNetCoreBuildSettings { Configuration = "Release" });
 
     Information("Hack webpack config");
     var render_config = "target: 'electron-renderer'";
-    var config_file = System.IO.Path.Combine("FudanFPGA.CrossUI.Web", "ClientApp", "node_modules", "react-scripts", "config", "webpack.config.js");
+    var config_file = System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp", "node_modules", "react-scripts", "config", "webpack.config.js");
     var config_contents = System.IO.File.ReadAllLines(config_file);
     List<string> modified_contents = new List<string>();
     var modified = false;
@@ -82,30 +90,33 @@ Task("Build")
         System.IO.File.WriteAllText(config_file, string.Join(Environment.NewLine, modified_contents));
     }
 
-    Information("下载Electron");
-    if(!DirectoryExists(elec_cache_dir))
+    if(useMagic == "true") 
     {
-        CreateDirectory(elec_cache_dir);
-    }
+        Information("下载Electron");
+        if(!DirectoryExists(elec_cache_dir))
+        {
+            CreateDirectory(elec_cache_dir);
+        }
+    
+        if(!FileExists(System.IO.Path.Combine(elec_cache_dir, elec_name)))
+        {
+            var elec_file = System.IO.Path.Combine("Wonton.CrossUI.Web", "tools", elec_name);
+            
+            DoInDirectory(System.IO.Path.Combine("Wonton.CrossUI.Web", "tools"), () => {
+                DownloadFile(elec_bin, elec_name);
+            });
+            
+            CopyFileToDirectory(elec_file, elec_cache_dir);
+        }
+        else 
+        {
+            Information("文件已下载，跳过");
+        }
 
-    if(!FileExists(System.IO.Path.Combine(elec_cache_dir, elec_name)))
-    {
-        var elec_file = System.IO.Path.Combine("FudanFPGA.CrossUI.Web", "tools", elec_name);
-        
-        DoInDirectory(System.IO.Path.Combine("FudanFPGA.CrossUI.Web", "tools"), () => {
-            DownloadFile(elec_bin, elec_name);
-        });
-        
-        CopyFileToDirectory(elec_file, elec_cache_dir);
     }
-    else 
-    {
-        Information("文件已下载，跳过");
-    }
-
 
     Information("构建App");
-    DoInDirectory("FudanFPGA.CrossUI.Web", () => {
+    DoInDirectory("Wonton.CrossUI.Web", () => {
         var elec_net_tool_bin = System.IO.Path.Combine(".", "tools", "electronize");
         // DotNetCoreTool(".", "electronize", elec_args, new DotNetCoreToolSettings{ ToolPath = "tools" } );
 
