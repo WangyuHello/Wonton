@@ -2,7 +2,7 @@
 
 为复旦微电子FPGA课程量身打造的教学辅助软件。支持Windows和macOS操作系统。
 
-多语言文档：[English](./README.en-US.md), [简体中文](./README.md)
+多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
 ![win](./Imgs/win.png)
 
@@ -16,7 +16,39 @@
 - NodeJS : https://nodejs.org/en/
 - .NET Core SDK: https://dotnet.microsoft.com/download
 
-## 编译步骤
+## 自动编译步骤
+
+1. 安装 NodeJS https://nodejs.org/en/
+    
+    LTS 和 Current 版本均可
+
+2. 安装 .NET Core SDK https://dotnet.microsoft.com/download
+
+    需 >= 3.1 版本，请勿安装 Runtime 版本
+
+3. 在 FudanFPGAInterface 目录下运行
+
+    ```powershell
+    dotnet tool install --tool-path tools Cake.Tool
+    ```
+
+    > Cake.Tool 只需要安装一次
+
+4. 开始编译
+
+    Windows
+    ```powershell
+    .\tools\dotnet-cake
+    ```
+
+    macOS
+    ```bash
+    ./tools/dotnet-cake
+    ```
+
+5. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
+
+## 手动编译步骤
 
 ### 首次编译
 

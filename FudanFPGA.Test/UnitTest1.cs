@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using FudanFPGA.Common;
@@ -62,6 +64,38 @@ namespace FudanFPGA.Test
 
             XmlNode design = xml.SelectSingleNode("design");
             var json = JsonConvert.SerializeXmlNode(design);
+        }
+
+        [Fact]
+        void TestConfig()
+        {
+            var render_config = "target: 'electron-renderer'";
+            var config_file = System.IO.Path.Combine(@"F:\Repo\FudanFPGAInterface\FudanFPGA.CrossUI.Web\ClientApp\node_modules\react-scripts\config", "webpack.config.js");
+            var config_contents = File.ReadAllLines(config_file);
+            List<string> modified_contents = new List<string>();
+            var modified = false;
+            foreach (var line in config_contents)
+            {
+                if (line.Contains(render_config))
+                {
+                    modified = true;
+                    break;
+                }
+            }
+
+            if (!modified)
+            {
+                foreach (var line in config_contents)
+                {
+                    modified_contents.Add(line);
+                    if (line.Contains("mode: isEnvProduction"))
+                    {
+                        modified_contents.Add("    " + render_config + ",");
+                    }
+                }
+
+                File.WriteAllText(config_file, string.Join(Environment.NewLine, modified_contents));
+            }
         }
     }
 }
