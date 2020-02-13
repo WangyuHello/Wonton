@@ -2,6 +2,8 @@
 
 为复旦微电子FPGA课程量身打造的教学辅助软件。支持Windows和macOS操作系统。
 
+多语言文档：[English](./README.en-US.md), [简体中文](./README.md)
+
 ![win](./Imgs/win.png)
 
 ![mac](./Imgs/mac.png)
@@ -24,9 +26,9 @@
 
 2. 安装 .NET Core SDK https://dotnet.microsoft.com/download
 
-    需 >= 3.1 版本，请勿安装Runtime版本
+    需 >= 3.1 版本，请勿安装 Runtime 版本
 
-3. 安装ElectronNET 
+3. 安装 ElectronNET 
 
     ```powershell
     dotnet tool install -g ElectronNET.CLI
@@ -66,12 +68,12 @@
 
 8. 在 FudanFPGA.CrossUI.Web 目录运行如下命令，此步骤可能需要较长时间，视网络状况。如果出现Electron无法下载问题，请查看[Electron无法下载](####Electron无法下载)
 
-    编译macOS版本
+    编译 macOS 版本
     ```powershell
     ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
 
-    或者，编译Windows版本
+    或者，编译 Windows 版本
     ```powershell
     ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
     ```
@@ -81,12 +83,12 @@
 
 1. 在 FudanFPGA.CrossUI.Web 目录运行
 
-    编译macOS版本
+    编译 macOS 版本
     ```powershell
     ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
 
-    或者，编译Windows版本
+    或者，编译 Windows 版本
     ```powershell
     ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
     ```
