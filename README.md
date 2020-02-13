@@ -68,14 +68,14 @@
 
 8. 在 FudanFPGA.CrossUI.Web 目录运行如下命令，此步骤可能需要较长时间，视网络状况。如果出现Electron无法下载问题，请查看[Electron无法下载](####Electron无法下载)
 
-    编译 macOS 版本
+    编译 Windows 版本
     ```powershell
-    ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
+    C:\Users\<用户名>\.dotnet\tools\electronize.exe build /target win /package-json .\ClientApp\electron.package.json
     ```
 
-    或者，编译 Windows 版本
+    或者，编译 macOS 版本
     ```powershell
-    ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
+    ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
 9. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
 
@@ -83,14 +83,14 @@
 
 1. 在 FudanFPGA.CrossUI.Web 目录运行
 
-    编译 macOS 版本
+    编译 Windows 版本
     ```powershell
-    ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
+    C:\Users\<用户名>\.dotnet\tools\electronize.exe build /target win /package-json .\ClientApp\electron.package.json
     ```
 
-    或者，编译 Windows 版本
+    或者，编译 macOS 版本
     ```powershell
-    ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
+    ~/.dotnet/tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
 2. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
 
