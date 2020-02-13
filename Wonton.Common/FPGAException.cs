@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FudanFPGA.Common
+namespace Wonton.Common
 {
     public class FPGAException : Exception
     {

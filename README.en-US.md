@@ -2,7 +2,7 @@
 
 **民以食为天**
 
-![wonton](./Imgs/wonton.jpg)
+![wonton](./imgs/wonton.jpg)
 
 Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
@@ -50,7 +50,7 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
     Add ```target: 'electron-renderer'``` in the ```return``` function, and save
 
-    ![webpack](./Imgs/target.png)
+    ![webpack](./imgs/target.png)
 
 7. Execute under FudanFPGA.CrossUI.Web
 

@@ -55,7 +55,7 @@ Task("Build")
         {
             npm.Registry = new Uri(npm_reg);
         }
-        NpmInstall();
+        NpmInstall(npm);
     });
 
     Information("开始构建C# Host程序");

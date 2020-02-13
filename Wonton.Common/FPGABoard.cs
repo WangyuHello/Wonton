@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VLFD;
 
-namespace FudanFPGA.Common
+namespace Wonton.Common
 {
     public class FPGABoard
     {

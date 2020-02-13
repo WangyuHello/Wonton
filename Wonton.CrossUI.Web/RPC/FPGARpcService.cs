@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FudanFPGA.Common;
-using FudanFPGA.CrossUI.Web.RPC;
+using Wonton.Common;
+using Wonton.CrossUI.Web.RPC;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 
-namespace FudanFPGA.CrossUI.Web.Rpc
+namespace Wonton.CrossUI.Web.Rpc
 {
     public class FPGARpcService : FPGARpc.FPGARpcBase
     {

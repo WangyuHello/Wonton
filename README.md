@@ -2,7 +2,7 @@
 
 **民以食为天**
 
-![wonton](./Imgs/wonton.jpg)
+![wonton](./imgs/wonton.jpg)
 
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
@@ -89,7 +89,7 @@
 
 6. 修改 FudanFPGA.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` （注意逗号）然后保存。
 
-    ![webpack](./Imgs/target.png)
+    ![webpack](./imgs/target.png)
 
 7. 如果是海外用户请跳过此步骤
 
