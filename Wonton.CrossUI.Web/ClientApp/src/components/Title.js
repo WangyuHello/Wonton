@@ -343,7 +343,7 @@ export class Title extends Component {
                 <div className="myTitle">
                     <div style={{ display: 'flex', alignItems: 'top', marginLeft: titleLeftMargin, marginTop: '8px'}}>
                         <FontAwesomeIcon style={{width:'20px', height:'20px', color: 'white', marginTop: "5px"}} icon={faServer}/>
-                        <div className="titleName">FPGA</div>
+                        <div className="titleName">馄饨FPGA</div>
                     </div>
 
                     <div className="pjTitle">{this.state.pjName}</div>
