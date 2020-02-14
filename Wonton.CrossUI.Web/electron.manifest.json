@@ -30,15 +30,15 @@
     ],
     "win": {
       "icon": "./bin/ClientApp/build/chip.ico",
-      "target": [ "zip" ]
+      "target": [ "7z" ]
     },
     "mac": {
       "icon": "./bin/ClientApp/build/chip.icns",
-      "target": [ "zip" ]
+      "target": [ "7z" ]
     },
     "linux": {
       "icon": "./bin/ClientApp/build/chip.png",
-      "target": [ "zip" ]
+      "target": [ "7z" ]
     }
   }
 }

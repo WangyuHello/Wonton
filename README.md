@@ -33,7 +33,7 @@
 
     > Cake.Tool 只需要安装一次
 
-4. 开始编译
+4. 开始编译，在 Wonton 目录下运行
 
     Windows
     ```powershell
