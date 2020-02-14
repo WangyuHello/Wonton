@@ -2,7 +2,7 @@
 
 **民以食为天**
 
-![wonton](./imgs/wonton.jpg)
+![wonton](./Imgs/wonton.jpg)
 
 Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
@@ -50,7 +50,7 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
     Add ```target: 'electron-renderer'``` in the ```return``` function, and save
 
-    ![webpack](./imgs/target.png)
+    ![webpack](./Imgs/target.png)
 
 7. Execute under Wonton.CrossUI.Web
 

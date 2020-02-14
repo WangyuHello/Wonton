@@ -2,7 +2,7 @@
 
 **民以食为天**
 
-![wonton](./imgs/wonton.jpg)
+![wonton](./Imgs/wonton.jpg)
 
 支持Windows、macOS和Linux
 
@@ -91,7 +91,7 @@
 
 6. 修改 Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` （注意逗号）然后保存。
 
-    ![webpack](./imgs/target.png)
+    ![webpack](./Imgs/target.png)
 
 7. 如果是海外用户请跳过此步骤
 
