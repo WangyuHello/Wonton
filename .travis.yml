@@ -31,7 +31,7 @@ script:
 deploy:
   provider: releases
   api_key: ${GITHUB_TOKEN}
-  file: *.7z
+  file: Wonton.CrossUI.Web/bin/Desktop/*.7z
   file_glob: true
   skip_cleanup: true
   on:
