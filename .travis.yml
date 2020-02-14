@@ -24,7 +24,7 @@ install:
 
 script:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./tools/dotnet-cake -useMagic="false"          ; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./tools/dotnet-cake -useMagic="false" -targetOS="win"         ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./tools/dotnet-cake -useMagic="false" -targetOS="win"         ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./tools/dotnet-cake -useMagic="false"          ; fi
   # - ./tools/dotnet-cake -useMagic="false"
 
