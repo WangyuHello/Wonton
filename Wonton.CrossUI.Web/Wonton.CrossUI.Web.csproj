@@ -54,8 +54,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="Rpc/fpga.proto" GrpcServices="Server"/>
-  </ItemGroup>
-
 </Project>

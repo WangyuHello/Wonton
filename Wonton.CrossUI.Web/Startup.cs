@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Wonton.Common;
-using Wonton.CrossUI.Web.Rpc;
-using Wonton.CrossUI.Web.RPC;
 using Wonton.CrossUI.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +35,6 @@ namespace Wonton.CrossUI.Web
             });
 
             services.AddSingleton<FPGAManager>();
-            services.AddGrpc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +59,6 @@ namespace Wonton.CrossUI.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapGrpcService<FPGARpcService>();
             });
 
             app.UseSpa(spa =>

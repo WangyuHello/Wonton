@@ -6,6 +6,10 @@
 
 支持Windows、macOS和Linux
 
+## 构建状态
+
+[![Build Status](https://www.travis-ci.org/WangyuHello/Wonton.svg?branch=master)](https://www.travis-ci.org/WangyuHello/Wonton)
+
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
 # 编译指南
