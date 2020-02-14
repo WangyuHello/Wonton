@@ -132,8 +132,12 @@ Task("Build")
     DoInDirectory("Wonton.CrossUI.Web", () => {
         var elec_net_tool_bin = System.IO.Path.Combine(".", "tools", "electronize");
         // DotNetCoreTool(".", "electronize", elec_args, new DotNetCoreToolSettings{ ToolPath = "tools" } );
-
-        StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args });
+        var env_dict = new Dictionary<string, string>();
+        if(useMagic == "true")
+        {
+            env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
+        }
+        StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
     });
 });
 
