@@ -1,0 +1,19 @@
+language: csharp
+solution: Wonton.sln
+mono: none
+dotnet: 3.1.101
+node_js: "node"
+
+
+cache:
+  directories:
+    - "Wonton.CrossUI.Web/ClientApp/node_modules"
+
+before_install:
+  - dotnet tool install --tool-path tools Cake.Tool
+
+install:
+  - dotnet restore Wonton.sln
+
+script:
+  - ./tools/dotnet-cake -useMagic="false"
