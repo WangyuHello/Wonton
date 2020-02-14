@@ -35,6 +35,10 @@
     "mac": {
       "icon": "./bin/ClientApp/build/chip.icns",
       "target": [ "zip" ]
+    },
+    "linux": {
+      "icon": "./bin/ClientApp/build/chip.png",
+      "target": [ "zip" ]
     }
   }
 }

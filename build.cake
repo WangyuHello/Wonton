@@ -60,11 +60,15 @@ Task("Build")
     Information("npm install");
     DoInDirectory(System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp"), () => {
         var npm = new NpmInstallSettings();
+        var arg = "install";
         if(useMagic == "true") 
         {
             npm.Registry = new Uri(npm_reg);
+            arg = arg + " --registry="+npm_reg;
         }
-        NpmInstall(npm);
+        // NpmInstall(npm);
+
+        StartProcess("npm", new ProcessSettings { Arguments = arg });
     });
 
     Information("开始构建C# Host程序");
