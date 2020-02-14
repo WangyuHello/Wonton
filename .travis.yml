@@ -1,7 +1,7 @@
 language: csharp
 solution: Wonton.sln
 mono: none
-dotnet: latest
+dotnet: 3.1
 node_js: "node"
 
 os:
