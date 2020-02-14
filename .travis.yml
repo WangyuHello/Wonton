@@ -4,6 +4,12 @@ mono: none
 dotnet: 3.1.101
 node_js: "node"
 
+os:
+  - linux
+  - osx
+
+env:
+  - CI=false
 
 cache:
   directories:
@@ -16,4 +22,6 @@ install:
   - dotnet restore Wonton.CrossUI.Web/Wonton.CrossUI.Web.csproj
 
 script:
-  - ./tools/dotnet-cake -useMagic="false"
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./tools/dotnet-cake -useMagic="false"          ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./tools/dotnet-cake -useMagic="false" -targetOS="win"         ; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./tools/dotnet-cake -useMagic="false"          ; fi

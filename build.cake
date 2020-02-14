@@ -3,46 +3,64 @@
 
 var target = Argument("target", "Build");
 var useMagic = Argument("useMagic", "true");
+var elec_target_os = Argument("targetOS", "SameAsHost");
 
-var isMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
-var isWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
-var isLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
+var isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
+var isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+var isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
 
 var elec_ver = "7.1.2";
 var elec_args = "";
 var elec_cache_dir = "";
 var elec_bin = "";
 var elec_name = "";
+// var elec_target_os = "";
+var elec_target_os2 = "";
+var host_os = "";
 
 var npm_reg = "https://registry.npm.taobao.org";
 
-if(isMac) 
+if(isHostMac)
 {
-    elec_args = "build /target osx /package-json ./ClientApp/electron.package.json";
-    elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-darwin-x64.zip";
-    elec_name = "electron-v"+elec_ver+"-darwin-x64.zip";
+    if(elec_target_os == "SameAsHost") { elec_target_os = "osx"; }
+    host_os = "macOS";
     var HOME = EnvironmentVariable("HOME");
     elec_cache_dir = System.IO.Path.Combine(HOME, "Library", "Caches", "electron"); 
 }
-else if(isWin)
+else if(isHostWin)
 {
-    elec_args = "build /target win /package-json .\\ClientApp\\electron.package.json";
-    elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-win32-x64.zip";
-    elec_name = "electron-v"+elec_ver+"-win32-x64.zip";
+    if(elec_target_os == "SameAsHost") { elec_target_os = "win"; }
+    host_os = "Windows";
     var LOCALAPPDATA = EnvironmentVariable("LOCALAPPDATA");
     elec_cache_dir = System.IO.Path.Combine(LOCALAPPDATA, "electron", "Cache");
 }
-else if(isLinux)
+else if(isHostLinux)
 {
-    elec_args = "build /target linux /package-json ./ClientApp/electron.package.json";
-    elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-linux-x64.zip";
-    elec_name = "electron-v"+elec_ver+"-linux-x64.zip";
+    host_os = "Linux";
+    if(elec_target_os == "SameAsHost") { elec_target_os = "linux"; }
     var HOME = EnvironmentVariable("HOME");
     elec_cache_dir = System.IO.Path.Combine(HOME, ".cache", "electron"); 
 }
 
-Information("Electron Cache Dir: "+ elec_cache_dir);
+if(elec_target_os == "osx")
+{
+    elec_target_os2 = "darwin";
+}
+if(elec_target_os == "win")
+{
+    elec_target_os2 = "win32";
+}
+if(elec_target_os == "linux")
+{
+    elec_target_os2 = "linux";
+}
 
+elec_args = "build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
+elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
+elec_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
+
+Information("Electron Cache Dir: "+ elec_cache_dir);
+Information("Build for "+elec_target_os+" on "+host_os);
 
 Task("Build")
   .Does(() =>
@@ -66,7 +84,7 @@ Task("Build")
             npms.Registry = new Uri(npm_reg);
             arg = arg + " --registry="+npm_reg;
         }
-        if(isWin)
+        if(isHostWin)
         {
             NpmInstall(npms);
         }
