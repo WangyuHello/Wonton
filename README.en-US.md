@@ -32,13 +32,13 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
     dotnet tool install -g ElectronNET.CLI
     ```
 
-4. Execute under FudanFPGA.CrossUI.Web
+4. Execute under Wonton.CrossUI.Web
 
     ```powershell
     dotnet build -c Release
     ```
 
-5. Execute under FudanFPGA.CrossUI.Web\ClientApp 
+5. Execute under Wonton.CrossUI.Web\ClientApp 
    
    *This step may take a pretty long time depending on network situations.*
 
@@ -46,13 +46,13 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
     npm i
     ```
 
-6. Patch FudanFPGA.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js
+6. Patch Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js
 
     Add ```target: 'electron-renderer'``` in the ```return``` function, and save
 
     ![webpack](./imgs/target.png)
 
-7. Execute under FudanFPGA.CrossUI.Web
+7. Execute under Wonton.CrossUI.Web
 
     *This step may take a pretty long time depending on network situations.*
 
@@ -65,11 +65,11 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
     ```powershell
     ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
     ```
-8. Compiled binaries are located under FudanFPGA.CrossUI.Web\bin\Desktop
+8. Compiled binaries are located under Wonton.CrossUI.Web\bin\Desktop
 
 ### Re-build
 
-1. Execute under FudanFPGA.CrossUI.Web
+1. Execute under Wonton.CrossUI.Web
 
     Compile for macOS
     ```powershell
@@ -80,4 +80,4 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
     ```powershell
     ~/.dotnet/tools/electronize build /target win /package-json .\ClientApp\electron.package.json
     ```
-2. Compiled binaries are located under FudanFPGA.CrossUI.Web\bin\Desktop
+2. Compiled binaries are located under Wonton.CrossUI.Web\bin\Desktop

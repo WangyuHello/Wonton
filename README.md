@@ -23,7 +23,7 @@
 
     需 >= 3.1 版本，请勿安装 Runtime 版本
 
-3. 在 FudanFPGAInterface 目录下运行
+3. 在 Wonton 目录下运行
 
     ```powershell
     dotnet tool install --tool-path tools Cake.Tool
@@ -55,7 +55,7 @@
     ./tools/dotnet-cake -useMagic="false"
     ```
 
-5. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
+5. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
 
 ## 手动编译步骤
 
@@ -69,25 +69,25 @@
 
     需 >= 3.1 版本，请勿安装 Runtime 版本
 
-3. 在 FudanFPGA.CrossUI.Web 目录运行
+3. 在 Wonton.CrossUI.Web 目录运行
 
     ```powershell
     dotnet tool install --tool-path tools ElectronNET.CLI
     ```
 
-4. 在 FudanFPGA.CrossUI.Web 目录运行
+4. 在 Wonton.CrossUI.Web 目录运行
 
     ```powershell
     dotnet build -c Release
     ```
 
-5. 在 FudanFPGA.CrossUI.Web\ClientApp 目录运行，此步骤可能需要较长时间，视网络状况。
+5. 在 Wonton.CrossUI.Web\ClientApp 目录运行，此步骤可能需要较长时间，视网络状况。
 
     ```powershell
     npm i
     ```
 
-6. 修改 FudanFPGA.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` （注意逗号）然后保存。
+6. 修改 Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` （注意逗号）然后保存。
 
     ![webpack](./imgs/target.png)
 
@@ -107,7 +107,7 @@
 
     3. 将上述下载的zip包存放在**Electron缓存目录**中
 
-8. 在 FudanFPGA.CrossUI.Web 目录运行如下命令，此步骤可能需要较长时间，视网络状况。如果出现Electron无法下载问题，请查看[Electron无法下载](####Electron无法下载)
+8. 在 Wonton.CrossUI.Web 目录运行如下命令，此步骤可能需要较长时间，视网络状况。如果出现Electron无法下载问题，请查看[Electron无法下载](####Electron无法下载)
 
     编译 Windows 版本
     ```powershell
@@ -118,11 +118,11 @@
     ```bash
     ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
-9. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
+9. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
 
 ### 非首次编译
 
-1. 在 FudanFPGA.CrossUI.Web 目录运行
+1. 在 Wonton.CrossUI.Web 目录运行
 
     编译 Windows 版本
     ```powershell
@@ -133,13 +133,13 @@
     ```bash
     ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
-2. 编译后的文件在 FudanFPGA.CrossUI.Web\bin\Desktop 目录下
+2. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
 
 ### 问题解决
 
 #### Electron无法下载
 
-1. 删除 FudanFPGA.CrossUI.Web\ClientApp\node_modules\electron 目录
+1. 删除 Wonton.CrossUI.Web\ClientApp\node_modules\electron 目录
 
 2. 找到Electron缓存目录
 

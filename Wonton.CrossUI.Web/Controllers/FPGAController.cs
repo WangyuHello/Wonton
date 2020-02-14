@@ -51,14 +51,14 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
-                Electron.Notification.Show(new NotificationOptions("复旦FPGA","Program失败"));
+                Electron.Notification.Show(new NotificationOptions("馄饨FPGA","Program失败"));
                 return new FPGAResponse()
                 {
                     Message = e.Message,
                     Status = false
                 };
             }
-            Electron.Notification.Show(new NotificationOptions("复旦FPGA", "Program成功"));
+            Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program成功"));
             return new FPGAResponse()
             {
                 Message = "成功",
@@ -193,7 +193,7 @@ namespace Wonton.CrossUI.Web.Controllers
         {
             await System.IO.File.WriteAllTextAsync(filename, data.data);
 
-            Electron.Notification.Show(new NotificationOptions("复旦FPGA", "已保存"));
+            Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "已保存"));
 
             return new FPGAResponse()
             {
