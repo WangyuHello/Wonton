@@ -122,6 +122,11 @@
     ```bash
     ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
     ```
+
+    或者，编译 Linux 版本
+    ```bash
+    ./tools/electronize build /target linux /package-json ./ClientApp/electron.package.json
+    ```
 9. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
 
 ### 非首次编译
@@ -136,6 +141,11 @@
     或者，编译 macOS 版本
     ```bash
     ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
+    ```
+
+    或者，编译 Linux 版本
+    ```bash
+    ./tools/electronize build /target linux /package-json ./ClientApp/electron.package.json
     ```
 2. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
 
