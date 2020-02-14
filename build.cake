@@ -6,6 +6,7 @@ var useMagic = Argument("useMagic", "true");
 
 var isMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
 var isWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+var isLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
 
 var elec_ver = "7.1.2";
 var elec_args = "";
@@ -30,7 +31,15 @@ else if(isWin)
     elec_name = "electron-v"+elec_ver+"-win32-x64.zip";
     var LOCALAPPDATA = EnvironmentVariable("LOCALAPPDATA");
     elec_cache_dir = System.IO.Path.Combine(LOCALAPPDATA, "electron", "Cache");
-} 
+}
+else if(isLinux)
+{
+    elec_args = "build /target linux /package-json ./ClientApp/electron.package.json";
+    elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-linux-x64.zip";
+    elec_name = "electron-v"+elec_ver+"-linux-x64.zip";
+    var HOME = EnvironmentVariable("HOME");
+    elec_cache_dir = System.IO.Path.Combine(HOME, ".cache", "electron"); 
+}
 
 Information("Electron Cache Dir: "+ elec_cache_dir);
 

@@ -4,6 +4,8 @@
 
 ![wonton](./imgs/wonton.jpg)
 
+支持Windows、macOS和Linux
+
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
 # 编译指南
@@ -38,7 +40,7 @@
     .\tools\dotnet-cake
     ```
 
-    macOS
+    macOS、Linux
     ```bash
     ./tools/dotnet-cake
     ```
@@ -50,7 +52,7 @@
     .\tools\dotnet-cake -useMagic="false"
     ```
 
-    macOS
+    macOS、Linux
     ```bash
     ./tools/dotnet-cake -useMagic="false"
     ```
@@ -95,15 +97,17 @@
 
     - 配置Electron
 
-    1. 找到**Electron缓存目录**
+    1. 找到**Electron缓存目录**，如果没有可自行创建。
 
         Windows： ```%LOCALAPPDATA%\electron\Cache``` <br>
-        macOS:  ```~/Library/Caches/electron/```
+        macOS:  ```~/Library/Caches/electron/``` <br>
+        Linux: ```~/.cache/electron/```
 
     2. 从淘宝镜像下载Electron包
 
         Windows： https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-win32-x64.zip <br>
-        macOS:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-darwin-x64.zip
+        macOS:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-darwin-x64.zip <br>
+        Linux:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-linux-x64.zip
 
     3. 将上述下载的zip包存放在**Electron缓存目录**中
 
@@ -141,14 +145,17 @@
 
 1. 删除 Wonton.CrossUI.Web\ClientApp\node_modules\electron 目录
 
-2. 找到Electron缓存目录
+2. 找到**Electron缓存目录**，如果没有可自行创建。
 
     Windows： ```%LOCALAPPDATA%\electron\Cache``` <br>
-    macOS: ```~/Library/Caches/electron/```
+    macOS:  ```~/Library/Caches/electron/``` <br>
+    Linux: ```~/.cache/electron/```
 
 3. 从淘宝镜像下载Electron包
 
     Windows： https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-win32-x64.zip <br>
-    macOS:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-darwin-x64.zip
+    macOS:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-darwin-x64.zip <br>
+    Linux:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-linux-x64.zip
+
 
 4. 将上述下载的zip包存放在Electron缓存目录中即可
