@@ -16,6 +16,8 @@
 
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
+## 发现bug请提交Issue
+
 # 编译指南
 
 ## 依赖软件

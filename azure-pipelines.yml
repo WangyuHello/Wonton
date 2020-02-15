@@ -2,12 +2,21 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-latest'
+    mac:
+      imageName: 'macos-10.15'
+    windows:
+      imageName: 'windows-latest'
+
+pool:
+  vmImage: $(imageName)
+
 
 trigger:
 - master
-
-pool:
-  vmImage: 'ubuntu-latest'
 
 steps:
 - task: UseDotNet@2
@@ -18,11 +27,5 @@ steps:
 - script: dotnet tool install --tool-path tools Cake.Tool
   displayName: 'Install Cake'
 
-- script: ./tools/dotnet-cake -useMagic="false" -targetOS="linux"
-  displayName: 'Build for Linux'
-
-- script: ./tools/dotnet-cake -useMagic="false" -targetOS="win"
-  displayName: 'Build for Windows'
-
-- script: ./tools/dotnet-cake -useMagic="false" -targetOS="osx"
-  displayName: 'Build for macOS'
+- script: ./tools/dotnet-cake -useMagic="false"
+  displayName: 'Build'
