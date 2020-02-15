@@ -4,15 +4,15 @@
 
 ![wonton](./Imgs/wonton.jpg)
 
-![GitHub](https://img.shields.io/github/license/WangyuHello/Wonton?style=flat-square)
-![csharp](https://img.shields.io/badge/language-C%23-orange?style=flat-square)
-![js](https://img.shields.io/badge/language-JavaScript-yellow?style=flat-square)
-![platform](https://img.shields.io/badge/platform-Windows%20|%20macOS%20|%20Linux-blue?style=flat-square)
+![GitHub](https://img.shields.io/github/license/WangyuHello/Wonton?label=%E8%AE%B8%E5%8F%AF%E8%AF%81&style=flat-square)
+![csharp](https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-C%23-orange?style=flat-square)
+![js](https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-JavaScript-yellow?style=flat-square)
+![platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20|%20macOS%20|%20Linux-blue?style=flat-square)
 <a href="https://www.travis-ci.org/WangyuHello/Wonton">
-    <img src="https://img.shields.io/travis/WangyuHello/Wonton?style=flat-square">
+    <img src="https://img.shields.io/travis/WangyuHello/Wonton?label=%E6%9E%84%E5%BB%BA%E7%8A%B6%E6%80%81&style=flat-square">
 </a>
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/WangyuHello/Wonton?style=flat-square)
-![GitHub All Releases](https://img.shields.io/github/downloads/WangyuHello/Wonton/total?style=flat-square)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/WangyuHello/Wonton?label=%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC&style=flat-square)
+![GitHub All Releases](https://img.shields.io/github/downloads/WangyuHello/Wonton/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&style=flat-square)
 
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
