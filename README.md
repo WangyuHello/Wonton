@@ -11,8 +11,12 @@
 <a href="https://www.travis-ci.org/WangyuHello/Wonton">
     <img src="https://img.shields.io/travis/WangyuHello/Wonton?label=%E6%9E%84%E5%BB%BA%E7%8A%B6%E6%80%81&style=flat-square">
 </a>
+<a  href="https://dev.azure.com/FudanUniversity/Wonton/_build?definitionId=1&_a=summary">
+    <img src="https://img.shields.io/azure-devops/build/FudanUniversity/2a0e6b48-5a76-49ae-88ba-f8e4479266c8/1?label=%E6%9E%84%E5%BB%BA%E7%8A%B6%E6%80%81&style=flat-square">
+</a>
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/WangyuHello/Wonton?label=%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC&style=flat-square)
 ![GitHub All Releases](https://img.shields.io/github/downloads/WangyuHello/Wonton/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&style=flat-square)
+
 
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
