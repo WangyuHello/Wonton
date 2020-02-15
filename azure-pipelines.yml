@@ -1,0 +1,20 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: dotnet tool install --tool-path tools Cake.Tool
+  displayName: 'Install Cake'
+
+- script: |
+    ./tools/dotnet-cake -useMagic="false" -targetOS="linux"
+    ./tools/dotnet-cake -useMagic="false" -targetOS="win"
+    ./tools/dotnet-cake -useMagic="false" -targetOS="osx"
+  displayName: 'Build'
