@@ -39,3 +39,7 @@ steps:
   condition: eq( variables['Agent.OS'], 'Windows_NT' )
   displayName: 'Build on Windows'
 
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
+    publishLocation: 'pipeline'
