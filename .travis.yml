@@ -9,6 +9,8 @@ os:
   - osx
   # - windows
 
+osx_image: xcode11.3
+
 env:
   - CI=false
 
