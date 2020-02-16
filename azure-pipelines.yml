@@ -21,6 +21,26 @@ jobs:
   - bash: ./tools/dotnet-cake -useMagic="false"
     displayName: 'Build on Linux'
 
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/linux-unpacked'
+      includeRootFolder: false
+      archiveType: '7z'
+      sevenZipCompression: 'maximum'
+      archiveFile: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/Wonton-linux-azure.7z'
+      replaceExistingArchive: true
+
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'github.com_WangyuHello'
+      repositoryName: 'WangyuHello/Wonton'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      releaseNotesSource: 'inline'
+      assets: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/Wonton-linux-azure.7z'
+      addChangeLog: false
+
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
@@ -42,6 +62,26 @@ jobs:
   - bash: ./tools/dotnet-cake -useMagic="false"
     displayName: 'Build on macOS'
 
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/mac'
+      includeRootFolder: false
+      archiveType: '7z'
+      sevenZipCompression: 'maximum'
+      archiveFile: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/Wonton-mac-azure.7z'
+      replaceExistingArchive: true
+
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'github.com_WangyuHello'
+      repositoryName: 'WangyuHello/Wonton'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      releaseNotesSource: 'inline'
+      assets: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/Wonton-mac-azure.7z'
+      addChangeLog: false
+
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
@@ -62,6 +102,25 @@ jobs:
   
   - powershell: ./tools/dotnet-cake -useMagic="false"
     displayName: 'Build on Windows'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/win-unpacked'
+      includeRootFolder: false
+      archiveType: '7z'
+      sevenZipCompression: 'maximum'
+      archiveFile: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/Wonton-win-azure.7z'
+      replaceExistingArchive: true
+
+  - task: GitHubRelease@1
+    inputs:
+      gitHubConnection: 'github.com_WangyuHello'
+      repositoryName: 'WangyuHello/Wonton'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      releaseNotesSource: 'inline'
+      assets: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/Wonton-win-azure.7z'
+      addChangeLog: false
 
   - task: PublishPipelineArtifact@1
     inputs:
