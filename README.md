@@ -8,19 +8,21 @@
 ![csharp](https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-C%23-orange?style=flat-square)
 ![js](https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-JavaScript-yellow?style=flat-square)
 ![platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20|%20macOS%20|%20Linux-blue?style=flat-square)
-<a href="https://www.travis-ci.org/WangyuHello/Wonton">
-    <img src="https://img.shields.io/travis/WangyuHello/Wonton?label=%E6%9E%84%E5%BB%BA%E7%8A%B6%E6%80%81&style=flat-square">
-</a>
-<a  href="https://dev.azure.com/FudanUniversity/Wonton/_build?definitionId=1&_a=summary">
-    <img src="https://img.shields.io/azure-devops/build/FudanUniversity/2a0e6b48-5a76-49ae-88ba-f8e4479266c8/1?label=%E6%9E%84%E5%BB%BA%E7%8A%B6%E6%80%81&style=flat-square">
-</a>
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/WangyuHello/Wonton?label=%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC&style=flat-square)
 ![GitHub All Releases](https://img.shields.io/github/downloads/WangyuHello/Wonton/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&style=flat-square)
 
+## 构建状态
+
+| 构建平台        | WIndows                                                                                                                                                                                                                              | macOS                                                                                                                                                                                                                              | Linux                                                                                                                                                                                                                              |
+|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Travis CI       | [![Build Status](https://www.travis-ci.org/WangyuHello/Wonton.svg?branch=master)](https://www.travis-ci.org/WangyuHello/Wonton)                                                                                                      | [![Build Status](https://www.travis-ci.org/WangyuHello/Wonton.svg?branch=master)](https://www.travis-ci.org/WangyuHello/Wonton)                                                                                                    | [![Build Status](https://www.travis-ci.org/WangyuHello/Wonton.svg?branch=master)](https://www.travis-ci.org/WangyuHello/Wonton)                                                                                                    |
+| Azure Pipelines | [![Build Status](https://dev.azure.com/FudanUniversity/Wonton/_apis/build/status/WangyuHello.Wonton?branchName=master&jobName=Windows)](https://dev.azure.com/FudanUniversity/Wonton/_build/latest?definitionId=1&branchName=master) | [![Build Status](https://dev.azure.com/FudanUniversity/Wonton/_apis/build/status/WangyuHello.Wonton?branchName=master&jobName=macOS)](https://dev.azure.com/FudanUniversity/Wonton/_build/latest?definitionId=1&branchName=master) | [![Build Status](https://dev.azure.com/FudanUniversity/Wonton/_apis/build/status/WangyuHello.Wonton?branchName=master&jobName=Linux)](https://dev.azure.com/FudanUniversity/Wonton/_build/latest?definitionId=1&branchName=master) |
+
+
+## 发现bug请提交Issue
 
 多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
 
-## 发现bug请提交Issue
 
 # 编译指南
 
