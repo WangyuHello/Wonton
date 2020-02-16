@@ -97,5 +97,20 @@ namespace Wonton.Test
                 File.WriteAllText(config_file, string.Join(Environment.NewLine, modified_contents));
             }
         }
+
+        [Fact]
+        void TestRename()
+        {
+            var arcs = Directory.EnumerateFiles(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", "*.7z");
+            var arcs2 = Directory.EnumerateFiles(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", "*.zip");
+            foreach (var f in arcs)
+            {
+                var ext = Path.GetExtension(f);
+                var n = Path.GetFileNameWithoutExtension(f);
+                n = n + "-" + "win10";
+                var f2 = Path.Combine(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", n + ext);
+                File.Move(f, f2, true);
+            }
+        }
     }
 }

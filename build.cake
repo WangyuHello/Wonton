@@ -4,6 +4,7 @@
 var target = Argument("target", "Build");
 var useMagic = Argument("useMagic", "true");
 var elec_target_os = Argument("targetOS", "SameAsHost");
+var addi_name = Argument("AdditionalName", "");
 
 var isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
 var isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
@@ -61,6 +62,18 @@ elec_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
 
 Information("Electron Cache Dir: "+ elec_cache_dir);
 Information("Build for "+elec_target_os+" on "+host_os);
+
+void Rename(string dir, string addi_name, string ext)
+{
+    var arcs = System.IO.Directory.EnumerateFiles(dir, "*."+ext);
+    foreach (var f in arcs)
+    {
+        var n = System.IO.Path.GetFileNameWithoutExtension(f);
+        n = n + "-" + addi_name;
+        var f2 = System.IO.Path.Combine(dir, n + "." + ext);
+        System.IO.File.Move(f, f2, true);
+    }
+}
 
 Task("Build")
   .Does(() =>
@@ -162,6 +175,16 @@ Task("Build")
         }
         StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
     });
+
+    if(!string.IsNullOrEmpty(addi_name))
+    {
+        Information("重命名:"+addi_name);
+        var archives = GetFiles(System.IO.Path.Combine("Wonton.CrossUI.Web", "bin", "Desktop", "*.7z"));
+        var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
+        Information(build_path);
+        Rename(build_path, addi_name, "7z");
+        Rename(build_path, addi_name, "zip");
+    }
 });
 
 RunTarget(target);
