@@ -138,7 +138,9 @@ jobs:
       itemPattern: '**/*.7z'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
-  - script: ls -la $(System.DefaultWorkingDirectory)/Build
+  - script: |
+      ls -la $(System.DefaultWorkingDirectory)/Build
+      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.Windows
     displayName: 'List artifacts'
 
   - task: GitHubRelease@1
