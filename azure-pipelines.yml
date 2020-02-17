@@ -147,7 +147,7 @@ jobs:
       tagSource: 'gitTag'
       releaseNotesSource: 'inline'
       assets: |
-        '$(System.DefaultWorkingDirectory)/Build/**/*.7z'
-        '$(System.DefaultWorkingDirectory)/Build/**/*.zip'
+        '$(System.DefaultWorkingDirectory)/Build/*/*.7z'
+        '$(System.DefaultWorkingDirectory)/Build/*/*.zip'
       addChangeLog: false
   
