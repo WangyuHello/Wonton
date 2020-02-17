@@ -141,6 +141,10 @@ jobs:
   - script: |
       ls -la $(System.DefaultWorkingDirectory)/Build
       ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.Windows
+      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.Linux
+      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.Linux16
+      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.macOS
+      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.macOS14
     displayName: 'List artifacts'
 
   - task: GitHubRelease@1
