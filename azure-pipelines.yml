@@ -147,7 +147,6 @@ jobs:
       tagSource: 'gitTag'
       releaseNotesSource: 'inline'
       assets: |
-        '$(System.DefaultWorkingDirectory)/**/*.7z'
-        '$(System.DefaultWorkingDirectory)/**/*.zip'
+        '$(System.DefaultWorkingDirectory)/Build/Wonton.Windows/*.7z'
       addChangeLog: false
   
