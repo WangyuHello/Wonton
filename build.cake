@@ -5,6 +5,7 @@ var target = Argument("target", "Build");
 var useMagic = Argument("useMagic", "true");
 var elec_target_os = Argument("targetOS", "SameAsHost");
 var addi_name = Argument("AdditionalName", "");
+var release_dir = Argument("releaseDir", "");
 
 var isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
 var isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
@@ -186,5 +187,13 @@ Task("Build")
         Rename(build_path, addi_name, "zip");
     }
 });
+
+Task("CopyToRelease")
+  .Does(() =>
+{
+    Information(release_dir);
+    var files = GetFiles("./Build/**/*.7z");
+    CopyFiles(files, release_dir);
+}
 
 RunTarget(target);

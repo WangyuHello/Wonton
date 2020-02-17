@@ -138,13 +138,14 @@ jobs:
       itemPattern: '**/*.7z'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
+  - script: dotnet tool install --tool-path tools Cake.Tool
+    displayName: 'Install Cake'
+  
+  - bash: ./tools/dotnet-cake -target="CopyToRelease" -useMagic="false" -releaseDir="$(Build.ArtifactStagingDirectory)"
+    displayName: 'Copy Release'
+
   - script: |
-      ls -la $(System.DefaultWorkingDirectory)/Build
-      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.Windows
-      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.Linux
-      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.Linux16
-      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.macOS
-      ls -la $(System.DefaultWorkingDirectory)/Build/Wonton.macOS14
+      ls -la $(Build.ArtifactStagingDirectory)
     displayName: 'List artifacts'
 
   - task: GitHubRelease@1
@@ -155,11 +156,5 @@ jobs:
       target: '$(Build.SourceVersion)'
       tagSource: 'gitTag'
       releaseNotesSource: 'inline'
-      assets: |
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.Windows/Wonton-1.0.2-win.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.Linux/Wonton-1.0.2-ubuntu-18.04.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.Linux16/Wonton-1.0.2-ubuntu-16.04.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.macOS/Wonton-1.0.2-mac-10.15.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.macOS14/Wonton-1.0.2-mac-10.14.7z'
       addChangeLog: false
   
