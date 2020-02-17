@@ -135,7 +135,7 @@ jobs:
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'current'
-      itemPattern: '**'
+      itemPattern: '**/*.7z'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
   - task: GitHubRelease@1
