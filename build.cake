@@ -194,6 +194,6 @@ Task("CopyToRelease")
     Information(release_dir);
     var files = GetFiles("./Build/**/*.7z");
     CopyFiles(files, release_dir);
-}
+});
 
 RunTarget(target);
