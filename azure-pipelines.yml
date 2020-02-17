@@ -156,10 +156,10 @@ jobs:
       tagSource: 'gitTag'
       releaseNotesSource: 'inline'
       assets: |
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.Windows/Wonton-*-win.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.Linux/Wonton-*-ubuntu-18.04.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.Linux16/Wonton-*-ubuntu-16.04.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.macOS/Wonton-*-mac-10.15.7z'
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.macOS14/Wonton-*-mac-10.14.7z'
+        '$(System.DefaultWorkingDirectory)/Build/Wonton.Windows/Wonton-1.0.2-win.7z'
+        '$(System.DefaultWorkingDirectory)/Build/Wonton.Linux/Wonton-1.0.2-ubuntu-18.04.7z'
+        '$(System.DefaultWorkingDirectory)/Build/Wonton.Linux16/Wonton-1.0.2-ubuntu-16.04.7z'
+        '$(System.DefaultWorkingDirectory)/Build/Wonton.macOS/Wonton-1.0.2-mac-10.15.7z'
+        '$(System.DefaultWorkingDirectory)/Build/Wonton.macOS14/Wonton-1.0.2-mac-10.14.7z'
       addChangeLog: false
   
