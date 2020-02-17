@@ -3,7 +3,13 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 trigger:
-- master
+  branches:
+    include:
+    - master
+  tags:
+    include:
+    - v*
+
 
 jobs:
 - job: Linux
@@ -18,25 +24,35 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu.18.04"
+  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu-18.04"
     displayName: 'Build on Linux'
-
-  - task: GitHubRelease@1
-    inputs:
-      gitHubConnection: 'github.com_WangyuHello'
-      repositoryName: 'WangyuHello/Wonton'
-      action: 'create'
-      target: '$(Build.SourceVersion)'
-      tagSource: 'gitTag'
-      releaseNotesSource: 'inline'
-      assets: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/*.7z'
-      addChangeLog: false
 
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
       publishLocation: 'pipeline'
       artifactName: 'Wonton.Linux'
+
+- job: Linux16
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '3.1.x'
+  
+  - script: dotnet tool install --tool-path tools Cake.Tool
+    displayName: 'Install Cake'
+  
+  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu-16.04"
+    displayName: 'Build on Linux'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.Linux16'
 
 - job: macOS
   pool:
@@ -50,25 +66,35 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="macOS.10.15"
+  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="-10.15"
     displayName: 'Build on macOS'
-
-  - task: GitHubRelease@1
-    inputs:
-      gitHubConnection: 'github.com_WangyuHello'
-      repositoryName: 'WangyuHello/Wonton'
-      action: 'create'
-      target: '$(Build.SourceVersion)'
-      tagSource: 'gitTag'
-      releaseNotesSource: 'inline'
-      assets: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/*.7z'
-      addChangeLog: false
 
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
       publishLocation: 'pipeline'
       artifactName: 'Wonton.macOS'
+
+- job: macOS14
+  pool:
+    vmImage: 'macos-10.14'
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '3.1.x'
+  
+  - script: dotnet tool install --tool-path tools Cake.Tool
+    displayName: 'Install Cake'
+  
+  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="-10.14"
+    displayName: 'Build on macOS'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.macOS14'
 
 - job: Windows
   pool:
@@ -85,6 +111,30 @@ jobs:
   - powershell: ./tools/dotnet-cake -useMagic="false"
     displayName: 'Build on Windows'
 
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.Windows'
+
+- job: GithubRelease
+  pool: 
+    vmImage: 'ubuntu-latest'
+  dependsOn:
+  - Linux
+  - Linux16
+  - macOS
+  - macOS14
+  - Windows
+  steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      itemPattern: |
+        *.7z
+        *.zip
+      targetPath: '$(System.DefaultWorkingDirectory)/Build'
+
   - task: GitHubRelease@1
     inputs:
       gitHubConnection: 'github.com_WangyuHello'
@@ -93,11 +143,8 @@ jobs:
       target: '$(Build.SourceVersion)'
       tagSource: 'gitTag'
       releaseNotesSource: 'inline'
-      assets: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop/*.7z'
+      assets: |
+        '$(System.DefaultWorkingDirectory)/Build/**/*.7z'
+        '$(System.DefaultWorkingDirectory)/Build/**/*.zip'
       addChangeLog: false
-
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
-      publishLocation: 'pipeline'
-      artifactName: 'Wonton.Windows'
+  

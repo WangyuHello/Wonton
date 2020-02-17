@@ -30,11 +30,12 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu.16.04"              ; fi
   # - ./tools/dotnet-cake -useMagic="false"
 
-deploy:
-  provider: releases
-  api_key: ${GITHUB_TOKEN}
-  file: Wonton.CrossUI.Web/bin/Desktop/*.7z
-  file_glob: true
-  skip_cleanup: true
-  on:
-    tags: true
+# deploy交给azure pipelines
+# deploy:
+#   provider: releases
+#   api_key: ${GITHUB_TOKEN}
+#   file: Wonton.CrossUI.Web/bin/Desktop/*.7z
+#   file_glob: true
+#   skip_cleanup: true
+#   on:
+#     tags: true
