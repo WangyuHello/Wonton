@@ -66,7 +66,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="-10.15"
+  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="10.15"
     displayName: 'Build on macOS'
 
   - task: PublishPipelineArtifact@1
@@ -92,7 +92,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="-10.14"
+  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="10.14"
     displayName: 'Build on macOS'
 
   - task: PublishPipelineArtifact@1
@@ -135,9 +135,7 @@ jobs:
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'current'
-      itemPattern: |
-        *.7z
-        *.zip
+      itemPattern: '**'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
   - task: GitHubRelease@1
