@@ -138,6 +138,9 @@ jobs:
       itemPattern: '**/*.7z'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
+  - script: ls -la $(System.DefaultWorkingDirectory)/Build
+    displayName: 'List artifacts'
+
   - task: GitHubRelease@1
     inputs:
       gitHubConnection: 'github.com_WangyuHello'
@@ -147,6 +150,6 @@ jobs:
       tagSource: 'gitTag'
       releaseNotesSource: 'inline'
       assets: |
-        '$(System.DefaultWorkingDirectory)/Build/Wonton.Windows/*.7z'
+        '$(System.DefaultWorkingDirectory)/Build/*.7z'
       addChangeLog: false
   
