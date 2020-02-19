@@ -8,7 +8,6 @@ using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Wonton.Common;
 using Wonton.CrossUI.Web.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -166,9 +165,13 @@ namespace Wonton.CrossUI.Web.Controllers
             if (string.IsNullOrEmpty(filename))
             {
                 //没有项目文件
+                //显示开始界面
+                //返回RecentProjects
+                await _manager.ReadRecentProjectAsync();
+
                 return new FPGAResponse()
                 {
-                    Message = "",
+                    Message = _manager.RecentProjectsRaw,
                     Status = false
                 };
             }
@@ -179,6 +182,13 @@ namespace Wonton.CrossUI.Web.Controllers
 
             sr.Close();
             fs.Close();
+
+            //将项目信息添加到RecentProjects
+            JObject pjJobj = JObject.Parse(content);
+            var pjName = pjJobj["projectName"].Value<string>();
+            await _manager.ReadRecentProjectAsync();
+            _manager.AddRecentProject(pjName, filename);
+            await _manager.SaveRecentProjectAsync();
 
             return new FPGAResponse()
             {

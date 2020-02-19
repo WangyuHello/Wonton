@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import FPGAManager, { manager } from '../../Service/FPGAManager';
+import { manager } from '../../Service/FPGAManager';
 import { LEDCore } from './LEDCore';
 
-import ledOn from './led_on.svg';
-import ledOff from './led_off.svg';
 
 export class LED extends Component {
     
@@ -39,7 +37,7 @@ export class LED extends Component {
 
     render() {
 
-        let on = this.state.inputs[0] == 1 ? true : false;
+        let on = this.state.inputs[0] === 1 ? true : false;
 
         return (      
             <LEDCore onOff={on}/>

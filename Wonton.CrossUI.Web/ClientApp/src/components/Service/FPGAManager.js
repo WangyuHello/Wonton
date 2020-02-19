@@ -160,19 +160,19 @@ export default class FPGAManager {
     Program = async (bitfile) => {
         this.bitfile = bitfile;
         const response = await fetch('/api/fpga/program?bitfile=' + bitfile);
-        const data = await response.json();
+        await response.json();
         // console.log(data.message);
     }
 
     IoOpen = async () => {
         const response = await fetch('/api/fpga/ioopen');
-        const data = await response.json();
+        await response.json();
         // console.log(data.message);
     }
 
     IoClose = async () => {
         const response = await fetch('/api/fpga/ioclose');
-        const data = await response.json();
+        await response.json();
         // console.log(data.message);
     }
 
@@ -183,7 +183,7 @@ export default class FPGAManager {
         this.inputValues = new Array(writeCount*16).fill(0);
         this.tempi16WriteData = new Array(writeCount).fill(0);
         const response = await fetch('/api/fpga/initio?writeCount='+writeCount+'&readCount='+readCount);
-        const data = await response.json();
+        await response.json();
         // console.log(data.message);
     }
 

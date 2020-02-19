@@ -5,38 +5,52 @@ import './Start.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
+import { pjManager } from './Service/ProjectManager';
+
 export class Start extends Component {
 
-    onOpen = (event) => {
-        this.props.onOpen(event);
-    }
+  onOpen = (event) => {
+      this.props.onOpen(event);
+  }
 
-    onNew = (event) => {
-        this.props.onNew(event);
-    }
+  onNew = (event) => {
+      this.props.onNew(event);
+  }
+
+  clickOpen = async (index) => {
+    console.log('Open project index:' + index)
+
+    //将新的项目地址存储在后台进程
+    pjManager.projectFile = this.props.recentProjects[index].Item2;
+    await pjManager.SetProjectFile();
+
+    //刷新页面,重新载入项目
+    window.location.reload(true);
+  }
 
   render () {
+
+    console.log(this.props.recentProjects)
+
     return (
       <div className="twocolumn">
           <div className="buttons">
-            <Button size="lg" onClick={this.onNew}>
+            <Button className="tranButton" size="lg" onClick={this.onNew}>
                 <FontAwesomeIcon icon={faPlus} />
             </Button>
-            <Button size="lg" onClick={this.onOpen}>
+            <Button className="tranButton" size="lg" onClick={this.onOpen}>
                 <FontAwesomeIcon icon={faFolderOpen} />
             </Button>
           </div>
           <div className="recent"> 
                 <div style={{marginBottom: "10px"}}>最近项目</div>
-                <div>
-                <ListGroup>
-                    <ListGroupItem>Cras justo odio</ListGroupItem>
-                    <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
-                    <ListGroupItem>Morbi leo risus</ListGroupItem>
-                    <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-                    <ListGroupItem>Vestibulum at eros</ListGroupItem>
+                <ListGroup className="startList">
+                    {
+                      this.props.recentProjects.map((item, ind) => {
+                      return <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)}>{item.Item1}</ListGroupItem>
+                      })
+                    }
                 </ListGroup>
-                </div>
           </div>
       </div>
     );

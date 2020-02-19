@@ -16,12 +16,26 @@ const ReactGridLayout = WidthProvider(RGL);
 export class MainPanel extends PureComponent {
 
     //从Manager获取数据
-    async componentWillMount() {
-        let data = await pjManager.GetPanelData();
-        this.setState({
-            layout: data.layout,
-            instanceCounter: data.layout.length
-        });
+    // async componentWillMount() {
+    //     let data = await pjManager.GetPanelData();
+    //     this.setState({
+    //         layout: data.layout,
+    //         instanceCounter: data.layout.length
+    //     });
+    // }
+    layoutChangeFlag = false
+
+    componentWillReceiveProps(nextProps) {
+        let data = nextProps.panelData;
+        if (data != null && this.state.layout == null) {
+            this.setState({
+                layout: data.layout,
+                instanceCounter: data.layout.length
+            }, ()=> {
+                this.layoutChangeFlag = true;
+                // console.log("state callback2")
+            });
+        }
     }
 
     componentDidMount() {
@@ -85,6 +99,7 @@ export class MainPanel extends PureComponent {
         let newLayout = _.reject(this.state.layout, {i: instance});
         //更新当前状态和PJManager中的值
         pjManager.layout = newLayout;
+        this.props.onModified(true);
 
         this.setState({
             layout: newLayout
@@ -102,6 +117,8 @@ export class MainPanel extends PureComponent {
         } else {
             manager.MapOutputPorts(event.target.value, instance, index);
         }
+
+        this.props.onModified(true);
 
         this.setState({
             projectConnections: prevConnectionMap
@@ -181,7 +198,7 @@ export class MainPanel extends PureComponent {
     OnAdd = (event, name) => {
         let insCounter = this.state.instanceCounter;
         insCounter = insCounter + 1;
-
+        console.log(insCounter)
         let nextX = (this.state.layout.length * 3) % 24;
         let nextY = 3 * Math.floor(this.state.layout.length / 8);
 
@@ -192,12 +209,17 @@ export class MainPanel extends PureComponent {
              y: nextY,w:3,h:3, minW:3, minH:3
         });
 
+        // console.log(newLayout)
+
         //更新当前状态和PJManager中的值
         pjManager.layout = newLayout;
+        this.props.onModified(true);
 
         this.setState({
             layout: newLayout,
             instanceCounter: insCounter
+        }, () => {
+            // console.log("state callback")
         })
     }
 
@@ -234,6 +256,7 @@ export class MainPanel extends PureComponent {
         } else {
             manager.MapOutputPorts(event.target.value, instance, index);
         }
+        this.props.onModified(true);
 
         this.setState({
             selectedDevicePortsConnection: connections
@@ -290,21 +313,16 @@ export class MainPanel extends PureComponent {
         // console.log(layout);
         //此处的Layout不含device信息
         pjManager.layoutNoDevice = layout;
+        if (this.layoutChangeFlag) {
+            this.props.onModified(true);
+        }
     }
 
     state = {
         isSettingModalOpen: false,
-        instanceCounter: 7,
+        instanceCounter: 0,
         projectConnections: new Map(),
-        layout: [
-            // { i: 'i1', device:'LED', x: 0,  y: 0,w:3,h:3, minW:3, minH:3},
-            // { i: 'i2', device:'LED', x: 3,  y: 0,w:3,h:3, minW:3, minH:3},
-            // { i: 'i3', device:'LED', x: 6,  y: 0,w:3,h:3, minW:3, minH:3},
-            // { i: 'i4', device:'LED', x: 9,  y: 0,w:3,h:3, minW:3, minH:3},
-            // { i: 'i5', device:'LED', x: 12, y: 0,w:3,h:3, minW:3, minH:3},
-            // { i: 'i6', device:'LED', x: 15, y: 0,w:3,h:3, minW:3, minH:3},
-            // { i: 'i7', device:'HButton', x: 18, y: 0,w:3,h:3, minW:3, minH:3}
-        ],
+        layout: null,
         selectedDevice: "", // "i1"  被选中的Instance名称
         selectedDevicePorts: [], // [输入1,  ...] 选中Instance的所有端口
         selectedDevicePortsDirection: [], // [input, ...]

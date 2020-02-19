@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardTitle, CardSubtitle, CardLink, Button, CardText } from 'reactstrap';
+import { Card, CardBody, CardTitle, Button } from 'reactstrap';
 
 import './DeviceItem.css';
 

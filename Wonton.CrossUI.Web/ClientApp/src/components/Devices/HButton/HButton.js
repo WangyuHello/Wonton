@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic } from '@fortawesome/free-solid-svg-icons'
-import FPGAManager, { manager } from '../../Service/FPGAManager';
+import { manager } from '../../Service/FPGAManager';
 
 import './HButton.css'
 

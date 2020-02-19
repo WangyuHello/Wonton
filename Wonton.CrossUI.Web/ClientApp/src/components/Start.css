@@ -16,3 +16,18 @@
     display: flex;
     flex-direction: column;
 }
+
+.tranButton {
+    width: 100px;
+    height: 80px;
+    background-color: transparent;
+    color: #6c757d;
+    border-width: 1px;
+}
+
+.startList {
+    height: 250px;
+    width: 220px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

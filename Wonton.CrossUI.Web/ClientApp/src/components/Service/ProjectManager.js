@@ -17,6 +17,8 @@ export default class ProjectManager {
     OnRefreshTitle = null
     OnRefreshMainPanel = null
 
+    recentProjects = []
+
     // Refresh = () => {
     //     this.OnRefreshMainPanel({layout: this.layout});
     //     this.OnRefreshTitle({bitfile: this.bitfile});
@@ -24,31 +26,62 @@ export default class ProjectManager {
 
     initialzed = false
 
-    GetPanelData = async () => {
+    GetInitData = async () => {
         if (this.initialzed) {
-            return {layout: this.layout};
+            return {
+                titleData: {
+                    bitfile: this.bitfile,
+                    pjName: this.projectName,
+                    projectInitialize: this.projectInitialize,
+                    recentProjects: this.recentProjects
+                },
+                panelData: {
+                    layout: this.layout
+                }
+            }
         } else {
             await this.Initialize();
-            return {layout: this.layout};
+            return {
+                titleData: {
+                    bitfile: this.bitfile,
+                    pjName: this.projectName,
+                    projectInitialize: this.projectInitialize,
+                    recentProjects: this.recentProjects
+                },
+                panelData: {
+                    layout: this.layout
+                }
+            }
         }
     }
 
-    GetTitleData = async () => {
-        if (this.initialzed) {
-            return {
-                bitfile: this.bitfile,
-                pjName: this.projectName,
-                projectInitialize: this.projectInitialize
-            };
-        } else {
-            await this.Initialize();
-            return {
-                bitfile: this.bitfile,
-                pjName: this.projectName,
-                projectInitialize: this.projectInitialize
-            };
-        }
-    }
+    // GetPanelData = async () => {
+    //     if (this.initialzed) {
+    //         return {layout: this.layout};
+    //     } else {
+    //         await this.Initialize();
+    //         return {layout: this.layout};
+    //     }
+    // }
+
+    // GetTitleData = async () => {
+    //     if (this.initialzed) {
+    //         return {
+    //             bitfile: this.bitfile,
+    //             pjName: this.projectName,
+    //             projectInitialize: this.projectInitialize,
+    //             recentProjects: this.recentProjects
+    //         };
+    //     } else {
+    //         await this.Initialize();
+    //         return {
+    //             bitfile: this.bitfile,
+    //             pjName: this.projectName,
+    //             projectInitialize: this.projectInitialize,
+    //             recentProjects: this.recentProjects
+    //         };
+    //     }
+    // }
 
     //初始化程序
     //从Host拿去数据
@@ -58,9 +91,11 @@ export default class ProjectManager {
         const res = await response.json();
 
         //没有初始化项目文件,则显示开始屏幕
+        //显示RecentProjects
         if (res.status === false) {
-            this.projectName = ""
+            this.projectName = "";
             this.projectInitialize = false;
+            this.recentProjects = JSON.parse(res.message);
             return;
         }
         // console.log(res);
@@ -86,12 +121,12 @@ export default class ProjectManager {
 
     SetProjectFile = async () => {
         const response = await fetch('/api/fpga/setprojectfile?filename=' + this.projectFile);
-        const res = await response.json();
+        await response.json();
     }
 
     NewProject = async (projectdir, projectname, projectiofile) => {
         const response = await fetch(`/api/fpga/newproject?projectdir=${projectdir}&projectname=${projectname}&projectiofile=${projectiofile}`);
-        const res = await response.json();
+        await response.json();
     }
 
     // ReadProjectFile = async () => {
@@ -181,7 +216,7 @@ export default class ProjectManager {
             },
             body: JSON.stringify(transmit, null, 4)
         });
-        const data = await response.json();
+        await response.json();
     }
 
     RegisterRefreshTitle = (titlecallback) => {

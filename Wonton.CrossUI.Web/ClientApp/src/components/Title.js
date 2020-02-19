@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faMicrochip, faPlay, faStop, faServer, faSquareFull, faTimes, faFolderPlus, faSave, faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons'
 import './Title.css'
-import FPGAManager, { manager } from './Service/FPGAManager';
+import { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
 import { Start } from "./Start";
 import isElectron from 'is-electron';
@@ -11,10 +11,10 @@ import is from 'electron-is';
 import { ipcRenderer } from "electron";
 
 
-import maximize from './Resource/maximize.svg';
-import minimize from './Resource/minimize.svg';
-import restore from './Resource/restore.svg';
-import close from './Resource/close.svg';
+// import maximize from './Resource/maximize.svg';
+// import minimize from './Resource/minimize.svg';
+// import restore from './Resource/restore.svg';
+// import close from './Resource/close.svg';
 
 
 export class Title extends Component {
@@ -29,8 +29,12 @@ export class Title extends Component {
         isOpenModalOpen: false,
         isMaximized: false,
         isSettingDropdownOpen: false,
-        pjName: '',
-        isStartModalOpen: false
+        titlePjName: '',
+        newPjName: '',
+        openPjName: '',
+        isStartModalOpen: false,
+        recentProjects: [],
+        modified: false
     }
 
     constructor(props) {
@@ -55,13 +59,29 @@ export class Title extends Component {
     }
 
     //从Manager获取初始值
-    async componentWillMount() {
-        let data = await pjManager.GetTitleData();
+    // async componentWillMount() {
+    //     let data = await pjManager.GetTitleData();
+    //     this.setState({
+    //         bitfile: data.bitfile,
+    //         titlePjName: data.pjName,
+    //         isStartModalOpen: !data.projectInitialize,
+    //         recentProjects: data.recentProjects
+    //     });
+    // }
+
+    componentWillReceiveProps(nextProps) {
+        let data = nextProps.titleData;
+        if (data != null) {
+            this.setState({
+                bitfile: data.bitfile,
+                titlePjName: data.pjName,
+                isStartModalOpen: !data.projectInitialize,
+                recentProjects: data.recentProjects
+            });
+        }
         this.setState({
-            bitfile: data.bitfile,
-            pjName: data.pjName,
-            isStartModalOpen: !data.projectInitialize
-        });
+            modified: nextProps.modified
+        })
     }
 
     // componentDidMount() {
@@ -93,6 +113,8 @@ export class Title extends Component {
 
     OnBitfileChange = (event) => {
         console.log(event.target.files[0]);
+        this.props.onModified(true);
+
         if (isElectron()) {
             let path = event.target.files[0].path;
             pjManager.bitfile = path
@@ -151,7 +173,7 @@ export class Title extends Component {
         while (this.state.isRunning)
         {            
             // let r = await manager.WriteReadData(write);
-            let r = await manager.WriteReadData2();
+            await manager.WriteReadData2();
 
             // For Test
             // var hr_out = r[0] & 0x000F;
@@ -220,7 +242,7 @@ export class Title extends Component {
     }
 
     NewPj = async (event) => {
-        await pjManager.NewProject(this.state.pjdir,this.state.pjName,this.state.iofile);
+        await pjManager.NewProject(this.state.pjdir,this.state.newPjName,this.state.iofile);
         window.location.reload(true);
     }
 
@@ -233,7 +255,7 @@ export class Title extends Component {
     OnNewPjNameChange = (event) => {
         console.log(`New Project Name: ${event.target.value}`);
         this.setState({
-            pjName: event.target.value
+            newPjName: event.target.value
         })
     }
 
@@ -305,6 +327,7 @@ export class Title extends Component {
 
     Save = async (event) => {
         await pjManager.WriteProjectFile();
+        this.props.onModified(false)
     }
 
     SettingToggle = (event) => {
@@ -319,24 +342,29 @@ export class Title extends Component {
         ipcRenderer.send('dev-tools');
     }
 
+    CloseApp = (event) => {
+        window.close();
+    }
+
     render() {
 
         const isRunning = this.state.isRunning;
         const runHz = this.state.runHz === 0 ? "" : this.state.runHz;
-        const bitf = this.state.bitfile == "" ? "未指定Bit文件" : this.state.bitfile;
+        const bitf = this.state.bitfile === "" ? "未指定Bit文件" : this.state.bitfile;
 
         let isMac = is.macOS(); //如果再MacOS上，要添加红绿灯按钮
         // isMac = true;
 
         let titleLeftMargin = isMac ? "80px" : "20px";
+        let tempTitle = this.state.modified ? this.state.titlePjName+"*" : this.state.titlePjName;
 
         return (
             <div className="titleBar">
 
-                <Modal isOpen={this.state.isStartModalOpen} centered>
-                    <ModalHeader>开始</ModalHeader>
+                <Modal isOpen={this.state.isStartModalOpen} centered fade={false} >
+                    <ModalHeader toggle={this.CloseApp}>开始</ModalHeader>
                     <ModalBody>
-                        <Start onOpen={this.OpenPjToggle} onNew={this.NewPjToggle}></Start>
+                        <Start onOpen={this.OpenPjToggle} onNew={this.NewPjToggle} recentProjects={this.state.recentProjects}></Start>
                     </ModalBody>
                 </Modal>
 
@@ -346,7 +374,7 @@ export class Title extends Component {
                         <div className="titleName">馄饨FPGA</div>
                     </div>
 
-                    <div className="pjTitle">{this.state.pjName}</div>
+                    <div className="pjTitle">{tempTitle}</div>
 
                     {isMac ? <div /> : 
                     <div className="clickTitle">

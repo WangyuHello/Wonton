@@ -15,7 +15,7 @@ export class LEDCore extends Component {
     render() {
         return (      
             <div>
-                <img src={this.props.onOff ? ledOn : ledOff}></img>
+                <img src={this.props.onOff ? ledOn : ledOff} alt="led"></img>
             </div>
         );
     }
