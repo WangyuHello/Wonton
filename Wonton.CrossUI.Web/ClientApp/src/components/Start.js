@@ -47,12 +47,10 @@ export class Start extends Component {
                 <ListGroup className="startList">
                     {
                       this.props.recentProjects.map((item, ind) => {
-                      return <span>
-                        <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)} tag="a" href="#" action id={"Tooltip-" + ind}>
-                              {item.Item1}
+                      return <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)} tag="a" href="#" action id={"Tooltip-" + ind}>
+                              {item.Item1} 
+                              <UncontrolledTooltip  placement="top" target={"Tooltip-" + ind} fade="true">{item.Item2}</UncontrolledTooltip >
                         </ListGroupItem>
-                      <UncontrolledTooltip  placement="top" target={"Tooltip-" + ind} >{item.Item2}</UncontrolledTooltip >
-                        </span>
                       })
                     }
                 </ListGroup>
