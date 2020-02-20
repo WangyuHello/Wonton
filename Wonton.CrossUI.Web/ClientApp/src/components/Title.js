@@ -8,7 +8,7 @@ import { pjManager } from './Service/ProjectManager';
 import { Start } from "./Start";
 import isElectron from 'is-electron';
 import is from 'electron-is';
-import { ipcRenderer } from "electron";
+import { ipcRenderer } from "./electron";
 
 
 // import maximize from './Resource/maximize.svg';

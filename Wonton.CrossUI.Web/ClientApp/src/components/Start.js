@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ListGroup, ListGroupItem } from 'reactstrap';
+import { Button, ListGroup, ListGroupItem, UncontrolledTooltip  } from 'reactstrap';
 
 import './Start.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -47,7 +47,12 @@ export class Start extends Component {
                 <ListGroup className="startList">
                     {
                       this.props.recentProjects.map((item, ind) => {
-                      return <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)}>{item.Item1}</ListGroupItem>
+                      return <span>
+                        <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)} tag="a" href="#" action id={"Tooltip-" + ind}>
+                              {item.Item1}
+                        </ListGroupItem>
+                      <UncontrolledTooltip  placement="top" target={"Tooltip-" + ind} >{item.Item2}</UncontrolledTooltip >
+                        </span>
                       })
                     }
                 </ListGroup>
