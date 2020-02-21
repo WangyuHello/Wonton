@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus, faFile } from '@fortawesome/free-solid-svg-icons'
 import './Title.css'
 import { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
@@ -34,7 +34,9 @@ export class Title extends Component {
         openPjName: '',
         isStartModalOpen: false,
         recentProjects: [],
-        modified: false
+        modified: false,
+        iofile: '',
+        pjdir: ''
     }
 
     constructor(props) {
@@ -42,6 +44,10 @@ export class Title extends Component {
 
         ipcRenderer.on('window-state-maximize', this.onWindowStateMaximize);
         ipcRenderer.on('window-state-unmaximize', this.onWindowStateUnMaximize);
+        ipcRenderer.on('open-project-callback', this.onOpenProjectCallback);
+        ipcRenderer.on('open-bitfile-callback', this.onOpenBitfileCallback);
+        ipcRenderer.on('open-project-save-folder-callback', this.onOpenNewPjDirCallback);
+        ipcRenderer.on('open-project-io-file-callback', this.onOpenNewPjIOCallback);
     }
 
     onWindowStateMaximize = (event, arg) => {
@@ -56,6 +62,26 @@ export class Title extends Component {
         this.setState({
             isMaximized: false
         });
+    }
+
+    onOpenProjectCallback = async (event, arg) => {
+        console.log('Open project file: '+arg);
+
+        //将新的项目地址存储在后台进程
+        pjManager.projectFile = arg;
+        await pjManager.SetProjectFile();
+
+        //刷新页面,重新载入项目
+        window.location.reload(true);
+    }
+
+    onOpenBitfileCallback = (event, arg) => {
+        console.log('Open Bitfile: '+arg);
+        this.props.onModified(true);
+
+        let path = arg;
+        pjManager.bitfile = path
+        this.setState({ bitfile: path });
     }
 
     //从Manager获取初始值
@@ -84,31 +110,15 @@ export class Title extends Component {
         })
     }
 
-    // componentDidMount() {
-    //     pjManager.RegisterRefreshTitle(this.OnRefresh);
-    // }
-
-    // OnRefresh = (data) => {
-    //     this.setState({
-    //         bitfile: data.bitfile
-    //     });
-    // }
 
     OpenFileModal = (event) => {
-        this.setState((prevState) => {
-            return {
-                isFileModalOpen : !prevState.isFileModalOpen,
-            }
-        });
+        // this.setState((prevState) => {
+        //     return {
+        //         isFileModalOpen : !prevState.isFileModalOpen,
+        //     }
+        // });
 
-        // var inputObj = document.createElement('input');
-        // inputObj.setAttribute('id','_ef');
-        // inputObj.setAttribute('type','file');
-        // inputObj.setAttribute('accept','.bit');
-        // inputObj.setAttribute('style','visibility:hidden');
-        // document.body.appendChild(inputObj);
-        // inputObj.addEventListener("change",this.OnBitfileChange);
-        // inputObj.click();
+        ipcRenderer.send('open-bitfile');
     }
 
     OnBitfileChange = (event) => {
@@ -252,6 +262,16 @@ export class Title extends Component {
         this.setState({ pjdir: path });
     }
 
+    onOpenNewPjDirCallback = (event, arg) =>{
+        console.log(`New Project Dir: ${arg}`);
+        let path = arg;
+        this.setState({ pjdir: path });      
+    }
+
+    OnOpenNewPjDir = (event) => {
+        ipcRenderer.send('open-project-save-folder');
+    }
+
     OnNewPjNameChange = (event) => {
         console.log(`New Project Name: ${event.target.value}`);
         this.setState({
@@ -260,13 +280,18 @@ export class Title extends Component {
     }
 
     OnNewPjIOfileChange = async (event) => {
-        if (isElectron()) {
-            let path = event.target.files[0].path;
-            this.setState({ iofile: path });
-        } else {
-            let path = "F:\\Repo\\Wonton\\Wonton.Test\\AlarmClock.xml";
-            this.setState({ iofile: path });
-        }
+        // if (isElectron()) {
+        //     let path = event.target.files[0].path;
+        //     this.setState({ iofile: path });
+        // } else {
+        //     let path = "F:\\Repo\\Wonton\\Wonton.Test\\AlarmClock.xml";
+        //     this.setState({ iofile: path });
+        // }
+
+        console.log(`New Project IO File: ${event.target.value}`);
+        this.setState({
+            iofile: event.target.value
+        })
 
         // if (isElectron()) {
             
@@ -276,12 +301,22 @@ export class Title extends Component {
 
     }
 
+    onOpenNewPjIOCallback = (event, arg) => {
+        let path = arg;
+        this.setState({ iofile: path });
+    }
+
+    OnOpenNewPjIO = (event) => {
+        ipcRenderer.send('open-project-io-file');
+    }
+
     OpenPjToggle = (event) => {
-        this.setState((prevState) => {
-            return {
-                isOpenModalOpen: !prevState.isOpenModalOpen
-            }
-        })
+        // this.setState((prevState) => {
+        //     return {
+        //         isOpenModalOpen: !prevState.isOpenModalOpen
+        //     }
+        // })
+        ipcRenderer.send('open-project-file');
     }
 
     // Open = (event) => {
@@ -425,16 +460,41 @@ export class Title extends Component {
                         <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle}>
                                 <ModalHeader toggle={this.NewPjToggle} >新建工程</ModalHeader>
                                 <ModalBody>
-                                    <div>项目名称</div>
-                                    <Input onChange={this.OnNewPjNameChange}></Input>
-                                    <div>项目地址</div>
-                                    <Input onChange={this.OnNewPjDirChange}></Input>
-                                    <div>引脚约束文件</div>
-                                    <Input type='file' accept='.xml' onChange={this.OnNewPjIOfileChange}></Input>
+                                    <div></div>
+                                    <InputGroup>
+                                        <InputGroupAddon addonType="prepend">
+                                            <InputGroupText>项目名称</InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input onChange={this.OnNewPjNameChange} value={this.state.newPjName}></Input>
+                                    </InputGroup>
+                                    
+                                    <div style={{marginTop: "10px"}}></div>
+                                    <InputGroup>
+                                        <InputGroupAddon addonType="prepend">
+                                            <InputGroupText>项目地址</InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input onChange={this.OnNewPjDirChange} value={this.state.pjdir}></Input>
+                                        <InputGroupAddon addonType="append">
+                                            <Button color="secondary" style={{width: "45px"}} onClick={this.OnOpenNewPjDir}>
+                                                <FontAwesomeIcon icon={faFolderOpen}></FontAwesomeIcon>
+                                            </Button>
+                                        </InputGroupAddon>
+                                    </InputGroup>
+                                    <div style={{marginTop: "10px"}}></div>
+                                    <InputGroup>
+                                        <InputGroupAddon addonType="prepend">
+                                            <InputGroupText>引脚约束</InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input onChange={this.OnNewPjIOfileChange} value={this.state.iofile}></Input>
+                                        <InputGroupAddon addonType="append">
+                                            <Button color="secondary" style={{width: "45px"}} onClick={this.OnOpenNewPjIO}>
+                                                <FontAwesomeIcon icon={faFile}></FontAwesomeIcon>
+                                            </Button>
+                                        </InputGroupAddon>                                    
+                                    </InputGroup>
                                 </ModalBody>
-                                <ModalFooter>
-                                    <Button color="primary" onClick={this.NewPj}>确定</Button>
-                                    <Button color="secondary" onClick={this.NewPjToggle}>关闭</Button>
+                                <ModalFooter style={{justifyContent: "center"}}>
+                                    <Button color="info" onClick={this.NewPj} style={{width: "140px", borderRadius: "20px"}}>确定</Button>
                                 </ModalFooter>
                         </Modal>
                     </div>

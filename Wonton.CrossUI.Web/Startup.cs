@@ -82,45 +82,16 @@ namespace Wonton.CrossUI.Web
                         Width = 1000,
                         Height = 650
                     });
-                SetWindow(window);
+                ElectronIPC.SetWindow(window);
+                ElectronIPC.Initialize(window);
             });
 
-            SetMenu();
-            ElectronIPC.Initialize();
+            ElectronIPC.SetMenu();
 #endif
         }
 
-        public void SetMenu()
-        {
-            var menu = new []
-            {
-                new MenuItem
-                {
-                    Label = "帮助",
-                    Role = MenuRole.help,
-                    Submenu = new []
-                    {
-                        new MenuItem
-                        {
-                            Label = "关于"
-                        }
-                    }
-                } 
-            };
 
-            Electron.Menu.SetApplicationMenu(menu);
-        }
 
-        public void SetWindow(BrowserWindow window)
-        {
-            window.OnMaximize += () =>
-            {
-                Electron.IpcMain.Send(window, "window-state-maximize", 1);
-            };
-            window.OnUnmaximize += () =>
-            {
-                Electron.IpcMain.Send(window, "window-state-unmaximize", 0);
-            };
-        }
+
     }
 }

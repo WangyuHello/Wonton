@@ -30,7 +30,7 @@ export class Start extends Component {
 
   render () {
 
-    console.log(this.props.recentProjects)
+    // console.log(this.props.recentProjects)
 
     return (
       <div className="twocolumn">
