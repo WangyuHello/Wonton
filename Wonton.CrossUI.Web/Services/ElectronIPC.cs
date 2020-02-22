@@ -120,6 +120,25 @@ namespace Wonton.CrossUI.Web.Services
                     Electron.IpcMain.Send(window, "open-project-callback", files[0]);
                 }
             });
+
+            Electron.IpcMain.On("show-unsave-prompt", async args =>
+            {
+                var result = await Electron.Dialog.ShowMessageBoxAsync(window, new MessageBoxOptions("是否关闭未保存的项目?")
+                {
+                    Title = "关闭", Type = MessageBoxType.question,
+                    Buttons = new[] { "ok", "cancel" }, CancelId = 1,
+                    DefaultId = 2,
+                });
+
+                switch (result.Response)
+                {
+                    case 0:
+                        Electron.IpcMain.Send(window, "exit-callback", 1); //通知渲染进行关闭
+                        break;
+                    default:
+                        break;
+                }
+            });
         }
 
         public static void SetWindow(BrowserWindow window)

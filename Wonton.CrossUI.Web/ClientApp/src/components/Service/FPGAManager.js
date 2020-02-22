@@ -160,20 +160,20 @@ export default class FPGAManager {
     Program = async (bitfile) => {
         this.bitfile = bitfile;
         const response = await fetch('/api/fpga/program?bitfile=' + bitfile);
-        await response.json();
-        // console.log(data.message);
+        const data = await response.json();
+        return data.status;
     }
 
     IoOpen = async () => {
         const response = await fetch('/api/fpga/ioopen');
-        await response.json();
-        // console.log(data.message);
+        const data = await response.json();
+        return data.status;
     }
 
     IoClose = async () => {
         const response = await fetch('/api/fpga/ioclose');
-        await response.json();
-        // console.log(data.message);
+        const data = await response.json();
+        return data.status;
     }
 
     InitIO = async (writeCount, readCount) => {
@@ -183,8 +183,8 @@ export default class FPGAManager {
         this.inputValues = new Array(writeCount*16).fill(0);
         this.tempi16WriteData = new Array(writeCount).fill(0);
         const response = await fetch('/api/fpga/initio?writeCount='+writeCount+'&readCount='+readCount);
-        await response.json();
-        // console.log(data.message);
+        const data = await response.json();
+        return data.status;
     }
 
     Split = (i16values) => {
@@ -224,12 +224,15 @@ export default class FPGAManager {
                 body: JSON.stringify(writeData)
             });
         const data = await response.json();
-        // console.log(data.data);
+        
+        if (!data.status) { //失败
+            return false;
+        } 
 
         this.Split(data.data);
         this.Update();
 
-        return data.data;
+        return true;
     }
 }
 

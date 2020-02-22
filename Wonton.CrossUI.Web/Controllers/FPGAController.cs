@@ -50,7 +50,7 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
-                Electron.Notification.Show(new NotificationOptions("馄饨FPGA","Program失败"));
+                Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program失败"));
                 return new FPGAResponse()
                 {
                     Message = e.Message,
@@ -75,6 +75,7 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
+                Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "FPGA未连接"));
                 return new FPGAResponse()
                 {
                     Message = e.Message,

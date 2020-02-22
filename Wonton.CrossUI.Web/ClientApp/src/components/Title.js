@@ -48,6 +48,11 @@ export class Title extends Component {
         ipcRenderer.on('open-bitfile-callback', this.onOpenBitfileCallback);
         ipcRenderer.on('open-project-save-folder-callback', this.onOpenNewPjDirCallback);
         ipcRenderer.on('open-project-io-file-callback', this.onOpenNewPjIOCallback);
+        ipcRenderer.on('exit-callback', this.onExitCallback);
+    }
+
+    onExitCallback = (event, arg) => {
+        window.close();
     }
 
     onWindowStateMaximize = (event, arg) => {
@@ -154,20 +159,24 @@ export class Title extends Component {
     ClickRun = async () => {
 
         if (this.state.isRunning) {      
-
+            //如果正在运行,则取消
             this.setState((prevState) => {
                 return {
                     isRunning : !prevState.isRunning,
                 }
             }, () => {});
         } else {
+            //如果没有运行, 则开始运行
             this.setState((prevState) => {
                 return {
                     isRunning : !prevState.isRunning,
                 }
             }, () => {});
 
-            await this.RunFPGA();
+            let r = await this.RunFPGA();
+            if (!r) { //运行失败, 还原
+                this.setState({isRunning: false});
+            }
         }
     }
 
@@ -176,26 +185,24 @@ export class Title extends Component {
         // await fetch('/api/window/working-state?state=1');
 
         await manager.InitIO(4, 4);
-        await manager.IoOpen();
+        let r = await manager.IoOpen();
+
+        if (!r) {
+            console.log("Init failed");
+            ipcRenderer.send('working-status',false);
+            return false;
+        }
 
         console.log(`Run Frequency: ${this.state.runHz}`);
 
         while (this.state.isRunning)
         {            
-            // let r = await manager.WriteReadData(write);
-            await manager.WriteReadData2();
-
-            // For Test
-            // var hr_out = r[0] & 0x000F;
-            // var min_out = (r[0] & 0x03F0) >> 4;
-            // var sec_out = (r[0] & 0xFC00) >> 10;
-            // var hr_alarm = r[1] & 0x000F;
-            // var min_alarm = (r[1] & 0x03F0) >> 4;
-            // var alarm = (r[1] & 0x0400) >> 10;
-
-            // console.log(
-            //     `"hr_out[${hr_out}] min_out[${min_out}] sec_out[${sec_out}] hr_alarm[${hr_alarm}] min_alarm[${
-            //     min_alarm}] alarm[${alarm}]"`);
+            let wr = await manager.WriteReadData2();
+            if (!wr) {
+                //失败, 退出循环
+                ipcRenderer.send('working-status',false);
+                return false;
+            }
 
             manager.Cycle();
 
@@ -210,6 +217,7 @@ export class Title extends Component {
         await manager.IoClose();
         ipcRenderer.send('working-status',false);
         // await fetch('/api/window/working-state?state=0');
+        return true;
     }
 
     sleep = (time) => {
@@ -230,7 +238,7 @@ export class Title extends Component {
     }
 
     ClickClose = () => {
-        window.close();
+        this.CloseApp();
     }
 
     ClickMaxRestore = async () => {
@@ -382,8 +390,16 @@ export class Title extends Component {
         ipcRenderer.send('dev-tools');
     }
 
-    CloseApp = (event) => {
-        window.close();
+    CloseApp = () => {
+        if (this.state.isRunning)
+        {
+
+        }
+        else if (this.state.modified) {
+            ipcRenderer.send('show-unsave-prompt');
+        } else {
+            window.close();
+        }
     }
 
     render() {
