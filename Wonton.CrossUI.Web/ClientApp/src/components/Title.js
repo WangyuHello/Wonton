@@ -466,7 +466,7 @@ export class Title extends Component {
                         </Modal> */}
 
                         <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle} className="SquareModal">
-                                <ModalHeader toggle={this.NewPjToggle} >新建工程</ModalHeader>
+                                <ModalHeader >新建工程</ModalHeader>
                                 <ModalBody>
                                     <div></div>
                                     <InputGroup>
@@ -501,8 +501,9 @@ export class Title extends Component {
                                         </InputGroupAddon>                                    
                                     </InputGroup>
                                 </ModalBody>
-                                <ModalFooter style={{justifyContent: "center"}}>
-                                    <Button color="info" onClick={this.NewPj} style={{width: "140px", borderRadius: "20px"}}>确定</Button>
+                                <ModalFooter style={{justifyContent: "flex-end"}}>
+                                    <Button color="info" onClick={this.NewPj} style={{width: "120px", borderRadius: "20px"}}>确定</Button>
+                                    <Button color="secondary" onClick={this.NewPjToggle} style={{width: "120px", borderRadius: "20px"}}>取消</Button>
                                 </ModalFooter>
                         </Modal>
                     </div>

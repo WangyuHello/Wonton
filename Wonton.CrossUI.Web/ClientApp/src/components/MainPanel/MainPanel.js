@@ -3,7 +3,7 @@ import RGL, { WidthProvider } from "react-grid-layout";
 import { LED } from '../Devices/LED/LED';
 import { HButton } from '../Devices/HButton/HButton';
 import { DeviceLayout } from '../Devices/DeviceLayout';
-import { Modal, ModalHeader, ModalBody, Table, Input } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Table, Input, ModalFooter, Button } from 'reactstrap';
 import _ from 'lodash';
 
 import './MainPanel.css';
@@ -340,13 +340,16 @@ export class MainPanel extends PureComponent {
                     </ReactGridLayout>
                 </main>
                 <Modal isOpen={this.state.isSettingModalOpen} toggle={this.OnSettingModalToggle}>
-                    <ModalHeader toggle={this.OnSettingModalToggle} >设置</ModalHeader>
+                    <ModalHeader >设置</ModalHeader>
                     <ModalBody>
                         {
                         /* {this.SettingTable} */
                         this.GenerateSettingTable2(this.state.selectedDevice, this.state.selectedDevicePorts, this.state.selectedDevicePortsDirection, this.state.selectedDevicePortsConnection)
                         }
                     </ModalBody>
+                    <ModalFooter>
+                        <Button color="info" onClick={this.OnSettingModalToggle} style={{width: "120px", borderRadius: "20px"}}>确定</Button>
+                    </ModalFooter>
                 </Modal>
             </div>
         );
