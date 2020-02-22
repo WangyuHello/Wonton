@@ -333,7 +333,7 @@ export class MainPanel extends PureComponent {
 
         return (
             <div id="outer-container">
-                <Gallery OnAdd={this.OnAdd}></Gallery>
+                <Gallery OnAdd={this.OnAdd} isOpen={this.props.isGalleryOpen} onGalleryStateChange={(sta) => this.props.onGalleryStateChange(sta)}></Gallery>
                 <main id='panel-content' >
                     <ReactGridLayout cols={24} rowHeight={24} compactType={null} onLayoutChange={this.OnLayoutChange}>
                         {this.GenLayoutDevices(this.state.layout)}

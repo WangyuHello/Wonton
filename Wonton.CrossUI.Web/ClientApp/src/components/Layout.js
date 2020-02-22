@@ -10,7 +10,8 @@ export class Layout extends Component {
   state = {
     titleData: null,
     panelData: null,
-    modified: false
+    modified: false,
+    isGalleryOpen: false
   }
 
   async componentDidMount() {
@@ -30,11 +31,19 @@ export class Layout extends Component {
     });
   }
 
+  onGalleryToggle = () => {
+    this.setState(prev => ({isGalleryOpen: !prev.isGalleryOpen}))
+  }
+
+  onGalleryStateChange = (state) => {
+    this.setState({isGalleryOpen: state.isOpen})
+  }
+
   render () {
     return (
       <div className="AppRoot">
-        <Title titleData={this.state.titleData} modified={this.state.modified} onModified={this.onModified}/>
-        <MainPanel panelData={this.state.panelData} onModified={this.onModified}/>
+        <Title titleData={this.state.titleData} modified={this.state.modified} onModified={this.onModified} onGalleryToggle={this.onGalleryToggle}/>
+        <MainPanel panelData={this.state.panelData} onModified={this.onModified} isGalleryOpen={this.state.isGalleryOpen} onGalleryStateChange={this.onGalleryStateChange}/>
       </div>
     );
   }

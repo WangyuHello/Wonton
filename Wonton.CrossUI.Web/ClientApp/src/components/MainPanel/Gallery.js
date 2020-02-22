@@ -14,7 +14,7 @@ export class Gallery extends Component {
 
     render() {
         return (      
-            <Menu pageWrapId={"panel-content"} outerContainerId={"outer-container"}  noOverlay>
+            <Menu pageWrapId={"panel-content"} outerContainerId={"outer-container"}  noOverlay isOpen={this.props.isOpen} onStateChange={(s) => this.props.onGalleryStateChange(s)}>
                 <DeviceItem OnAdd={this.OnAdd}>
                     <LEDCore />
                 </DeviceItem>

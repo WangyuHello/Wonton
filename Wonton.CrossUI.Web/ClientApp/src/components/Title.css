@@ -158,3 +158,6 @@
     padding-top: 6px;
 }
 
+.modal-content {
+    border-radius: 0px;
+}

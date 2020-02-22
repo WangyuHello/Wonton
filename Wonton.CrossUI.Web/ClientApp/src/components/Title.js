@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus, faFile } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus, faFile, faStore } from '@fortawesome/free-solid-svg-icons'
 import './Title.css'
 import { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
@@ -310,13 +310,18 @@ export class Title extends Component {
         ipcRenderer.send('open-project-io-file');
     }
 
-    OpenPjToggle = (event) => {
+    OpenPjToggle = async (event) => {
         // this.setState((prevState) => {
         //     return {
         //         isOpenModalOpen: !prevState.isOpenModalOpen
         //     }
         // })
-        ipcRenderer.send('open-project-file');
+        if (isElectron()) {
+            ipcRenderer.send('open-project-file');
+        } else {
+            await this.onOpenProjectCallback({}, "F:\\Repo\\Wonton\\Wonton.Test\\haha4.hwproj")
+        }
+        
     }
 
     // Open = (event) => {
@@ -396,8 +401,8 @@ export class Title extends Component {
         return (
             <div className="titleBar">
 
-                <Modal isOpen={this.state.isStartModalOpen} centered fade={false} >
-                    <ModalHeader toggle={this.CloseApp}>开始</ModalHeader>
+                <Modal isOpen={this.state.isStartModalOpen} centered fade={false}>
+                    <ModalHeader toggle={this.CloseApp} >开始</ModalHeader>
                     <ModalBody>
                         <Start onOpen={this.OpenPjToggle} onNew={this.NewPjToggle} recentProjects={this.state.recentProjects}></Start>
                     </ModalBody>
@@ -431,8 +436,11 @@ export class Title extends Component {
                 </div>
                 <div className="navMenu">
                     <div style={{display: "flex", alignItems: 'center'}}>
-                        <div style={{width: "50px"}}/>
-                        <div style={{color: 'white', fontSize:'18px', marginBottom:"-2px"}}>器件库</div>
+                        <div style={{width: "10px"}}/>
+                        <Button className="no-drag" onClick={(e) => this.props.onGalleryToggle()} size="sm">
+                            <FontAwesomeIcon icon={faStore}></FontAwesomeIcon>
+                        </Button>
+                        <div style={{color: 'white', fontSize:'18px', marginLeft:"10px"}}>器件库</div>
                         <div style={{width: "30px"}}></div>
                         <ButtonGroup size="sm" className="no-drag">
                             <Button onClick={this.NewPjToggle}>
@@ -446,7 +454,7 @@ export class Title extends Component {
                             </Button>
                         </ButtonGroup>
 
-                        <Modal isOpen={this.state.isOpenModalOpen} toggle={this.OpenPjToggle} >
+                        {/* <Modal isOpen={this.state.isOpenModalOpen} toggle={this.OpenPjToggle} >
                             <ModalHeader toggle={this.OpenPjToggle}>打开工程</ModalHeader>
                             <ModalBody>
                                 <Input type='file' accept='.hwproj' onChange={this.OnOpenfileChange}></Input>
@@ -455,9 +463,9 @@ export class Title extends Component {
                                 <Button color="primary" onClick={this.OpenPj}>确定</Button>
                                 <Button color="secondary" onClick={this.OpenPjToggle}>关闭</Button>
                             </ModalFooter>
-                        </Modal>
+                        </Modal> */}
 
-                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle}>
+                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle} className="SquareModal">
                                 <ModalHeader toggle={this.NewPjToggle} >新建工程</ModalHeader>
                                 <ModalBody>
                                     <div></div>
@@ -501,7 +509,7 @@ export class Title extends Component {
 
                     <div style={{display: "flex"}} className="no-drag">
                         <div>
-                            <InputGroup>
+                            <InputGroup size="sm">
                                 <Input style={{width: "100px"}} placeholder="频率" value={runHz} type="number" onChange={this.FreqChange}/>
                                 <InputGroupAddon addonType="append">
                                     <InputGroupText>Hz</InputGroupText>
@@ -509,14 +517,14 @@ export class Title extends Component {
                             </InputGroup>
                         </div>
                         <div style={{width: "10px"}}/>
-                        <Button className="no-drag" color={isRunning ? "success" : "info"} onClick={this.ClickRun}>
+                        <Button className="no-drag" color={isRunning ? "success" : "info"} onClick={this.ClickRun} size="sm">
                             <FontAwesomeIcon icon={isRunning ? faStop : faPlay}/>
                         </Button>
                     </div>
 
                     <div style={{display: "flex"}} className="no-drag">
                         <div>
-                            <ButtonGroup >
+                            <ButtonGroup size="sm">
                                 <Button onClick={this.ClickProgram}>
                                     <div style={{display:'flex', alignItems: 'center'}} >
                                         <FontAwesomeIcon icon={faMicrochip}/>
@@ -524,7 +532,7 @@ export class Title extends Component {
                                     </div>
                                 </Button>
                                  <ButtonDropdown isOpen={this.state.isProgrammToggle} toggle={this.ClickProgrammToggle} >
-                                    <DropdownToggle caret>
+                                    <DropdownToggle caret size="sm">
 
                                     </DropdownToggle> 
                                     <DropdownMenu right>
@@ -539,7 +547,7 @@ export class Title extends Component {
                                 </ButtonDropdown> 
                             </ButtonGroup>
 
-                            <Modal isOpen={this.state.isFileModalOpen} toggle={this.OpenFileModal}>
+                            {/* <Modal isOpen={this.state.isFileModalOpen} toggle={this.OpenFileModal}>
                                 <ModalHeader toggle={this.OpenFileModal} >选择Bit文件</ModalHeader>
                                 <ModalBody>
                                     <Input type='file' accept='.bit' onChange={this.OnBitfileChange}></Input>
@@ -548,21 +556,16 @@ export class Title extends Component {
                                     <Button color="primary" onClick={this.OpenFileModal}>确定</Button>
                                     <Button color="secondary" onClick={this.OpenFileModal}>关闭</Button>
                                 </ModalFooter>
-                            </Modal>
+                            </Modal> */}
                             
                         </div>
                         
                         <div style={{width: "20px"}}/>
-                        <ButtonGroup className="no-drag">
-                            <Button onClick={this.SettingToggle}>
-                                <div style={{display:'flex', alignItems: 'center'}}>
-                                    <FontAwesomeIcon icon={faCog}/>
-                                    <div style={{marginLeft: '4px'}}>设置</div>
-                                </div>
-                            </Button>
+                        <ButtonGroup className="no-drag" size="sm">
                             <ButtonDropdown  isOpen={this.state.isSettingDropdownOpen} toggle={this.SettingToggle}>
-                                <DropdownToggle caret>
-
+                                <DropdownToggle caret size="sm">
+                                <FontAwesomeIcon icon={faCog} style={{marginRight: "4px"}}/>
+                                    设置
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <DropdownItem onClick={this.DevToolsToggle}>

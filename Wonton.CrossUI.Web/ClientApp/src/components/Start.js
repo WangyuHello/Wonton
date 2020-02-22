@@ -36,20 +36,28 @@ export class Start extends Component {
       <div className="twocolumn">
           <div className="buttons">
             <Button className="tranButton" size="lg" onClick={this.onNew}>
-                <FontAwesomeIcon icon={faPlus} />
+                <div style={{display: "flex", alignItems: "center", justifyContent:"space-around"}}>
+                  <FontAwesomeIcon icon={faPlus} style={{marginRight: "10px"}}/>
+                  新建项目
+                </div>
             </Button>
             <Button className="tranButton" size="lg" onClick={this.onOpen}>
-                <FontAwesomeIcon icon={faFolderOpen} />
+              <div style={{display: "flex", alignItems: "center", justifyContent:"space-around"}}>
+                  <FontAwesomeIcon icon={faFolderOpen} style={{marginRight: "10px"}}/>
+                  打开项目
+              </div>
             </Button>
           </div>
           <div className="recent"> 
-                <div style={{marginBottom: "10px"}}>最近项目</div>
+                <div style={{marginBottom: "10px"}}>打开最近项目</div>
                 <ListGroup className="startList">
                     {
                       this.props.recentProjects.map((item, ind) => {
-                      return <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)} tag="a" href="#" action id={"Tooltip-" + ind}>
-                              {item.Item1} 
-                              <UncontrolledTooltip  placement="top" target={"Tooltip-" + ind} fade="true">{item.Item2}</UncontrolledTooltip >
+                      return <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)} tag="a" href="#" action style={{padding:"12px", borderRadius:"0px"}}>
+                              <div style={{display: "flex", flexDirection: "column"}}>
+                                <div style={{fontWeight: "bold"}}>{item.Item1}</div>
+                                <div style={{fontSize: "12px", marginTop:"4px"}}>{item.Item2}</div>
+                              </div>
                         </ListGroupItem>
                       })
                     }
