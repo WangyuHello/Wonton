@@ -161,3 +161,17 @@
 .modal-content {
     border-radius: 0px;
 }
+
+.dropdown-item-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-bottom: 0px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    min-width: 16rem;
+}

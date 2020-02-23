@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ElectronNET.API;
@@ -164,7 +165,8 @@ namespace Wonton.CrossUI.Web.Services
                     {
                         new MenuItem
                         {
-                            Label = "关于"
+                            Label = "关于",
+                            Click = () => { Process.Start("https://github.com/WangyuHello/Wonton"); }
                         }
                     }
                 }

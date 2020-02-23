@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus, faFile, faStore } from '@fortawesome/free-solid-svg-icons'
+import Switch from "react-switch";
 import './Title.css'
 import { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
 import { Start } from "./Start";
 import isElectron from 'is-electron';
 import is from 'electron-is';
-import { ipcRenderer } from "electron";
+import { ipcRenderer, shell } from "electron";
 
 
 // import maximize from './Resource/maximize.svg';
@@ -36,7 +37,9 @@ export class Title extends Component {
         recentProjects: [],
         modified: false,
         iofile: '',
-        pjdir: ''
+        pjdir: '',
+        isDevSwitchChecked: false,
+        isDarkSwitchChecked: false
     }
 
     constructor(props) {
@@ -386,8 +389,32 @@ export class Title extends Component {
         })
     }
 
+    SettingToggle2 = (event) => {
+        // console.log(event);
+        //如果是MouseEvent则Toggle
+        if (event instanceof MouseEvent) {
+            this.SettingToggle({});
+        }
+    }
+
     DevToolsToggle = (event) => {
         ipcRenderer.send('dev-tools');
+    }
+
+    ToggleDevSwitchChecked = (checked) => {
+        if (checked) {
+            this.DevToolsToggle({});
+        }
+        this.setState({isDevSwitchChecked: checked});
+    }
+
+    ToggleDarkSwitchChecked = (checked) => {
+        this.setState({isDarkSwitchChecked: checked});
+    }
+
+    ClickAbout = (e) => {
+        // const w = window.open('https://github.com/WangyuHello/Wonton');
+        shell.openExternal("https://github.com/WangyuHello/Wonton");
     }
 
     CloseApp = () => {
@@ -579,14 +606,29 @@ export class Title extends Component {
                         
                         <div style={{width: "20px"}}/>
                         <ButtonGroup className="no-drag" size="sm">
-                            <ButtonDropdown  isOpen={this.state.isSettingDropdownOpen} toggle={this.SettingToggle}>
-                                <DropdownToggle caret size="sm">
-                                <FontAwesomeIcon icon={faCog} style={{marginRight: "4px"}}/>
+                            <ButtonDropdown  isOpen={this.state.isSettingDropdownOpen} toggle={this.SettingToggle2}>
+                                <DropdownToggle caret size="sm" onClick={this.SettingToggle}>
+                                    <FontAwesomeIcon icon={faCog} style={{marginRight: "4px"}}/>
                                     设置
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem onClick={this.DevToolsToggle}>
-                                        开发者工具
+                                    <DropdownItem header>外观</DropdownItem>
+                                    <DropdownItem >
+                                        <label className="dropdown-item-label">
+                                            <span style={{marginRight:"8px"}}>黑暗模式</span>
+                                            <Switch onChange={this.ToggleDarkSwitchChecked} checked={this.state.isDarkSwitchChecked} ></Switch>
+                                        </label>
+                                    </DropdownItem>
+                                    <DropdownItem divider></DropdownItem>
+                                    <DropdownItem header>其他</DropdownItem>
+                                    <DropdownItem >
+                                        <label className="dropdown-item-label">
+                                            <span style={{marginRight:"8px"}}>开发者工具</span>
+                                            <Switch onChange={this.ToggleDevSwitchChecked} checked={this.state.isDevSwitchChecked} ></Switch>
+                                        </label>
+                                    </DropdownItem>
+                                    <DropdownItem onClick={this.ClickAbout}>
+                                        关于
                                     </DropdownItem>
                                 </DropdownMenu>
                             </ButtonDropdown>

@@ -1,4 +1,4 @@
-class FakeElectron {
+class FakeipcRenderer {
     on = (str, func) => {
 
     }
@@ -8,4 +8,9 @@ class FakeElectron {
     }
 }
 
-export const ipcRenderer = new FakeElectron();
+class Fakeshell {
+
+}
+
+export const ipcRenderer = new FakeipcRenderer();
+export const shell = new Fakeshell();
