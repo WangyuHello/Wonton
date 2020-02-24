@@ -3,8 +3,14 @@
     "version":"1.0.0",
     "description":"GUI for Wonton",
     "main":"main.js",
-    "author":"Wang Yu",
+    "author": {
+        "name": "Wang Yu",
+        "email": "wwangyuu@outlook.com",
+        "url": "https://www.github.com/WangyuHello"
+    },
     "license":"MIT",
+    "homepage": "https://www.github.com/WangyuHello/Wonton",
+    "maintainer": "Wang Yu",
     "scripts": {
         "start":"tsc -p ."
     },
