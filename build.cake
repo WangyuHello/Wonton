@@ -113,6 +113,7 @@ Task("Build")
 
     Information("Hack webpack config");
     var render_config = "target: isEnvProduction ? 'electron-renderer' : isEnvDevelopment && 'web'";
+    // var render_config = "target: 'electron-renderer'";
     var config_file = System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp", "node_modules", "react-scripts", "config", "webpack.config.js");
     var config_contents = System.IO.File.ReadAllLines(config_file);
     List<string> modified_contents = new List<string>();

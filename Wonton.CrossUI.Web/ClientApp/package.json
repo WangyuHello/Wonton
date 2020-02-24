@@ -2,9 +2,6 @@
   "name": "wonton.crossui.web",
   "version": "0.1.0",
   "author": "Wang Yu",
-  "email": "wwangyuu@outlook.com",
-  "homepage": "https://www.github.com/WangyuHello/Wonton",
-  "maintainer": "Wang Yu",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
