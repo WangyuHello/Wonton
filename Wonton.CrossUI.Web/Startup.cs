@@ -38,7 +38,7 @@ namespace Wonton.CrossUI.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             if (env.IsDevelopment())
             {
@@ -82,6 +82,7 @@ namespace Wonton.CrossUI.Web
                         Width = 1000,
                         Height = 650
                     });
+                window.OnClosed += lifetime.StopApplication;
                 ElectronIPC.SetWindow(window);
                 ElectronIPC.Initialize(window);
             });
