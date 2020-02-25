@@ -106,12 +106,12 @@ export class Title extends Component {
     componentWillReceiveProps(nextProps) {
         let data = nextProps.titleData;
         if (data != null) {
-            this.setState({
-                bitfile: data.bitfile,
+            this.setState(prevState => ({
+                bitfile: prevState.bitfile === "" ? data.bitfile : prevState.bitfile,
                 titlePjName: data.pjName,
                 isStartModalOpen: !data.projectInitialize,
                 recentProjects: data.recentProjects
-            });
+            }));
         }
         this.setState({
             modified: nextProps.modified
