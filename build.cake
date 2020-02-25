@@ -175,6 +175,7 @@ Task("Build")
         {
             env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
             env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
+            env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
         }
         StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
     });
