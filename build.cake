@@ -112,8 +112,8 @@ Task("Build")
     DotNetCoreBuild("Wonton.CrossUI.Web", new DotNetCoreBuildSettings { Configuration = "Release" });
 
     Information("Hack webpack config");
-    var render_config = "target: isEnvProduction ? 'electron-renderer' : isEnvDevelopment && 'web'";
-    // var render_config = "target: 'electron-renderer'";
+    // var render_config = "target: isEnvProduction ? 'electron-renderer' : isEnvDevelopment && 'web'";
+    var render_config = "target: 'electron-renderer'";
     var config_file = System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp", "node_modules", "react-scripts", "config", "webpack.config.js");
     var config_contents = System.IO.File.ReadAllLines(config_file);
     List<string> modified_contents = new List<string>();
@@ -174,6 +174,7 @@ Task("Build")
         if(useMagic == "true")
         {
             env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
+            env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
         }
         StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
     });

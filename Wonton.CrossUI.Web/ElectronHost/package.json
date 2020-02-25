@@ -1,0 +1,30 @@
+{
+    "name": "wonton",
+    "version": "1.0.5",
+    "description": "GUI for Wonton",
+    "main": "main.js",
+    "author": {
+        "name": "Wang Yu",
+        "email": "wwangyuu@outlook.com",
+        "url": "https://www.github.com/WangyuHello"
+    },
+    "license": "MIT",
+    "homepage": "https://www.github.com/WangyuHello/Wonton",
+    "maintainer": "Wang Yu",
+    "scripts": {
+        "start": "electron ."
+    },
+    "dependencies": {
+        "electron-updater": "^4.2.0",
+        "image-size": "^0.8.3",
+        "portscanner": "^2.2.0",
+        "socket.io": "^2.3.0"
+    },
+    "devDependencies": {
+        "@types/node": "^13.1.4",
+        "@types/socket.io": "^2.1.4",
+        "tslint": "^5.20.1",
+        "typescript": "^3.7.4",
+        "electron": "7.1.2"
+    }
+}

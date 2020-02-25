@@ -22,9 +22,7 @@ namespace Wonton.CrossUI.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-#if RELEASE
                         .UseElectron(args)
-#endif
                         .UseStartup<Startup>();
                 });
     }

@@ -70,8 +70,6 @@ namespace Wonton.CrossUI.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-
-#if RELEASE
             Task.Run(async () =>
             {
                 var window = await Electron.WindowManager.CreateWindowAsync(
@@ -88,7 +86,6 @@ namespace Wonton.CrossUI.Web
             });
 
             ElectronIPC.SetMenu();
-#endif
         }
 
 
