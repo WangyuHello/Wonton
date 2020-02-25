@@ -15,7 +15,7 @@ if(app.commandLine.hasSwitch('manifest')) {
     manifestJsonFileName = app.commandLine.getSwitchValue('manifest');
 };
 
-const currentBinPath = path.join(__dirname.replace('app.asar', ''), 'bin');
+const currentBinPath = path.join(__dirname.replace('app.asar', ''), 'config');
 const manifestJsonFilePath = path.join(currentBinPath, manifestJsonFileName);
 const manifestJsonFile = require(manifestJsonFilePath);
 if (manifestJsonFile.singleInstance || manifestJsonFile.aspCoreBackendPort) {
