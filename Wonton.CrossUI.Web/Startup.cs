@@ -78,7 +78,8 @@ namespace Wonton.CrossUI.Web
                         TitleBarStyle = TitleBarStyle.hiddenInset,
                         Frame = false,
                         Width = 1000,
-                        Height = 650
+                        Height = 650,
+                        BackgroundColor = "#FFF"
                     });
                 window.OnClosed += lifetime.StopApplication;
                 ElectronIPC.SetWindow(window);

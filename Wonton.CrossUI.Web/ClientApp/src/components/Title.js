@@ -3,6 +3,7 @@ import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus, faFile, faStore } from '@fortawesome/free-solid-svg-icons'
 import Switch from "react-switch";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
 import './Title.css'
 import { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
@@ -469,9 +470,11 @@ export class Title extends Component {
                             {/* <img src={this.state.isMaximized ? restore : maximize} /> */}
                             {this.state.isMaximized ? <span className="systemIcon">&#xeabb;</span> : <span className="systemIcon">&#xeab9;</span>}
                         </a>
+                        {/* <div className="window-icon codicon codicon-chrome-maximize"></div> */}
                         <a className="btn btn-close" href="#" onClick={this.ClickClose}>
                             {/* <img src={close} /> */}
                             <span className="systemIcon">&#xeab8;</span>
+                            {/* <span className="systemIcon2">&#xe106;</span> */}
                         </a>
                     </div>
                     }
@@ -507,47 +510,46 @@ export class Title extends Component {
                                 <Button color="secondary" onClick={this.OpenPjToggle}>关闭</Button>
                             </ModalFooter>
                         </Modal> */}
-
-                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle} className="SquareModal">
-                                <ModalHeader >新建工程</ModalHeader>
-                                <ModalBody>
-                                    <div></div>
-                                    <InputGroup>
-                                        <InputGroupAddon addonType="prepend">
-                                            <InputGroupText>项目名称</InputGroupText>
-                                        </InputGroupAddon>
-                                        <Input onChange={this.OnNewPjNameChange} value={this.state.newPjName}></Input>
-                                    </InputGroup>
-                                    
-                                    <div style={{marginTop: "10px"}}></div>
-                                    <InputGroup>
-                                        <InputGroupAddon addonType="prepend">
-                                            <InputGroupText>项目地址</InputGroupText>
-                                        </InputGroupAddon>
-                                        <Input onChange={this.OnNewPjDirChange} value={this.state.pjdir}></Input>
-                                        <InputGroupAddon addonType="append">
-                                            <Button color="secondary" style={{width: "45px"}} onClick={this.OnOpenNewPjDir}>
-                                                <FontAwesomeIcon icon={faFolderOpen}></FontAwesomeIcon>
-                                            </Button>
-                                        </InputGroupAddon>
-                                    </InputGroup>
-                                    <div style={{marginTop: "10px"}}></div>
-                                    <InputGroup>
-                                        <InputGroupAddon addonType="prepend">
-                                            <InputGroupText>引脚约束</InputGroupText>
-                                        </InputGroupAddon>
-                                        <Input onChange={this.OnNewPjIOfileChange} value={this.state.iofile}></Input>
-                                        <InputGroupAddon addonType="append">
-                                            <Button color="secondary" style={{width: "45px"}} onClick={this.OnOpenNewPjIO}>
-                                                <FontAwesomeIcon icon={faFile}></FontAwesomeIcon>
-                                            </Button>
-                                        </InputGroupAddon>                                    
-                                    </InputGroup>
-                                </ModalBody>
-                                <ModalFooter style={{justifyContent: "flex-end"}}>
-                                    <Button color="info" onClick={this.NewPj} style={{width: "120px", borderRadius: "20px"}}>确定</Button>
-                                    <Button color="secondary" onClick={this.NewPjToggle} style={{width: "120px", borderRadius: "20px"}}>取消</Button>
-                                </ModalFooter>
+                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle} className="SquareModal" fade={false}>
+                            <ModalHeader >新建工程</ModalHeader>
+                            <ModalBody>
+                                <div></div>
+                                <InputGroup>
+                                    <InputGroupAddon addonType="prepend">
+                                        <InputGroupText>项目名称</InputGroupText>
+                                    </InputGroupAddon>
+                                    <Input onChange={this.OnNewPjNameChange} value={this.state.newPjName}></Input>
+                                </InputGroup>
+                                
+                                <div style={{marginTop: "10px"}}></div>
+                                <InputGroup>
+                                    <InputGroupAddon addonType="prepend">
+                                        <InputGroupText>项目地址</InputGroupText>
+                                    </InputGroupAddon>
+                                    <Input onChange={this.OnNewPjDirChange} value={this.state.pjdir}></Input>
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="secondary" style={{width: "45px"}} onClick={this.OnOpenNewPjDir}>
+                                            <FontAwesomeIcon icon={faFolderOpen}></FontAwesomeIcon>
+                                        </Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
+                                <div style={{marginTop: "10px"}}></div>
+                                <InputGroup>
+                                    <InputGroupAddon addonType="prepend">
+                                        <InputGroupText>引脚约束</InputGroupText>
+                                    </InputGroupAddon>
+                                    <Input onChange={this.OnNewPjIOfileChange} value={this.state.iofile}></Input>
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="secondary" style={{width: "45px"}} onClick={this.OnOpenNewPjIO}>
+                                            <FontAwesomeIcon icon={faFile}></FontAwesomeIcon>
+                                        </Button>
+                                    </InputGroupAddon>                                    
+                                </InputGroup>
+                            </ModalBody>
+                            <ModalFooter style={{justifyContent: "flex-end"}}>
+                                <Button color="info" onClick={this.NewPj} style={{width: "120px", borderRadius: "20px"}}>确定</Button>
+                                <Button color="secondary" onClick={this.NewPjToggle} style={{width: "120px", borderRadius: "20px"}}>取消</Button>
+                            </ModalFooter>
                         </Modal>
                     </div>
 
@@ -561,9 +563,14 @@ export class Title extends Component {
                             </InputGroup>
                         </div>
                         <div style={{width: "10px"}}/>
-                        <Button className="no-drag" color={isRunning ? "success" : "info"} onClick={this.ClickRun} size="sm">
-                            <FontAwesomeIcon icon={isRunning ? faStop : faPlay}/>
-                        </Button>
+                        <SwitchTransition>
+                            <CSSTransition classNames="play-button" timeout={300}>
+                                <Button className="no-drag" color={isRunning ? "success" : "info"} onClick={this.ClickRun} size="sm">
+                                    <FontAwesomeIcon icon={isRunning ? faStop : faPlay}/>
+                                </Button>       
+                            </CSSTransition>
+                        </SwitchTransition>
+
                     </div>
 
                     <div style={{display: "flex"}} className="no-drag">
@@ -579,15 +586,17 @@ export class Title extends Component {
                                     <DropdownToggle caret size="sm">
 
                                     </DropdownToggle> 
-                                    <DropdownMenu right>
-                                        <DropdownItem disabled>
-                                            <div>{bitf}</div>
-                                        </DropdownItem>
-                                        <DropdownItem divider ></DropdownItem>
-                                        <DropdownItem onClick={this.OpenFileModal}> 
-                                            选择文件
-                                         </DropdownItem> 
-                                    </DropdownMenu> 
+                                    {/* <CSSTransition in={this.state.isProgrammToggle} timeout={300} classNames="setting-dropdown"> */}
+                                        <DropdownMenu right>
+                                            <DropdownItem disabled>
+                                                <div>{bitf}</div>
+                                            </DropdownItem>
+                                            <DropdownItem divider ></DropdownItem>
+                                            <DropdownItem onClick={this.OpenFileModal}> 
+                                                选择文件
+                                            </DropdownItem> 
+                                        </DropdownMenu> 
+                                    {/* </CSSTransition> */}
                                 </ButtonDropdown> 
                             </ButtonGroup>
 
@@ -611,26 +620,28 @@ export class Title extends Component {
                                     <FontAwesomeIcon icon={faCog} style={{marginRight: "4px"}}/>
                                     设置
                                 </DropdownToggle>
-                                <DropdownMenu right>
-                                    <DropdownItem header>外观</DropdownItem>
-                                    <DropdownItem >
-                                        <label className="dropdown-item-label">
-                                            <span style={{marginRight:"8px"}}>黑暗模式</span>
-                                            <Switch onChange={this.ToggleDarkSwitchChecked} checked={this.state.isDarkSwitchChecked} ></Switch>
-                                        </label>
-                                    </DropdownItem>
-                                    <DropdownItem divider></DropdownItem>
-                                    <DropdownItem header>其他</DropdownItem>
-                                    <DropdownItem >
-                                        <label className="dropdown-item-label">
-                                            <span style={{marginRight:"8px"}}>开发者工具</span>
-                                            <Switch onChange={this.ToggleDevSwitchChecked} checked={this.state.isDevSwitchChecked} ></Switch>
-                                        </label>
-                                    </DropdownItem>
-                                    <DropdownItem onClick={this.ClickAbout}>
-                                        关于
-                                    </DropdownItem>
-                                </DropdownMenu>
+                                <CSSTransition in={this.state.isSettingDropdownOpen} timeout={300} classNames="setting-dropdown">
+                                    <DropdownMenu right>
+                                        <DropdownItem header>外观</DropdownItem>
+                                        <DropdownItem >
+                                            <label className="dropdown-item-label">
+                                                <span style={{marginRight:"8px"}}>黑暗模式</span>
+                                                <Switch onChange={this.ToggleDarkSwitchChecked} checked={this.state.isDarkSwitchChecked} ></Switch>
+                                            </label>
+                                        </DropdownItem>
+                                        <DropdownItem divider></DropdownItem>
+                                        <DropdownItem header>其他</DropdownItem>
+                                        <DropdownItem >
+                                            <label className="dropdown-item-label">
+                                                <span style={{marginRight:"8px"}}>开发者工具</span>
+                                                <Switch onChange={this.ToggleDevSwitchChecked} checked={this.state.isDevSwitchChecked} ></Switch>
+                                            </label>
+                                        </DropdownItem>
+                                        <DropdownItem onClick={this.ClickAbout}>
+                                            关于
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </CSSTransition>
                             </ButtonDropdown>
                         </ButtonGroup>
 
