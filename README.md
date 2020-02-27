@@ -1,8 +1,10 @@
 # 馄饨
 
-**民以食为天**
+![chip32](./Imgs/chip32.png) **民以食为天**
 
-![wonton](./Imgs/wonton.jpg)
+![wonton](./Imgs/wonton2.gif)
+
+多语言文档：[English](./README.en-US.md), [简体中文](./README.md)
 
 ![GitHub](https://img.shields.io/github/license/WangyuHello/Wonton?label=%E8%AE%B8%E5%8F%AF%E8%AF%81&style=flat-square)
 ![csharp](https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-C%23-orange?style=flat-square)
@@ -13,7 +15,7 @@
 
 | Windows | macOS | Linux |
 |:------------------------:|:------------------------:|:---------------------------:|
-| ![win ](./Imgs/win.png ) | ![mac ](./Imgs/mac.png ) | ![lnx ](./Imgs/ubuntu.png ) |
+| ![win ](./Imgs/win.png) | ![mac ](./Imgs/mac.png) | ![lnx ](./Imgs/ubuntu.png) |
 
 ## 构建状态
 
@@ -24,9 +26,6 @@
 
 
 ## 发现bug请提交Issue
-
-多语言文档：[English](./README.en-US.md) (不完善), [简体中文](./README.md)
-
 
 # 编译指南
 
