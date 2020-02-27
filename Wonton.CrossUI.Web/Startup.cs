@@ -10,6 +10,13 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Linq;
+using System;
+using System.Diagnostics;
 
 namespace Wonton.CrossUI.Web
 {
@@ -89,8 +96,6 @@ namespace Wonton.CrossUI.Web
             ElectronIPC.SetMenu();
         }
 
-
-
-
+        
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Wonton.CrossUI.Web.Services;
 
 namespace Wonton.CrossUI.Web.Controllers
 {
@@ -161,6 +162,8 @@ namespace Wonton.CrossUI.Web.Controllers
         [HttpGet("init")]
         public async Task<FPGAResponse> Init()
         {
+            _ = Task.Run(async () => await ElectronIPC.CheckUpdateAsync());
+
             var filename = _manager.CurrentProjectFile;
 
             if (string.IsNullOrEmpty(filename))

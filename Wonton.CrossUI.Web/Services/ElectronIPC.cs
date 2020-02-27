@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace Wonton.CrossUI.Web.Services
 {
@@ -140,6 +143,51 @@ namespace Wonton.CrossUI.Web.Services
                         break;
                 }
             });
+
+            Electron.IpcMain.On("check-update", async args =>
+            {
+                await CheckUpdateAsync();
+            });
+        }
+
+        public static async Task CheckUpdateAsync()
+        {
+            var sr = File.OpenText("electron.manifest.json");
+            var manifest = await sr.ReadToEndAsync().ConfigureAwait(false);
+            var mani_j = JObject.Parse(manifest);
+            var cur_ver = mani_j["build"]["buildVersion"].Value<string>();
+            var cur_ver_frag = cur_ver.Split('.');
+            var cur_ver_dec = cur_ver_frag.Select(s => int.Parse(s)).Select((dec, ind) => dec * Math.Pow(100, cur_ver_frag.Length - ind - 1)).Sum();
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://api.github.com/");
+                client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36 Edg/80.0.361.62");
+                try
+                {
+                    var res = await client.GetStringAsync("https://api.github.com/repos/WangyuHello/Wonton/releases/latest");
+                    var jobj = JObject.Parse(res);
+                    var tag_name = jobj["tag_name"].Value<string>(); //v1.0.6
+                    var release_ver = tag_name.Substring(1);
+                    var release_ver_frag = release_ver.Split('.');
+                    var release_ver_dec = release_ver_frag.Select(s => int.Parse(s)).Select((dec, ind) => dec * Math.Pow(100, release_ver_frag.Length - ind - 1)).Sum();
+
+                    if (release_ver_dec > cur_ver_dec)
+                    {
+                        //有更新
+                        Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "更新: " + release_ver) 
+                        { 
+                            
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("检查更新失败");
+                    Console.WriteLine(e);
+                }
+            }
         }
 
         public static void SetWindow(BrowserWindow window)
