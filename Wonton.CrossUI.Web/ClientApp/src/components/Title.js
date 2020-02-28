@@ -22,6 +22,7 @@ import { ipcRenderer, shell } from "electron";
 export class Title extends Component {
 
     state = {
+        focus: true,
         isRunning: false,
         isProgrammToggle: false,
         runHz: 10,
@@ -48,6 +49,8 @@ export class Title extends Component {
 
         ipcRenderer.on('window-state-maximize', this.onWindowStateMaximize);
         ipcRenderer.on('window-state-unmaximize', this.onWindowStateUnMaximize);
+        ipcRenderer.on('window-state-blur', this.onWindowStateBlur);
+        ipcRenderer.on('window-state-focus', this.onWindowStateFocus);
         ipcRenderer.on('open-project-callback', this.onOpenProjectCallback);
         ipcRenderer.on('open-bitfile-callback', this.onOpenBitfileCallback);
         ipcRenderer.on('open-project-save-folder-callback', this.onOpenNewPjDirCallback);
@@ -70,6 +73,20 @@ export class Title extends Component {
         console.log("unmaximized");
         this.setState({
             isMaximized: false
+        });
+    }
+
+    onWindowStateBlur = (event, arg) => {
+        console.log("blur");
+        this.setState({
+            focus: false
+        });
+    }
+
+    onWindowStateFocus = (event, arg) => {
+        console.log("focus");
+        this.setState({
+            focus: true
         });
     }
 
@@ -437,12 +454,11 @@ export class Title extends Component {
         const bitf = this.state.bitfile === "" ? "未指定Bit文件" : this.state.bitfile;
 
         let isMac = is.macOS(); //如果再MacOS上，要添加红绿灯按钮
-        // isMac = true;
-
         let titleLeftMargin = isMac ? "80px" : "20px";
         let tempTitle = this.state.modified ? this.state.titlePjName+"*" : this.state.titlePjName;
 
         return (
+            <CSSTransition in={this.state.focus} timeout={300} classNames="titleBaT">
             <div className="titleBar">
 
                 <Modal isOpen={this.state.isStartModalOpen} centered fade={false}>
@@ -510,7 +526,7 @@ export class Title extends Component {
                                 <Button color="secondary" onClick={this.OpenPjToggle}>关闭</Button>
                             </ModalFooter>
                         </Modal> */}
-                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle} className="SquareModal" fade={false}>
+                        <Modal isOpen={this.state.isNewModalOpen} toggle={this.NewPjToggle} className="SquareModal" >
                             <ModalHeader >新建工程</ModalHeader>
                             <ModalBody>
                                 <div></div>
@@ -649,6 +665,7 @@ export class Title extends Component {
                     </div>
                 </div>
             </div>
+            </CSSTransition>
         );
     }
 }

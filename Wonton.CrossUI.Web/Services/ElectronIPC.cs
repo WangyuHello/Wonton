@@ -144,9 +144,9 @@ namespace Wonton.CrossUI.Web.Services
                 }
             });
 
-            Electron.IpcMain.On("check-update", async args =>
+            Electron.IpcMain.On("check-update", args =>
             {
-                await CheckUpdateAsync();
+                //await CheckUpdateAsync();
             });
         }
 
@@ -200,6 +200,11 @@ namespace Wonton.CrossUI.Web.Services
             {
                 Electron.IpcMain.Send(window, "window-state-unmaximize", 0);
             };
+            window.OnBlur += () =>
+            {
+                Electron.IpcMain.Send(window, "window-state-blur", 0);
+            };
+            window.OnFocus += () => Electron.IpcMain.Send(window, "window-state-focus", 0);
         }
         public static void SetMenu()
         {

@@ -162,7 +162,7 @@ namespace Wonton.CrossUI.Web.Controllers
         [HttpGet("init")]
         public async Task<FPGAResponse> Init()
         {
-            _ = Task.Run(async () => await ElectronIPC.CheckUpdateAsync());
+            //_ = Task.Run(async () => await ElectronIPC.CheckUpdateAsync());
 
             var filename = _manager.CurrentProjectFile;
 

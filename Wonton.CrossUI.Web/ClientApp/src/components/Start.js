@@ -56,7 +56,7 @@ export class Start extends Component {
                       return <ListGroupItem key={ind} onClick={event => this.clickOpen(ind)} tag="a" href="#" action style={{padding:"12px", borderRadius:"0px"}}>
                               <div style={{display: "flex", flexDirection: "column"}}>
                                 <div style={{fontWeight: "bold"}}>{item.Item1}</div>
-                                <div style={{fontSize: "12px", marginTop:"4px"}}>{item.Item2}</div>
+                                <div style={{fontSize: "12px", marginTop:"4px", wordWrap: "break-word"}}>{item.Item2}</div>
                               </div>
                         </ListGroupItem>
                       })

@@ -18,6 +18,32 @@
     align-items: stretch;
 }
 
+.titleBaT-enter {
+    background-color: rgb(145, 157, 179);
+}
+
+.titleBaT-enter-active {
+    background-color: #495A80;
+    transition: background-color 300ms;
+}
+
+.titleBaT-enter-done {
+    background-color: #495A80;
+}
+
+.titleBaT-exit {
+    background-color: #495A80;
+}
+
+.titleBaT-exit-active {
+    background-color: rgb(145, 157, 179);
+    transition: background-color 300ms;
+}
+
+.titleBaT-exit-done {
+    background-color: rgb(145, 157, 179);
+}
+
 .pjTitle {
     margin-top: 8px;
     color: white;
