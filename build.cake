@@ -180,14 +180,30 @@ Task("Build")
         StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
     });
 
+    var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
+    Information(build_path);
+
     if(!string.IsNullOrEmpty(addi_name))
     {
         Information("重命名:"+addi_name);
         var archives = GetFiles(System.IO.Path.Combine("Wonton.CrossUI.Web", "bin", "Desktop", "*.7z"));
-        var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
-        Information(build_path);
+        
+        
         Rename(build_path, addi_name, "7z");
         Rename(build_path, addi_name, "zip");
+    }
+
+    if(release_dir != "") //拷贝到Release目录
+    {
+        Information(release_dir);
+        var files = GetFiles(build_path+"/*.7z");
+        CopyFiles(files, release_dir);
+        files = GetFiles(build_path+"/*.deb");
+        CopyFiles(files, release_dir);
+        files = GetFiles(build_path+"/*.dmg");
+        CopyFiles(files, release_dir);
+        files = GetFiles(build_path+"/*.exe");
+        CopyFiles(files, release_dir);
     }
 });
 
