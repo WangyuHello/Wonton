@@ -138,6 +138,24 @@ jobs:
       itemPattern: '**/*.7z'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      itemPattern: '**/*.deb'
+      targetPath: '$(System.DefaultWorkingDirectory)/Build'
+
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      itemPattern: '**/*.dmg'
+      targetPath: '$(System.DefaultWorkingDirectory)/Build'
+
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      itemPattern: '*/*.exe'
+      targetPath: '$(System.DefaultWorkingDirectory)/Build'
+
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   

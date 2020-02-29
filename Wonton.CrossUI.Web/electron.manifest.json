@@ -30,15 +30,24 @@
     ],
     "win": {
       "icon": "./bin/ClientApp/build/chip.ico",
-      "target": [ "7z" ]
+      "target": [ "7z", "nsis" ]
     },
     "mac": {
       "icon": "./bin/ClientApp/build/chip.icns",
-      "target": [ "7z" ]
+      "target": [ "7z", "dmg" ]
     },
     "linux": {
-      "icon": "./bin/ClientApp/build/chip.png",
-      "target": [ "7z" ]
+      "icon": "./bin/ClientApp/build/icons",
+      "category": "Education",
+      "target": [ "7z", "deb" ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "./bin/ClientApp/build/chip.ico",
+      "uninstallerIcon": "./bin/ClientApp/build/chip.ico",
+      "installerHeaderIcon": "./bin/ClientApp/build/chip.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     }
   }
 }
