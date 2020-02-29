@@ -27,11 +27,11 @@ jobs:
   - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu-18.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
-  # - task: PublishPipelineArtifact@1
-  #   inputs:
-  #     targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
-  #     publishLocation: 'pipeline'
-  #     artifactName: 'Wonton.Linux'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.Linux'
 
 - job: Linux16
   pool:
@@ -48,11 +48,11 @@ jobs:
   - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu-16.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
-  # - task: PublishPipelineArtifact@1
-  #   inputs:
-  #     targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
-  #     publishLocation: 'pipeline'
-  #     artifactName: 'Wonton.Linux16'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.Linux16'
 
 - job: macOS
   pool:
@@ -69,11 +69,11 @@ jobs:
   - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="10.15" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on macOS'
 
-  # - task: PublishPipelineArtifact@1
-  #   inputs:
-  #     targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
-  #     publishLocation: 'pipeline'
-  #     artifactName: 'Wonton.macOS'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.macOS'
 
 - job: macOS14
   pool:
@@ -95,11 +95,11 @@ jobs:
   - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="10.14" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on macOS'
 
-  # - task: PublishPipelineArtifact@1
-  #   inputs:
-  #     targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
-  #     publishLocation: 'pipeline'
-  #     artifactName: 'Wonton.macOS14'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.macOS14'
 
 - job: Windows
   pool:
@@ -116,11 +116,11 @@ jobs:
   - powershell: ./tools/dotnet-cake -useMagic="false" --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Windows'
 
-  # - task: PublishPipelineArtifact@1
-  #   inputs:
-  #     targetPath: '$(System.DefaultWorkingDirectory)/Wonton.CrossUI.Web/bin/Desktop'
-  #     publishLocation: 'pipeline'
-  #     artifactName: 'Wonton.Windows'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.Windows'
 
 - job: GithubRelease
   pool: 
@@ -135,7 +135,7 @@ jobs:
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'current'
-      itemPattern: '**/*.*'
+      itemPattern: '**'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
   - script: dotnet tool install --tool-path tools Cake.Tool

@@ -190,6 +190,8 @@ Task("Build")
         
         
         Rename(build_path, addi_name, "7z");
+        Rename(build_path, addi_name, "dmg");
+        Rename(build_path, addi_name, "deb");
         Rename(build_path, addi_name, "zip");
     }
 
