@@ -188,3 +188,14 @@
 
 
 4. 将上述下载的zip包存放在Electron缓存目录中即可
+
+# 贡献 ✨
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/WangyuHello"><img src="https://avatars2.githubusercontent.com/u/16507233?v=4" width="100px;" alt="" style="border-radius:50%;"/><br /><sub><b>WangyuHello</b></sub></a></td>
+    <td align="center"><a href="https://github.com/GeraltShi"><img src="https://avatars0.githubusercontent.com/u/25215492?v=4" width="100px;" alt="" style="border-radius:50%;"/><br /><sub><b>GeraltShi</b></sub></a></td>
+  </tr>
+</table>
+
+<!-- https://api.github.com/repos/WangyuHello/Wonton/contributors?page=1&per_page=100 -->

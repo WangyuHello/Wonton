@@ -193,3 +193,12 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
     Linux:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-linux-x64.zip
 
 4.  Put the downloaded zip package into **Electron Cache Directory**
+
+# Contributors ✨
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/WangyuHello"><img src="https://avatars2.githubusercontent.com/u/16507233?v=4" width="100px;" alt=""/><br /><sub><b>WangyuHello</b></sub></a></td>
+    <td align="center"><a href="https://github.com/GeraltShi"><img src="https://avatars0.githubusercontent.com/u/25215492?v=4" width="100px;" alt=""/><br /><sub><b>GeraltShi</b></sub></a></td>
+  </tr>
+</table>
