@@ -1,7 +1,7 @@
 {
   "executable": "Wonton.CrossUI.Web",
   "splashscreen": {
-    "imageFile": ""
+    "imageFile": "ClientApp/build/icons/256x256.png"
   },
   "singleInstance": true,
   "build": {
