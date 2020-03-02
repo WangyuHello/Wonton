@@ -16,6 +16,10 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
@@ -37,6 +41,10 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+    
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
@@ -58,6 +66,10 @@ jobs:
   pool:
     vmImage: 'macos-10.15'
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+    
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
@@ -79,6 +91,10 @@ jobs:
   pool:
     vmImage: 'macos-10.14'
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+    
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
@@ -105,6 +121,10 @@ jobs:
   pool:
     vmImage: 'windows-latest'
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+    
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
@@ -132,6 +152,10 @@ jobs:
   - macOS14
   - Windows
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+    
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'current'
