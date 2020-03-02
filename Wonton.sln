@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wonton.CrossUI.Web", "Wonto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wonton.Test", "Wonton.Test\Wonton.Test.csproj", "{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronNET.API", "Electron.NET\ElectronNET.API\ElectronNET.API.csproj", "{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,26 @@ Global
 		{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}.Release|x64.Build.0 = Release|Any CPU
 		{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}.Release|x86.ActiveCfg = Release|Any CPU
 		{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}.Release|x86.Build.0 = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|x64.Build.0 = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Debug|x86.Build.0 = Debug|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|ARM.Build.0 = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|ARM64.Build.0 = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|x64.Build.0 = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{45F382EA-2729-4CE7-9F2E-C035FFA4E5BD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

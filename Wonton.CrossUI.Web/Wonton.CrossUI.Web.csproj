@@ -8,7 +8,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ElectronNET.API" Version="7.30.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.26.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.26.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.26.0" />
@@ -51,6 +50,7 @@
     </ItemGroup>
   </Target>
   <ItemGroup>
+    <ProjectReference Include="..\Electron.NET\ElectronNET.API\ElectronNET.API.csproj" />
     <ProjectReference Include="..\Wonton.Common\Wonton.Common.csproj" />
   </ItemGroup>
   <ItemGroup>

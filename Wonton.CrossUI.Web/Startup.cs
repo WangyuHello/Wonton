@@ -77,17 +77,20 @@ namespace Wonton.CrossUI.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            Task.Run(async () =>
+
+            Task.Run(() =>
             {
-                var window = await Electron.WindowManager.CreateWindowAsync(
-                    new BrowserWindowOptions
-                    {
-                        TitleBarStyle = TitleBarStyle.hiddenInset,
-                        Frame = false,
-                        Width = 1000,
-                        Height = 650,
-                        BackgroundColor = "#FFF"
-                    });
+                var window = new BrowserWindow();
+                window.LoadURL("http://localhost");
+                //var window = await Electron.WindowManager.CreateWindowAsync(
+                //    new BrowserWindowOptions
+                //    {
+                //        TitleBarStyle = TitleBarStyle.hiddenInset,
+                //        Frame = false,
+                //        Width = 1000,
+                //        Height = 650,
+                //        BackgroundColor = "#FFF"
+                //    });
                 window.OnClosed += lifetime.StopApplication;
                 ElectronIPC.SetWindow(window);
                 ElectronIPC.Initialize(window);
