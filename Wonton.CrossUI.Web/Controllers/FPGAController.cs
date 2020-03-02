@@ -164,8 +164,27 @@ namespace Wonton.CrossUI.Web.Controllers
         {
             //_ = Task.Run(async () => await ElectronIPC.CheckUpdateAsync());
 
-            var filename = _manager.CurrentProjectFile;
-
+            var filename = "";
+            if (string.IsNullOrEmpty(_manager.CurrentProjectFile))
+            {
+                //未指定打开文件文件
+                if (string.IsNullOrEmpty(Web.Program.LaunchingProject))
+                {
+                    //也没有指定启动文件
+                    //保持为空
+                }
+                else
+                {
+                    //指定了启动文件
+                    filename = Web.Program.LaunchingProject;
+                }
+            }
+            else
+            {
+                //已经指定打开文件
+                filename = _manager.CurrentProjectFile;
+            }
+            
             if (string.IsNullOrEmpty(filename))
             {
                 //没有项目文件

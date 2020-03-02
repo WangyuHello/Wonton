@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.CommandLine;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,8 +13,11 @@ namespace Wonton.CrossUI.Web
 {
     public class Program
     {
+        public static string LaunchingProject = ""; 
+
         public static void Main(string[] args)
         {
+            SetLaunchingProject(args);
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -25,5 +29,14 @@ namespace Wonton.CrossUI.Web
                         .UseElectron(args)
                         .UseStartup<Startup>();
                 });
+
+        static void SetLaunchingProject(string[] args)
+        {
+            var pjs = args.Where(s => s.EndsWith("hwproj"));
+            foreach (var item in pjs)
+            {
+                LaunchingProject = item;
+            }
+        }
     }
 }
