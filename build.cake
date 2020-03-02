@@ -77,7 +77,8 @@ void Rename(string dir, string addi_name, string ext)
 }
 
 Task("Build")
-  .Does(() =>
+    .IsDependentOn("BuildElectronCLI")
+    .Does(() =>
 {
     Information("开始构建");
 
@@ -169,6 +170,7 @@ Task("Build")
     Information("构建App");
     DoInDirectory("Wonton.CrossUI.Web", () => {
         var elec_net_tool_bin = System.IO.Path.Combine(".", "tools", "electronize");
+        var elec_net_tool_bin_local = "dotnet";
         // DotNetCoreTool(".", "electronize", elec_args, new DotNetCoreToolSettings{ ToolPath = "tools" } );
         var env_dict = new Dictionary<string, string>();
         if(useMagic == "true")
@@ -177,7 +179,11 @@ Task("Build")
             env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
             env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
         }
-        StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
+        // StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
+        var cli_path = MakeAbsolute(Directory("../Electron.NET/ElectronNET.CLI/bin/Release/netcoreapp3.1/") + File("ElectronNET.CLI.dll"));
+        var elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
+
+        StartProcess(elec_net_tool_bin_local, new ProcessSettings { Arguments = elec_args_local, EnvironmentVariables = env_dict });
     });
 
     var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
@@ -221,6 +227,14 @@ Task("CopyToRelease")
     CopyFiles(files, release_dir);
     files = GetFiles("./Build/**/*.exe");
     CopyFiles(files, release_dir);
+});
+
+Task("BuildElectronCLI")
+  .Does(() =>
+{
+    Information("构建CLI");
+    DotNetCoreBuild("Electron.NET/ElectronNET.CLI/ElectronNET.CLI.csproj", new DotNetCoreBuildSettings { Configuration = "Release" });
+
 });
 
 RunTarget(target);
