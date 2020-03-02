@@ -1,0 +1,3 @@
+[submodule "Electron.NET"]
+	path = Electron.NET
+	url = https://github.com/WangyuHello/Electron.NET.git
