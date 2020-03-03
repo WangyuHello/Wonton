@@ -109,8 +109,8 @@ Task("Build")
         }
     });
 
-    Information("开始构建C# Host程序");
-    DotNetCoreBuild("Wonton.CrossUI.Web", new DotNetCoreBuildSettings { Configuration = "Release" });
+    // Information("开始构建C# Host程序");
+    // DotNetCoreBuild("Wonton.CrossUI.Web", new DotNetCoreBuildSettings { Configuration = "Release" });
 
     Information("Hack webpack config");
     // var render_config = "target: isEnvProduction ? 'electron-renderer' : isEnvDevelopment && 'web'";
