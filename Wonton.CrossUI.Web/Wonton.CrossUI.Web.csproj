@@ -11,10 +11,10 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="BeetleX.FastHttpApi" Version="1.8.0.1" />
+    <PackageReference Include="BeetleX.FastHttpApi.Hosting" Version="1.2.2" />
+    <PackageReference Include="BeetleX.FastHttpApi.SpanJson" Version="0.5.2" />
     <PackageReference Include="ElectronNET.API" Version="7.30.2" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.26.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.26.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.26.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.1.2" />

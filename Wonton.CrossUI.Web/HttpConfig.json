@@ -1,0 +1,5 @@
+﻿{
+  "HttpConfig": {
+    "StaticResurceType": "xml;svg;woff;woff2;ttf;jpg;jpeg;gif;png;js;html;htm;css;txt;ico;zip;rar"
+  }
+}

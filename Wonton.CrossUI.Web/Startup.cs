@@ -98,4 +98,28 @@ namespace Wonton.CrossUI.Web
 
         
     }
+
+    public class Startup2
+    {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
+        {
+            Task.Run(async () =>
+            {
+                var window = await Electron.WindowManager.CreateWindowAsync(
+                    new BrowserWindowOptions
+                    {
+                        TitleBarStyle = TitleBarStyle.hiddenInset,
+                        Frame = false,
+                        Width = 1000,
+                        Height = 650,
+                        BackgroundColor = "#FFF"
+                    });
+                window.OnClosed += lifetime.StopApplication;
+                ElectronIPC.SetWindow(window);
+                ElectronIPC.Initialize(window);
+            });
+
+            ElectronIPC.SetMenu();
+        }
+    }
 }
