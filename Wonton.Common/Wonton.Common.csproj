@@ -10,7 +10,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="SharpVLFD" Version="0.2.0" />
+  </ItemGroup>
+
+  <!-- 如果本地存在SharpVLFD则优先使用本地 -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\SharpVLFD\SharpVLFD\SharpVLFD.csproj')">
+    <ProjectReference Include="..\SharpVLFD\SharpVLFD\SharpVLFD.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\SharpVLFD\SharpVLFD\SharpVLFD.csproj')">
+    <PackageReference Include="SharpVLFD" Version="0.2.1" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,6 @@
 [submodule "Electron.NET"]
 	path = Electron.NET
 	url = https://github.com/WangyuHello/Electron.NET.git
+[submodule "SharpVLFD"]
+	path = SharpVLFD
+	url = https://github.com/WangyuHello/SharpVLFD.git
