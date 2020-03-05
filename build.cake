@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.DoInDirectory&version=3.3.0
 #addin nuget:?package=Cake.Npm&version=0.17.0
+#addin nuget:?package=Cake.CMake&version=1.2.0
 
 var target = Argument("target", "Build");
 var useMagic = Argument("useMagic", "true");
@@ -80,6 +81,26 @@ Task("Build")
     .IsDependentOn("BuildElectronCLI")
     .Does(() =>
 {
+    if(DirectoryExists("VLFDDriver"))
+    {
+        Information("构建Native依赖");
+        if(isHostWin)
+        {
+            MSBuild("./VLFDDriver/VLFDDriver.sln", new MSBuildSettings {
+                Verbosity = Verbosity.Minimal,
+                Configuration = "Release"
+            });
+        }
+        else 
+        {
+            DoInDirectory("./VLFDDriver/VLFDLibUSBDriver", () => {
+                CMake(new CMakeSettings());
+                CMakeBuild(new CMakeBuildSettings());
+            });
+            
+        }
+    }
+
     Information("开始构建");
 
     Information("安装 ElectronNET.CLI");
