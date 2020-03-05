@@ -77,30 +77,38 @@ void Rename(string dir, string addi_name, string ext)
     }
 }
 
-Task("Build")
-    .IsDependentOn("BuildElectronCLI")
+Task("BuildNative")
+    .WithCriteria(FileExists("NativeDeps.zip"))
     .Does(() =>
 {
-    if(DirectoryExists("VLFDDriver"))
-    {
-        Information("构建Native依赖");
-        if(isHostWin)
-        {
-            MSBuild("./VLFDDriver/VLFDDriver.sln", new MSBuildSettings {
-                Verbosity = Verbosity.Minimal,
-                Configuration = "Release"
-            });
-        }
-        else 
-        {
-            DoInDirectory("./VLFDDriver/VLFDLibUSBDriver", () => {
-                CMake(new CMakeSettings());
-                CMakeBuild(new CMakeBuildSettings());
-            });
-            
-        }
-    }
+    Information("构建Native依赖");
+    if(DirectoryExists("VLFDDriver")){DeleteDirectory("VLFDDriver", new DeleteDirectorySettings{Recursive=true, Force=true});}
+    if(DirectoryExists("SharpVLFD")){DeleteDirectory("SharpVLFD", new DeleteDirectorySettings{Recursive=true, Force=true});}
+    Unzip("NativeDeps.zip", ".");
 
+    if(isHostWin)
+    {
+        MSBuild("./VLFDDriver/VLFDDriver.sln", new MSBuildSettings {
+            Verbosity = Verbosity.Minimal,
+            Configuration = "Release",
+            PlatformTarget = PlatformTarget.x64
+        });
+    }
+    else 
+    {
+        DoInDirectory("./VLFDDriver/VLFDLibUSBDriver", () => {
+            CMake(new CMakeSettings());
+            CMakeBuild(new CMakeBuildSettings());
+        });
+        
+    }
+});
+
+Task("Build")
+    .IsDependentOn("BuildElectronCLI")
+    .IsDependentOn("BuildNative")
+    .Does(() =>
+{
     Information("开始构建");
 
     Information("安装 ElectronNET.CLI");
