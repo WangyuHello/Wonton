@@ -182,6 +182,34 @@
 
 # 驱动编译指南
 
+## 依赖软件
+
+### Windows
+
+- Visual Studio 2019 (MSVC 142)
+
+### macOS
+
+- Xcode
+- cmake
+- autoconf
+- automake
+- libtool
+- m4
+- libudev-dev
+
+### Linux
+
+- gcc
+- cmake
+- autoconf
+- automake
+- libtool
+- m4
+- libudev-dev
+
+## 编译步骤
+
 1. 将 **NativeDeps.zip** 压缩包复制到 Wonton目录下，其余步骤同[自动编译步骤](####自动编译步骤)
 
     *驱动代码未开源*
