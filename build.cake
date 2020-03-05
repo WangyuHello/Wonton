@@ -97,8 +97,15 @@ Task("BuildNative")
     else 
     {
         DoInDirectory("./VLFDDriver/VLFDLibUSBDriver", () => {
-            CMake(new CMakeSettings());
-            CMakeBuild(new CMakeBuildSettings());
+            CMake(new CMakeSettings
+            {
+                SourcePath = ".",
+                OutputPath = "."
+            });
+            CMakeBuild(new CMakeBuildSettings
+            {
+                BinaryPath = "."
+            });
         });
         
     }
