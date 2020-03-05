@@ -44,7 +44,13 @@
 
     需 >= 3.1 版本，请勿安装 Runtime 版本
 
-3. 在 Wonton 目录下运行
+3. 克隆源代码仓库
+
+    ```powershell
+    git clone --recursive https://github.com/WangyuHello/Wonton.git
+    ```
+
+4. 在 Wonton 目录下运行
 
     ```powershell
     dotnet tool install --tool-path tools Cake.Tool
@@ -52,7 +58,7 @@
 
     > Cake.Tool 只需要安装一次
 
-4. 开始编译，在 Wonton 目录下运行
+5. 开始编译，在 Wonton 目录下运行
 
     Windows
     ```powershell
@@ -76,7 +82,7 @@
     ./tools/dotnet-cake -useMagic="false"
     ```
 
-5. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
+6. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
 
 ## 手动编译步骤
 
@@ -90,7 +96,13 @@
 
     需 >= 3.1 版本，请勿安装 Runtime 版本
 
-3. 在 Wonton.CrossUI.Web 目录运行
+3. 克隆源代码仓库
+
+    ```powershell
+    git clone --recursive https://github.com/WangyuHello/Wonton.git
+    ```
+
+4. 在 Wonton.CrossUI.Web 目录运行
 
     ```powershell
     dotnet tool install --tool-path tools ElectronNET.CLI
@@ -102,17 +114,17 @@
     dotnet build -c Release
     ```
 
-5. 在 Wonton.CrossUI.Web\ClientApp 目录运行，此步骤可能需要较长时间，视网络状况。
+6. 在 Wonton.CrossUI.Web\ClientApp 目录运行，此步骤可能需要较长时间，视网络状况。
 
     ```powershell
     npm i
     ```
 
-6. 修改 Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` （注意逗号）然后保存。
+7. 修改 Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` （注意逗号）然后保存。
 
     ![webpack](./Imgs/target.png)
 
-7. 如果是海外用户请跳过此步骤
+8. 如果是海外用户请跳过此步骤
 
     - 配置Electron
 
@@ -130,7 +142,7 @@
 
     3. 将上述下载的zip包存放在**Electron缓存目录**中
 
-8. 在 Wonton.CrossUI.Web 目录运行如下命令，此步骤可能需要较长时间，视网络状况。如果出现Electron无法下载问题，请查看[Electron无法下载](####Electron无法下载)
+9. 在 Wonton.CrossUI.Web 目录运行如下命令，此步骤可能需要较长时间，视网络状况。如果出现Electron无法下载问题，请查看[Electron无法下载](####Electron无法下载)
 
     编译 Windows 版本
     ```powershell
@@ -146,7 +158,7 @@
     ```bash
     ./tools/electronize build /target linux /package-json ./ClientApp/electron.package.json
     ```
-9. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
+10. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
 
 ### 非首次编译
 
@@ -167,6 +179,14 @@
     ./tools/electronize build /target linux /package-json ./ClientApp/electron.package.json
     ```
 2. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
+
+# 驱动编译指南
+
+1. 将 **NativeDeps.zip** 压缩包复制到 Wonton目录下，其余步骤同[自动编译步骤](####自动编译步骤)
+
+    *驱动代码未开源*
+
+2. 如果想要撤销驱动编译，请删除 **NativeDeps.zip** 、VLFDDriver、SharpVLFD目录。
 
 ### 问题解决
 
