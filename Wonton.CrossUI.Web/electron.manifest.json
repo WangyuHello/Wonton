@@ -8,7 +8,7 @@
     "appId": "edu.Wonton.CrossUI.Web.app",
     "productName": "Wonton",
     "copyright": "Copyright © 2019 Wang Yu",
-    "buildVersion": "1.0.7",
+    "buildVersion": "1.0.8",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"
