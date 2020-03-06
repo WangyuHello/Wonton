@@ -97,6 +97,12 @@ Task("BuildNative")
     else 
     {
         DoInDirectory("./VLFDDriver/VLFDLibUSBDriver", () => {
+            var shs = GetFiles("*.sh");
+            foreach(var sh in shs)
+            {
+                StartProcess("chmod", new ProcessSettings { Arguments = "+x "+ sh });
+            }
+            StartProcess("chmod", new ProcessSettings { Arguments = "+x ./configure" });
             CMake(new CMakeSettings
             {
                 SourcePath = ".",
