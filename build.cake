@@ -88,21 +88,24 @@ Task("BuildNative")
 
     if(isHostWin)
     {
+        var is64 = System.Environment.Is64BitOperatingSystem;
+        var p = PlatformTarget.x64;
+        if(!is64){ p = PlatformTarget.x86;  }
         MSBuild("./VLFDDriver/VLFDDriver.sln", new MSBuildSettings {
             Verbosity = Verbosity.Minimal,
             Configuration = "Release",
-            PlatformTarget = PlatformTarget.x64
+            PlatformTarget = p
         });
     }
     else 
     {
         DoInDirectory("./VLFDDriver/VLFDLibUSBDriver", () => {
-            var shs = GetFiles("*.sh");
+            var shs = GetFiles("../**/*.sh");
             foreach(var sh in shs)
             {
+                Information("Add excutable permission for "+sh);
                 StartProcess("chmod", new ProcessSettings { Arguments = "+x "+ sh });
             }
-            StartProcess("chmod", new ProcessSettings { Arguments = "+x ./configure" });
             CMake(new CMakeSettings
             {
                 SourcePath = ".",
