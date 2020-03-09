@@ -17,6 +17,7 @@ var elec_args = "";
 var elec_cache_dir = "";
 var elec_bin = "";
 var elec_name = "";
+var elec_full_name = "";
 var elec_target_os2 = "";
 var host_os = "";
 
@@ -81,10 +82,12 @@ Task("BuildOSArguments")
     elec_args = "build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
     elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
     elec_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
+    elec_full_name = System.IO.Path.Combine(elec_cache_dir, elec_name);
 
     Information("Electron Cache Dir: "+ elec_cache_dir);
     Information("Build for "+elec_target_os+" on "+host_os);
     Information("Electron name "+elec_name);
+    Information("Electron full name "+elec_full_name);
 
     build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
     Information("Build path "+build_path);
@@ -201,7 +204,7 @@ Task("HackWebpack")
 
 Task("DownloadElectron")
     .IsDependentOn("BuildOSArguments")
-    .WithCriteria(useMagic && !FileExists(System.IO.Path.Combine(elec_cache_dir, elec_name)))
+    .WithCriteria(useMagic & (!FileExists(elec_full_name)))
     .Does(()=> 
 {
     Information("下载Electron");
@@ -259,7 +262,7 @@ Task("RenamePacakge")
     .WithCriteria(!string.IsNullOrEmpty(addi_name))
     .Does(() =>
 {
-    Information("重命名:"+addi_name);    
+    Information("重命名: "+addi_name);    
     Rename(build_path, addi_name, "7z");
     Rename(build_path, addi_name, "dmg");
     Rename(build_path, addi_name, "deb");
@@ -270,7 +273,7 @@ Task("CopyPacakge")
     .WithCriteria(!string.IsNullOrEmpty(release_dir))
     .Does(() =>
 {
-    Information(release_dir);
+    Information("目标目录: "+ release_dir);
     if(!DirectoryExists(release_dir)){ CreateDirectory(release_dir); }
     var files = GetFiles(build_path+"/*.7z");
     CopyFiles(files, release_dir);
