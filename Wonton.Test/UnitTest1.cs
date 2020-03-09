@@ -12,7 +12,7 @@ namespace Wonton.Test
 {
     public class UnitTest1
     {
-        [Fact]
+        [Fact(Skip = "Tested")]
         public void Test1()
         {
             FPGABoard b = new FPGABoard();
@@ -54,7 +54,7 @@ namespace Wonton.Test
 
         }
 
-        [Fact]
+        [Fact(Skip = "Tested")]
         void TestXml()
         {
             XmlDocument xml = new XmlDocument();
@@ -66,7 +66,7 @@ namespace Wonton.Test
             var json = JsonConvert.SerializeXmlNode(design);
         }
 
-        [Fact]
+        [Fact(Skip = "Tested")]
         void TestConfig()
         {
             var render_config = "target: 'electron-renderer'";
@@ -98,7 +98,7 @@ namespace Wonton.Test
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Tested")]
         void TestRename()
         {
             var arcs = Directory.EnumerateFiles(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", "*.7z");
@@ -111,6 +111,20 @@ namespace Wonton.Test
                 var f2 = Path.Combine(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", n + ext);
                 File.Move(f, f2, true);
             }
+        }
+
+        [Fact]
+        void TestOS()
+        {
+            var v = Environment.OSVersion.Version;
+            List<string> vs = new List<string>();
+            vs.Add($"Build: {v.Build}");
+            vs.Add($"Major: {v.Major}");
+            vs.Add($"Minor: {v.Minor}");
+            vs.Add($"Revision {v.Revision}");
+            vs.Add($"ToString {v}");
+
+            File.WriteAllLines("os.txt", vs);
         }
     }
 }
