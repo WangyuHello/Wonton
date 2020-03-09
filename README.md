@@ -74,12 +74,12 @@
 
     Windows
     ```powershell
-    .\tools\dotnet-cake -useMagic="false"
+    .\tools\dotnet-cake -useMagic=false
     ```
 
     macOS、Linux
     ```bash
-    ./tools/dotnet-cake -useMagic="false"
+    ./tools/dotnet-cake -useMagic=false
     ```
 
 6. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下

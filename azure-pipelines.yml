@@ -28,7 +28,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu-18.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="ubuntu-18.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
   - task: PublishPipelineArtifact@1
@@ -53,7 +53,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="ubuntu-16.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="ubuntu-16.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
   - task: PublishPipelineArtifact@1
@@ -78,7 +78,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="10.15" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="10.15" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on macOS'
 
   - task: PublishPipelineArtifact@1
@@ -108,7 +108,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic="false" -AdditionalName="10.14" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="10.14" -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on macOS'
 
   - task: PublishPipelineArtifact@1
@@ -133,7 +133,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - powershell: ./tools/dotnet-cake -useMagic="false" --releaseDir="$(Build.ArtifactStagingDirectory)"
+  - powershell: ./tools/dotnet-cake -useMagic=false --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Windows'
 
   - task: PublishPipelineArtifact@1
@@ -165,7 +165,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -target="CopyToRelease" -useMagic="false" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake -target="CopyToRelease" -useMagic=false -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Copy Release'
 
   - script: |

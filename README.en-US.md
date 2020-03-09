@@ -67,12 +67,12 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
     Windows
     ```powershell
-    .\tools\dotnet-cake -useMagic="false"
+    .\tools\dotnet-cake -useMagic=false
     ```
 
     macOS、Linux
     ```bash
-    ./tools/dotnet-cake -useMagic="false"
+    ./tools/dotnet-cake -useMagic=false
     ```
 5. Compiled binaries are located under Wonton.CrossUI.Web\bin\Desktop
 
