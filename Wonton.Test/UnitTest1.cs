@@ -13,11 +13,11 @@ namespace Wonton.Test
     public class UnitTest1
     {
         [Fact(Skip = "Tested")]
-        public void Test1()
+        public void TestFPGA()
         {
             FPGABoard b = new FPGABoard();
             b.InitIO(4,4);
-            b.Program(@"E:\Documents\Repo\ProjectFDB\WontonInterface\Wonton.Test\AlarmClock_fde_dc.bit");
+            b.Program("AlarmClock_fde_dc.bit");
 
             b.IoOpen();
 
@@ -60,7 +60,7 @@ namespace Wonton.Test
             XmlDocument xml = new XmlDocument();
             XDocument x = new XDocument();
 
-            xml.Load(@"E:\Downloads\VeriCommSDK-2019-11-22�յ�\VeriCommSDK\Example\Alarm_Clock\FDP3P7\FDE\src\AlarmClock.xml");
+            xml.Load(@"AlarmClock.xml");
 
             XmlNode design = xml.SelectSingleNode("design");
             var json = JsonConvert.SerializeXmlNode(design);
