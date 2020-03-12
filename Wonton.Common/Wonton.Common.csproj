@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\SharpVLFD\SharpVLFD\SharpVLFD.csproj')">
-    <PackageReference Include="SharpVLFD" Version="0.3.4" />
+    <PackageReference Include="SharpVLFD" Version="0.3.5" />
   </ItemGroup>
 
 </Project>
