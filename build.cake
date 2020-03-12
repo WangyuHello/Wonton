@@ -127,6 +127,11 @@ Task("BuildNative")
                 SourcePath = ".",
                 OutputPath = "."
             });
+            CMake(new CMakeSettings
+            {
+                SourcePath = ".",
+                OutputPath = "."
+            });
             CMakeBuild(new CMakeBuildSettings
             {
                 BinaryPath = "."
@@ -214,14 +219,10 @@ Task("DownloadElectron")
     }
 
     if(!FileExists(System.IO.Path.Combine(elec_cache_dir, elec_name)))
-    {
-        var elec_file = System.IO.Path.Combine("Wonton.CrossUI.Web", "tools", elec_name);
-        
-        DoInDirectory(System.IO.Path.Combine("Wonton.CrossUI.Web", "tools"), () => {
+    {        
+        DoInDirectory(elec_cache_dir, () => {
             DownloadFile(elec_bin, elec_name);
         });
-        
-        CopyFileToDirectory(elec_file, elec_cache_dir);
     }
     else 
     {
