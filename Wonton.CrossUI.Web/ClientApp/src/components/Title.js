@@ -7,6 +7,7 @@ import { SwitchTransition, CSSTransition } from "react-transition-group";
 import './Title.css'
 import { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
+import { darkmode } from "./Service/Darkmode";
 import { Start } from "./Start";
 import isElectron from 'is-electron';
 import is from 'electron-is';
@@ -56,6 +57,19 @@ export class Title extends Component {
         ipcRenderer.on('open-project-save-folder-callback', this.onOpenNewPjDirCallback);
         ipcRenderer.on('open-project-io-file-callback', this.onOpenNewPjIOCallback);
         ipcRenderer.on('exit-callback', this.onExitCallback);
+        ipcRenderer.on('window-state-darkmode', this.onWindowStateDarkmode);
+    }
+
+    onWindowStateDarkmode = (event, arg) => {
+        console.log('Darkmode: '+arg)
+        if (arg) {
+            darkmode.ActivateDarkMode();
+        } else {
+            darkmode.DeactivateDarkMode();
+        }
+        this.setState({
+            isDarkSwitchChecked: arg
+        })
     }
 
     onExitCallback = (event, arg) => {
@@ -128,11 +142,12 @@ export class Title extends Component {
                 bitfile: prevState.bitfile === "" ? data.bitfile : prevState.bitfile,
                 titlePjName: data.pjName,
                 isStartModalOpen: !data.projectInitialize,
-                recentProjects: data.recentProjects
+                recentProjects: data.recentProjects,
+                isDarkSwitchChecked: data.isDarkMode
             }));
         }
         this.setState({
-            modified: nextProps.modified
+            modified: nextProps.modified,
         })
     }
 
@@ -427,6 +442,11 @@ export class Title extends Component {
     }
 
     ToggleDarkSwitchChecked = (checked) => {
+        if (checked) {
+            darkmode.ActivateDarkMode();
+        } else {
+            darkmode.DeactivateDarkMode();
+        }
         this.setState({isDarkSwitchChecked: checked});
     }
 

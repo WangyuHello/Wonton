@@ -4,4 +4,18 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: stretch;
+    height: 100%;
+}
+
+
+.darkmode-body {
+    background-color: #242424;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+body {
+    height: -webkit-fill-available;
 }

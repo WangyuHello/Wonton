@@ -25,6 +25,7 @@ export default class ProjectManager {
     // }
 
     initialzed = false
+    isDarkMode = false
 
     GetInitData = async () => {
         if (this.initialzed) {
@@ -37,7 +38,8 @@ export default class ProjectManager {
                 },
                 panelData: {
                     layout: this.layout
-                }
+                },
+                isDarkMode: this.isDarkMode
             }
         } else {
             await this.Initialize();
@@ -50,7 +52,8 @@ export default class ProjectManager {
                 },
                 panelData: {
                     layout: this.layout
-                }
+                },
+                isDarkMode: this.isDarkMode
             }
         }
     }
@@ -89,7 +92,7 @@ export default class ProjectManager {
         //载入存储在后台进程中的项目文件
         const response = await fetch('/api/fpga/init');
         const res = await response.json();
-
+        this.isDarkMode = res.isDarkMode;
         //没有初始化项目文件,则显示开始屏幕
         //显示RecentProjects
         if (res.status === false) {
@@ -101,6 +104,7 @@ export default class ProjectManager {
         // console.log(res);
         this.projectInfo = JSON.parse(res.message);
         this.projectFile = res.projectPath;
+        
         console.log(`Project Path: ${this.projectFile}`);
         this.projectInitialize = true;
         

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Title } from './Title';
 import { MainPanel } from './MainPanel/MainPanel';
 import { pjManager } from './Service/ProjectManager';
+import { darkmode } from "./Service/Darkmode";
 
 import './Layout.css'
 
@@ -18,10 +19,12 @@ export class Layout extends Component {
     let data = await pjManager.GetInitData();
     console.log(data)
     this.setState({
-      titleData: data.titleData,
+      titleData: {isDarkMode: data.isDarkMode, ...data.titleData},
       panelData: data.panelData
     });
-
+    if (data.isDarkMode) {
+      darkmode.ActivateDarkMode();
+    }
     this.forceUpdate();
   }
 

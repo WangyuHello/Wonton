@@ -11,5 +11,7 @@ namespace Wonton.CrossUI.Web.Models
         public string ProjectPath { get; set; }
         public bool Status { get; set; }
         public ushort[] Data { get; set; }
+
+        public bool IsDarkMode { get; set; }
     }
 }
