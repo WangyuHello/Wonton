@@ -599,13 +599,9 @@ export class Title extends Component {
                             </InputGroup>
                         </div>
                         <div style={{width: "10px"}}/>
-                        <SwitchTransition>
-                            <CSSTransition classNames="play-button" timeout={300}>
-                                <Button className="no-drag" color={isRunning ? "success" : "info"} onClick={this.ClickRun} size="sm">
-                                    <FontAwesomeIcon icon={isRunning ? faStop : faPlay}/>
-                                </Button>       
-                            </CSSTransition>
-                        </SwitchTransition>
+                        <Button className="no-drag" color={isRunning ? "success" : "info"} onClick={this.ClickRun} size="sm">
+                            <FontAwesomeIcon icon={isRunning ? faStop : faPlay}/>
+                        </Button>       
 
                     </div>
 

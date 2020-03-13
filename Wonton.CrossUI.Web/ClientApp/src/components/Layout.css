@@ -19,3 +19,57 @@ html {
 body {
     height: -webkit-fill-available;
 }
+
+.darkmode .modal-content {
+    background-color: #666666;
+}
+
+.darkmode .modal-header {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.darkmode .dropdown-menu {
+    background-color: #666666;
+}
+
+.darkmode .dropdown-item {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.darkmode .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.darkmode .disabled {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.darkmode .dropdown-divider {
+    color: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.darkmode .dropdown-header {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.darkmode .form-control {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.darkmode option {
+    background-color: #666666;
+}
+
+.darkmode .input-group-text {
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0);
+}
+
+/* .darkmode .btn-info {
+    background-color: #17a3b8bd;
+    border-color: #17a3b867;
+} */

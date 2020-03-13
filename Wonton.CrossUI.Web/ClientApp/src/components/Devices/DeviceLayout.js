@@ -22,15 +22,15 @@ export class DeviceLayout extends Component {
         return (
             <div style={{height: "100%", display:"flex", flexDirection: "column", justifyContent:"space-between"}}>
                 <div style={{display:"flex", justifyContent:"space-between", marginLeft: "10px", marginRight: "4px"}}>
-                    <div >{this.props.instance}</div>
+                    <div className="instance-name">{this.props.instance}</div>
                     <div style={{display: "flex"}}>
                         <div>
-                            <Button outline color='secondary' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", borderWidth:"0px",marginTop:"-4px" }} className="FramelessBtn" onClick={this.OnSettingClick.bind(this, this.props.children)}>
+                            <Button outline color='secondary' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", borderWidth:"0px",marginTop:"-4px" }} className="FramelessBtn instance-setting" onClick={this.OnSettingClick.bind(this, this.props.children)}>
                                 <FontAwesomeIcon icon={faCog}/>
                             </Button>
                         </div>
                         <div>
-                            <Button outline color='danger' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", marginLeft:"4px", borderWidth:"0px",marginTop:"-4px" }} className="FramelessBtn" onClick={this.OnRemoveClick.bind(this, this.props.children)}>
+                            <Button outline color='danger' size='sm' style={{borderRadius: "0", paddingTop: "0", paddingBottom: "0", paddingLeft: '4px', paddingRight:"4px", marginLeft:"4px", borderWidth:"0px",marginTop:"-4px" }} className="FramelessBtn instance-remove" onClick={this.OnRemoveClick.bind(this, this.props.children)}>
                                 <FontAwesomeIcon icon={faTimes}/>
                             </Button>
                         </div>

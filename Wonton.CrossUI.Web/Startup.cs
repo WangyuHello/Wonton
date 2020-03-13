@@ -91,6 +91,12 @@ namespace Wonton.CrossUI.Web
                 window.OnClosed += lifetime.StopApplication;
                 ElectronIPC.SetWindow(window);
                 ElectronIPC.Initialize(window);
+#if DEBUG
+                window.WebContents.OpenDevTools(new OpenDevToolsOptions
+                {
+                    Mode = DevToolsMode.detach
+                });
+#endif
             });
 
             ElectronIPC.SetMenu();

@@ -69,3 +69,21 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .grid-base {
     background-color: rgba(212, 212, 212, 0.876);
 }
+
+.darkmode .grid-base {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.darkmode .react-grid-item > .react-resizable-handle::after {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+  border-right: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.darkmode .table {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.darkmode .table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+}

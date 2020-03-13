@@ -18,6 +18,10 @@
     align-items: stretch;
 }
 
+.darkmode .titleBar {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .titleBaT-enter {
     background-color: rgb(145, 157, 179);
 }

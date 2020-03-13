@@ -59,8 +59,7 @@ namespace Wonton.CrossUI.Web.Services
 
             Electron.IpcMain.On("dev-tools", o =>
             {
-                var mainWindow = Electron.WindowManager.BrowserWindows.First();
-                mainWindow.WebContents.OpenDevTools(new OpenDevToolsOptions
+                window.WebContents.OpenDevTools(new OpenDevToolsOptions
                 {
                     Mode = DevToolsMode.detach
                 });

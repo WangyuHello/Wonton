@@ -10,3 +10,15 @@
     outline: none;
     box-shadow:none;
 }
+
+.darkmode .instance-name {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.darkmode .instance-setting {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.darkmode .instance-remove {
+    color: rgb(255, 175, 175);
+}
