@@ -37,61 +37,59 @@ void Rename(string dir, string addi_name, string ext)
     }
 }
 
-Task("BuildOSArguments")
-    .Does(() =>
+
+isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
+isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
+
+if(isHostMac)
 {
-    isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
-    isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
-    isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
+    if(elec_target_os == "SameAsHost") { elec_target_os = "osx"; }
+    host_os = "macOS";
+    var HOME = EnvironmentVariable("HOME");
+    elec_cache_dir = System.IO.Path.Combine(HOME, "Library", "Caches", "electron"); 
+}
+else if(isHostWin)
+{
+    if(elec_target_os == "SameAsHost") { elec_target_os = "win"; }
+    host_os = "Windows";
+    var LOCALAPPDATA = EnvironmentVariable("LOCALAPPDATA");
+    elec_cache_dir = System.IO.Path.Combine(LOCALAPPDATA, "electron", "Cache");
+}
+else if(isHostLinux)
+{
+    host_os = "Linux";
+    if(elec_target_os == "SameAsHost") { elec_target_os = "linux"; }
+    var HOME = EnvironmentVariable("HOME");
+    elec_cache_dir = System.IO.Path.Combine(HOME, ".cache", "electron"); 
+}
 
-    if(isHostMac)
-    {
-        if(elec_target_os == "SameAsHost") { elec_target_os = "osx"; }
-        host_os = "macOS";
-        var HOME = EnvironmentVariable("HOME");
-        elec_cache_dir = System.IO.Path.Combine(HOME, "Library", "Caches", "electron"); 
-    }
-    else if(isHostWin)
-    {
-        if(elec_target_os == "SameAsHost") { elec_target_os = "win"; }
-        host_os = "Windows";
-        var LOCALAPPDATA = EnvironmentVariable("LOCALAPPDATA");
-        elec_cache_dir = System.IO.Path.Combine(LOCALAPPDATA, "electron", "Cache");
-    }
-    else if(isHostLinux)
-    {
-        host_os = "Linux";
-        if(elec_target_os == "SameAsHost") { elec_target_os = "linux"; }
-        var HOME = EnvironmentVariable("HOME");
-        elec_cache_dir = System.IO.Path.Combine(HOME, ".cache", "electron"); 
-    }
+if(elec_target_os == "osx")
+{
+    elec_target_os2 = "darwin";
+}
+if(elec_target_os == "win")
+{
+    elec_target_os2 = "win32";
+}
+if(elec_target_os == "linux")
+{
+    elec_target_os2 = "linux";
+}
 
-    if(elec_target_os == "osx")
-    {
-        elec_target_os2 = "darwin";
-    }
-    if(elec_target_os == "win")
-    {
-        elec_target_os2 = "win32";
-    }
-    if(elec_target_os == "linux")
-    {
-        elec_target_os2 = "linux";
-    }
+elec_args = "build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
+elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
+elec_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
+elec_full_name = System.IO.Path.Combine(elec_cache_dir, elec_name);
 
-    elec_args = "build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
-    elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
-    elec_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
-    elec_full_name = System.IO.Path.Combine(elec_cache_dir, elec_name);
+Information("Electron Cache Dir: "+ elec_cache_dir);
+Information("Build for "+elec_target_os+" on "+host_os);
+Information("Electron name "+elec_name);
+Information("Electron full name "+elec_full_name);
 
-    Information("Electron Cache Dir: "+ elec_cache_dir);
-    Information("Build for "+elec_target_os+" on "+host_os);
-    Information("Electron name "+elec_name);
-    Information("Electron full name "+elec_full_name);
+build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
+Information("Build path "+build_path);
 
-    build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
-    Information("Build path "+build_path);
-});
 
 Task("BuildNative")
     .WithCriteria(FileExists("NativeDeps.zip"))
@@ -208,7 +206,6 @@ Task("HackWebpack")
 });
 
 Task("DownloadElectron")
-    .IsDependentOn("BuildOSArguments")
     .WithCriteria(useMagic & (!FileExists(elec_full_name)))
     .Does(()=> 
 {
@@ -309,7 +306,6 @@ Task("BuildElectronCLI")
 });
 
 Task("Build")
-    .IsDependentOn("BuildOSArguments")
     .IsDependentOn("BuildElectronCLI")
     .IsDependentOn("BuildNative")
     .IsDependentOn("NpmInstall")
