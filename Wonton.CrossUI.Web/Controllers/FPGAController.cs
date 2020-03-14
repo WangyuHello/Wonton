@@ -218,7 +218,12 @@ namespace Wonton.CrossUI.Web.Controllers
                 Message = content,
                 Status = true,
                 ProjectPath = filename,
-                IsDarkMode = false
+                IsDarkMode =
+#if Windows
+                DarkMode.InDarkMode
+#else
+                false
+#endif
             };
         }
 
