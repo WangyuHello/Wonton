@@ -205,10 +205,10 @@ namespace Wonton.CrossUI.Web.Services
             };
             window.OnFocus += () => Electron.IpcMain.Send(window, "window-state-focus", 0);
 
-            DarkMode.OnDarkModeChanged += dark =>
-            {
-                Electron.IpcMain.Send(window, "window-state-darkmode", dark);
-            };
+            // DarkMode.OnDarkModeChanged += dark =>
+            // {
+            //     Electron.IpcMain.Send(window, "window-state-darkmode", dark);
+            // };
         }
 
         public static void SetMenu()
