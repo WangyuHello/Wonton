@@ -24,9 +24,7 @@ namespace Wonton.Common
         {
             if (string.IsNullOrEmpty(BitfilePath))
             {
-#pragma warning disable CA1303 // 请不要将文本作为本地化参数传递
-                throw new Exception("BitfilePath is Null");
-#pragma warning restore CA1303 // 请不要将文本作为本地化参数传递
+                throw new Exception("BitfilePath为空");
             }
 
             var r = VLFDInterop.VLFD_ProgramFPGA(NOW_USE_BOARD, BitfilePath);

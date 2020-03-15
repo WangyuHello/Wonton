@@ -27,7 +27,13 @@ namespace Wonton.CrossUI.Web
                 {
                     webBuilder
                         .UseElectron(args)
-                        .UseStartup<Startup>();
+                        .UseStartup<Startup>()
+                        .ConfigureLogging(logging =>
+                        {
+                            logging.AddConsole();
+                            logging.AddDebug();
+                            logging.AddEventSourceLogger();
+                        });
                 });
 
         static void SetLaunchingProject(string[] args)

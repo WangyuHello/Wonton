@@ -34,6 +34,7 @@ namespace Wonton.CrossUI.Web.Controllers
         {
             var b = _manager.Board;
             b.InitIO(writeCount, readCount);
+            _logger.LogInformation("initio成功");
             return new FPGAResponse()
             {
                 Message = "成功",
@@ -51,6 +52,7 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "Program失败");
                 Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program失败"));
                 return new FPGAResponse()
                 {
@@ -58,6 +60,7 @@ namespace Wonton.CrossUI.Web.Controllers
                     Status = false
                 };
             }
+            _logger.LogInformation("Program成功");
             Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program成功"));
             return new FPGAResponse()
             {
@@ -76,6 +79,7 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "ioopen失败");
                 Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "FPGA未连接"));
                 return new FPGAResponse()
                 {
@@ -83,6 +87,7 @@ namespace Wonton.CrossUI.Web.Controllers
                     Status = false
                 };
             }
+            _logger.LogInformation("ioopen成功");
             return new FPGAResponse()
             {
                 Message = "成功",
@@ -100,12 +105,14 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "ioclose失败");
                 return new FPGAResponse()
                 {
                     Message = e.Message,
                     Status = false
                 };
             }
+            _logger.LogInformation("ioclose成功");
             return new FPGAResponse()
             {
                 Message = "成功",
@@ -126,6 +133,7 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "writereadfpga失败");
                 return new FPGAResponse()
                 {
                     Message = e.Message,
@@ -143,6 +151,7 @@ namespace Wonton.CrossUI.Web.Controllers
         [HttpGet("setprojectfile")]
         public FPGAResponse SetProjectFile(string filename)
         {
+            _logger.LogInformation("设置项目: " + filename);
             _manager.CurrentProjectFile = filename;
             return new FPGAResponse()
             {
@@ -190,6 +199,7 @@ namespace Wonton.CrossUI.Web.Controllers
                 //没有项目文件
                 //显示开始界面
                 //返回RecentProjects
+                _logger.LogInformation("没有项目文件");
                 await _manager.ReadRecentProjectAsync();
 
                 return new FPGAResponse()
@@ -198,7 +208,7 @@ namespace Wonton.CrossUI.Web.Controllers
                     Status = false
                 };
             }
-
+            _logger.LogInformation("打开项目文件: "+ filename);
             var fs = System.IO.File.Open(filename, FileMode.OpenOrCreate);
             var sr = new StreamReader(fs);
             var content = await sr.ReadToEndAsync();
@@ -231,7 +241,7 @@ namespace Wonton.CrossUI.Web.Controllers
         public async Task<FPGAResponse> WriteJson([FromQuery]string filename, [FromBody]ProjectInfo data)
         {
             await System.IO.File.WriteAllTextAsync(filename, data.data);
-
+            _logger.LogInformation("已保存项目: "+ filename);
             Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "已保存"));
 
             return new FPGAResponse()
@@ -261,7 +271,7 @@ namespace Wonton.CrossUI.Web.Controllers
         public async Task<FPGAResponse> NewProject(string projectdir, string projectname, string projectiofile)
         {
             var fullpath = Path.Combine(projectdir, projectname + ".hwproj");
-
+            _logger.LogInformation("新建项目: "+fullpath);
             XmlDocument xml = new XmlDocument();
             xml.Load(projectiofile);
 
