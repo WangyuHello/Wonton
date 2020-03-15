@@ -33,6 +33,7 @@ namespace Wonton.CrossUI.Web
                             logging.AddConsole();
                             logging.AddDebug();
                             logging.AddEventSourceLogger();
+                            logging.AddFile("logs/wonton-{Date}.log");
                         });
                 });
 
