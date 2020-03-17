@@ -7,6 +7,7 @@ var useMagic = Argument<bool>("useMagic", true);
 var elec_target_os = Argument("targetOS", "SameAsHost");
 var addi_name = Argument("AdditionalName", "");
 var release_dir = Argument("releaseDir", "Build");
+var clean_node = Argument<bool>("CleanNode", false);
 
 var isHostMac = false;
 var isHostWin = false;
@@ -317,6 +318,65 @@ Task("Build")
     .Does(() =>
 {
 
+});
+
+void DelDir(string dir)
+{
+    Information("Delete: "+ dir);
+    if(DirectoryExists(dir)){DeleteDirectory(dir, new DeleteDirectorySettings{Recursive=true, Force=true});}
+}
+
+Task("Clean")
+    .Does(() =>
+{
+    DelDir("VLFDDriver");
+    DelDir("SharpVLFD");
+    DelDir("Build");
+    DelDir("Wonton.Common/bin");
+    DelDir("Wonton.Common/obj");
+    DelDir("Wonton.CrossUI/bin");
+    DelDir("Wonton.CrossUI/obj");
+    DelDir("Wonton.CrossUI.Web/bin");
+    DelDir("Wonton.CrossUI.Web/obj");
+    DelDir("Wonton.CrossUI.Web/logs");
+    DelDir("Wonton.CrossUI.Web/ClientApp/build");
+    DelDir("Wonton.Test/bin");
+    DelDir("Wonton.Test/obj");
+    DelDir("Wonton.WinUI.UWP/bin");
+    DelDir("Wonton.WinUI.UWP/obj");
+    DelDir("Wonton.WinUI.WPF/bin");
+    DelDir("Wonton.WinUI.WPF/obj");
+
+    if(clean_node)
+    {
+        DelDir("Wonton.CrossUI.Web/ClientApp/node_modules");
+        DelDir("Wonton.CrossUI.Web/ElectronHost/node_modules");
+    }
+});
+
+Task("InstallElectronHost")
+    .Does(() =>
+{
+    DoInDirectory("Wonton.CrossUI.Web/ElectronHost", () => {
+        var env_dict = new Dictionary<string, string>();
+        var npms = new NpmInstallSettings();
+        if(useMagic)
+        {
+            env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
+            env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
+            env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
+        }
+        if(IsRunningOnWindows())
+        {
+            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npm.cmd i\"", EnvironmentVariables = env_dict });
+        }
+        else
+        {
+            StartProcess("npm", new ProcessSettings { Arguments = "i", EnvironmentVariables = env_dict });
+        }
+
+
+    });
 });
 
 RunTarget(target);
