@@ -346,6 +346,10 @@ Task("Clean")
     DelDir("Wonton.WinUI.UWP/obj");
     DelDir("Wonton.WinUI.WPF/bin");
     DelDir("Wonton.WinUI.WPF/obj");
+    DelDir("Electron.NET/ElectronNET.API/bin");
+    DelDir("Electron.NET/ElectronNET.API/obj");
+    DelDir("Electron.NET/ElectronNET.CLI/bin");
+    DelDir("Electron.NET/ElectronNET.CLI/obj");
 
     if(clean_node)
     {
