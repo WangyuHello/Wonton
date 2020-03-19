@@ -97,8 +97,9 @@ Task("BuildNative")
     .Does(() =>
 {
     Information("构建Native依赖");
-    if(DirectoryExists("VLFDDriver")){DeleteDirectory("VLFDDriver", new DeleteDirectorySettings{Recursive=true, Force=true});}
-    if(DirectoryExists("SharpVLFD")){DeleteDirectory("SharpVLFD", new DeleteDirectorySettings{Recursive=true, Force=true});}
+    DelDir("VLFDDriver");
+    DelDir("SharpVLFD");
+    DelFile("build.sh");
     Unzip("NativeDeps.zip", ".");
 
     if(IsRunningOnWindows())
@@ -326,12 +327,19 @@ void DelDir(string dir)
     if(DirectoryExists(dir)){DeleteDirectory(dir, new DeleteDirectorySettings{Recursive=true, Force=true});}
 }
 
+void DelFile(string file)
+{
+    Information("Delete: "+ file);
+    if(FileExists(file)) DeleteFile(file);
+}
+
 Task("Clean")
     .Does(() =>
 {
     DelDir("VLFDDriver");
     DelDir("SharpVLFD");
     DelDir("Build");
+    DelFile("build.sh");
     DelDir("Wonton.Common/bin");
     DelDir("Wonton.Common/obj");
     DelDir("Wonton.CrossUI/bin");

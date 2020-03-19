@@ -268,3 +268,4 @@ logs/
 VLFDDriver/
 SharpVLFD/
 NativeDeps.zip
+build.sh
