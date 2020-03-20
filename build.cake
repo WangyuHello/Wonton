@@ -245,7 +245,7 @@ Task("BuildApp")
             env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
         }
         // StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
-        var cli_path = MakeAbsolute(Directory("../Electron.NET/ElectronNET.CLI/bin/Release/netcoreapp3.1/") + File("ElectronNET.CLI.dll"));
+        var cli_path = MakeAbsolute(Directory("../Electron.NET/ElectronNET.CLI/bin/") + File("ElectronNET.CLI.dll"));
         var elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
 
         StartProcess(elec_net_tool_bin_local, new ProcessSettings { Arguments = elec_args_local, EnvironmentVariables = env_dict });
@@ -303,7 +303,11 @@ Task("BuildElectronCLI")
   .Does(() =>
 {
     Information("构建CLI");
-    DotNetCoreBuild("Electron.NET/ElectronNET.CLI/ElectronNET.CLI.csproj", new DotNetCoreBuildSettings { Configuration = "Release" });
+    DotNetCoreBuild("Electron.NET/ElectronNET.CLI/ElectronNET.CLI.csproj", new DotNetCoreBuildSettings 
+    { 
+        Configuration = "Release",
+        OutputDirectory = "Electron.NET/ElectronNET.CLI/bin/"
+    });
 
 });
 

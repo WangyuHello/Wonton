@@ -4,6 +4,7 @@
     <!-- <PublishSingleFile>true</PublishSingleFile> -->
     <!-- <PublishTrimmed>true</PublishTrimmed> -->
     <!-- <PublishReadyToRun>true</PublishReadyToRun> -->
+    <ServerGarbageCollection>false</ServerGarbageCollection> 
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
