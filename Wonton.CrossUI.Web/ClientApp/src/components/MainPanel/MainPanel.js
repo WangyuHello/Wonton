@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import RGL, { WidthProvider } from "react-grid-layout";
-import { LED } from '../Devices/LED/LED';
-import { HButton } from '../Devices/HButton/HButton';
+import { deviceMap } from "../Devices/Devices";
 import { DeviceLayout } from '../Devices/DeviceLayout';
 import { Modal, ModalHeader, ModalBody, Table, Input, ModalFooter, Button } from 'reactstrap';
 import _ from 'lodash';
@@ -227,18 +226,19 @@ export class MainPanel extends PureComponent {
         // console.log(layout);
         return _.map(layout, el => {
         
-            let dev = <div></div>
+            // let dev = <div></div>
 
-            switch (el.device) {
-                case "LED":
-                    dev = <LED instance={el.i}/>
-                    break;
-                case "HButton":
-                    dev = <HButton instance={el.i}/>
-                    break;
-                default:
-                    break;
-            }
+            // switch (el.device) {
+            //     case "LED":
+            //         dev = <LED instance={el.i}/>
+            //         break;
+            //     case "HButton":
+            //         dev = <HButton instance={el.i}/>
+            //         break;
+            //     default:
+            //         break;
+            // }
+            let dev = React.createElement(deviceMap.get(el.device)[0], {instance: el.i})
 
             return <div key={el.i} data-grid={el} className='grid-base'>
                 <DeviceLayout instance={el.i} OnSettingClick={this.OnSettingClick} OnRemoveClick={(e) => this.OnRemoveClick(e, el.i)}>
