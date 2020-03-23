@@ -151,9 +151,20 @@ export default class FPGAManager {
         });
     }
 
+    prevTime = 0
+    d = new Date()
+
     Cycle = () => {
+
+        const currentTime = this.d.getTime();
+        let deltaTime = currentTime - this.prevTime;
+        if (this.prevTime === 0) {
+            deltaTime = 0
+        }
+        this.prevTime = currentTime; //单位毫秒
+
         this.subscribedInstances.forEach((ins, key, map) => {
-            ins.refresh(ins.data);
+            ins.refresh(ins.data, deltaTime);
         });
     }
 

@@ -3,7 +3,7 @@ import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus, faFile, faStore } from '@fortawesome/free-solid-svg-icons'
 import Switch from "react-switch";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import './Title.css'
 import { manager } from './Service/FPGAManager';
 import { pjManager } from './Service/ProjectManager';
@@ -12,13 +12,6 @@ import { Start } from "./Start";
 import isElectron from 'is-electron';
 import is from 'electron-is';
 import { ipcRenderer, shell } from "electron";
-
-
-// import maximize from './Resource/maximize.svg';
-// import minimize from './Resource/minimize.svg';
-// import restore from './Resource/restore.svg';
-// import close from './Resource/close.svg';
-
 
 export class Title extends Component {
 
@@ -42,7 +35,7 @@ export class Title extends Component {
         iofile: '',
         pjdir: '',
         isDevSwitchChecked: false,
-        isDarkSwitchChecked: false
+        isDarkSwitchChecked: -1
     }
 
     constructor(props) {
@@ -68,7 +61,7 @@ export class Title extends Component {
             darkmode.DeactivateDarkMode();
         }
         this.setState({
-            isDarkSwitchChecked: arg
+            isDarkSwitchChecked: (arg ? 1 : 0)
         })
     }
 
@@ -124,17 +117,6 @@ export class Title extends Component {
         this.setState({ bitfile: path });
     }
 
-    //从Manager获取初始值
-    // async componentWillMount() {
-    //     let data = await pjManager.GetTitleData();
-    //     this.setState({
-    //         bitfile: data.bitfile,
-    //         titlePjName: data.pjName,
-    //         isStartModalOpen: !data.projectInitialize,
-    //         recentProjects: data.recentProjects
-    //     });
-    // }
-
     componentWillReceiveProps(nextProps) {
         let data = nextProps.titleData;
         if (data != null) {
@@ -143,7 +125,7 @@ export class Title extends Component {
                 titlePjName: data.pjName,
                 isStartModalOpen: !data.projectInitialize,
                 recentProjects: data.recentProjects,
-                isDarkSwitchChecked: data.isDarkMode
+                isDarkSwitchChecked: prevState.isDarkSwitchChecked === -1 ? (data.isDarkMode ? 1 : 0) : prevState.isDarkSwitchChecked
             }));
         }
         this.setState({
@@ -153,12 +135,6 @@ export class Title extends Component {
 
 
     OpenFileModal = (event) => {
-        // this.setState((prevState) => {
-        //     return {
-        //         isFileModalOpen : !prevState.isFileModalOpen,
-        //     }
-        // });
-
         ipcRenderer.send('open-bitfile');
     }
 
@@ -447,7 +423,7 @@ export class Title extends Component {
         } else {
             darkmode.DeactivateDarkMode();
         }
-        this.setState({isDarkSwitchChecked: checked});
+        this.setState({isDarkSwitchChecked: (checked ? 1 : 0)});
     }
 
     ClickAbout = (e) => {
@@ -658,7 +634,7 @@ export class Title extends Component {
                                         <DropdownItem >
                                             <label className="dropdown-item-label">
                                                 <span style={{marginRight:"8px"}}>黑暗模式</span>
-                                                <Switch onChange={this.ToggleDarkSwitchChecked} checked={this.state.isDarkSwitchChecked} ></Switch>
+                                                <Switch onChange={this.ToggleDarkSwitchChecked} checked={this.state.isDarkSwitchChecked === 1 ? true : false} ></Switch>
                                             </label>
                                         </DropdownItem>
                                         <DropdownItem divider></DropdownItem>

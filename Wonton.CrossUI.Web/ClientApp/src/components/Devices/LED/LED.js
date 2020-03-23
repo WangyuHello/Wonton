@@ -21,7 +21,7 @@ export class LED extends Component {
 
         let that = this;
 
-        manager.Subscribe(ins, this.props.ports, (inputs) => {
+        manager.Subscribe(ins, this.props.ports, (inputs, deltaTime) => {
             that.setState({
                 inputs: inputs
             });

@@ -12,10 +12,16 @@ export class HButtonCore extends Component {
         ClassName: "HButton"
     }
 
+    onCheckClick = (e) => {
+        if(this.props.onClick)
+        {
+            this.props.onClick(e);
+        }
+    }
 
     render() {
         return (      
-            <Button outline active={false} size='lg' className="myToggleButton">
+            <Button outline active={this.props.active} size='lg' className="myToggleButton" onClick={e => this.onCheckClick(e)}>
                 <FontAwesomeIcon icon={faMusic}/>
             </Button> 
         );
