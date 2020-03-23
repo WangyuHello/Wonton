@@ -1,8 +1,8 @@
 ---
 name: 提交Bug
 about: 提交bug以帮助我们改进程序
-title: "[Bug]"
-labels: ''
+title: ''
+labels: bug
 assignees: ''
 
 ---
