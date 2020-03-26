@@ -4,3 +4,6 @@
 [submodule "SharpVLFD"]
 	path = SharpVLFD
 	url = https://github.com/WangyuHello/SharpVLFD.git
+[submodule "socket.io-client-core"]
+	path = socket.io-client-core
+	url = https://github.com/WangyuHello/socket.io-client-core.git
