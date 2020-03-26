@@ -13,7 +13,7 @@ var isHostMac = false;
 var isHostWin = false;
 var isHostLinux = false;
 
-var elec_ver = "7.1.2";
+var elec_ver = "8.2.0";
 var elec_args = "";
 var elec_cache_dir = "";
 var elec_bin = "";
