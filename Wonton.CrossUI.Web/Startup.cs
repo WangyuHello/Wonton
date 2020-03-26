@@ -89,6 +89,7 @@ namespace Wonton.CrossUI.Web
                         BackgroundColor = "#FFF"
                     });
                 window.OnClosed += lifetime.StopApplication;
+                ElectronIPC.SetMenu();
                 ElectronIPC.SetWindow(window);
                 ElectronIPC.Initialize(window);
 #if DEBUG
@@ -98,10 +99,6 @@ namespace Wonton.CrossUI.Web
                 });
 #endif
             });
-
-            ElectronIPC.SetMenu();
         }
-
-        
     }
 }
