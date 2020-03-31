@@ -246,7 +246,7 @@ Task("BuildApp")
         }
         // StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
         var cli_path = MakeAbsolute(Directory("../Electron.NET/ElectronNET.CLI/bin/") + File("ElectronNET.CLI.dll"));
-        var elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
+        var elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json /fxdeps";
 
         StartProcess(elec_net_tool_bin_local, new ProcessSettings { Arguments = elec_args_local, EnvironmentVariables = env_dict });
     });
