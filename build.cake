@@ -1,6 +1,7 @@
 #addin nuget:?package=Cake.DoInDirectory&version=3.3.0
 #addin nuget:?package=Cake.Npm&version=0.17.0
 #addin nuget:?package=Cake.CMake&version=1.2.0
+#addin nuget:?package=Cake.FileHelpers&version=3.2.1
 
 var target = Argument("target", "Build");
 var useMagic = Argument<bool>("useMagic", true);
@@ -16,9 +17,10 @@ var isHostLinux = false;
 var elec_ver = "8.2.0";
 var elec_args = "";
 var elec_cache_dir = "";
-var elec_bin = "";
-var elec_name = "";
-var elec_full_name = "";
+var elec_mirror_zip = "";
+var elec_mirror_sha = "";
+var elec_zip_name = "";
+var elec_zip_full_name = "";
 var elec_target_os2 = "";
 var host_os = "";
 
@@ -79,14 +81,15 @@ if(elec_target_os == "linux")
 }
 
 elec_args = "build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
-elec_bin = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
-elec_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
-elec_full_name = System.IO.Path.Combine(elec_cache_dir, elec_name);
+elec_mirror_zip = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
+elec_mirror_sha = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/SHASUMS256.txt";
+elec_zip_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
+elec_zip_full_name = System.IO.Path.Combine(elec_cache_dir, elec_zip_name);
 
 Information("Electron Cache Dir: "+ elec_cache_dir);
 Information("Build for "+elec_target_os+" on "+host_os);
-Information("Electron name "+elec_name);
-Information("Electron full name "+elec_full_name);
+Information("Electron name "+elec_zip_name);
+Information("Electron full name "+elec_zip_full_name);
 
 build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
 Information("Build path "+build_path);
@@ -207,26 +210,54 @@ Task("HackWebpack")
     }
 });
 
+bool CheckSHA(string electron_file)
+{
+    if(!DirectoryExists(elec_cache_dir)) return false;
+    if(!FileExists(elec_zip_full_name)) return false;
+
+    bool correct = false;
+    DoInDirectory(elec_cache_dir, () => {
+        DelFile("SHASUMS256.txt");
+        DownloadFile(elec_mirror_sha, "SHASUMS256.txt");
+        var sha256 = CalculateFileHash(elec_zip_full_name, HashAlgorithm.SHA256).ToHex();
+        Information("已下载的 Electron: " + sha256);
+        var shas = FileReadLines("SHASUMS256.txt");
+        foreach(var sha in shas)
+        {
+            var parts = sha.Split(new [] { ' ', '*' });
+            var target_sha = parts[0];
+            var zip_name = parts[2];
+            if(zip_name == elec_zip_name)
+            {
+                if(target_sha == sha256)
+                {
+                    Information("SHA256 正确＜（＾－＾）＞");
+                    correct = true;
+                    break;
+                }
+                else
+                {
+                    Information("SHA256 错误，将重新下载");
+                }
+            }
+        }
+    });
+    return correct;
+}
+
 Task("DownloadElectron")
-    .WithCriteria(useMagic & (!FileExists(elec_full_name)))
+    .WithCriteria(useMagic && (!CheckSHA(elec_zip_full_name)))
     .Does(()=> 
 {
-    Information("下载Electron");
     if(!DirectoryExists(elec_cache_dir))
     {
         CreateDirectory(elec_cache_dir);
     }
-
-    if(!FileExists(System.IO.Path.Combine(elec_cache_dir, elec_name)))
-    {        
-        DoInDirectory(elec_cache_dir, () => {
-            DownloadFile(elec_bin, elec_name);
-        });
-    }
-    else 
-    {
-        Information("文件已下载，跳过");
-    }
+    DelFile(elec_zip_full_name);
+    Information("正在下载 Electron");
+    DoInDirectory(elec_cache_dir, () => {
+        DownloadFile(elec_mirror_zip, elec_zip_name);
+    });
 });
 
 Task("BuildApp")
@@ -327,14 +358,20 @@ Task("Build")
 
 void DelDir(string dir)
 {
-    Information("Delete: "+ dir);
-    if(DirectoryExists(dir)){DeleteDirectory(dir, new DeleteDirectorySettings{Recursive=true, Force=true});}
+    if(DirectoryExists(dir))
+    {
+        DeleteDirectory(dir, new DeleteDirectorySettings{Recursive=true, Force=true});
+        Information("删除目录: "+ dir);
+    }
 }
 
 void DelFile(string file)
 {
-    Information("Delete: "+ file);
-    if(FileExists(file)) DeleteFile(file);
+    if(FileExists(file)) 
+    {
+        DeleteFile(file);
+        Information("删除文件: "+ file);
+    }
 }
 
 Task("Clean")
