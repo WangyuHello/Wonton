@@ -30,14 +30,17 @@
     ],
     "win": {
       "icon": "./bin/ClientApp/build/chip.ico",
+      "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}${env.FXDEPS}.${ext}",
       "target": [ "7z", "nsis" ]
     },
     "mac": {
       "icon": "./bin/ClientApp/build/chip.icns",
+      "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}.${ext}",
       "target": [ "7z", "dmg" ]
     },
     "linux": {
       "icon": "./bin/ClientApp/build/icons",
+      "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}.${ext}",
       "category": "Education",
       "target": [ "7z", "deb" ]
     },
@@ -46,8 +49,15 @@
       "installerIcon": "./bin/ClientApp/build/chip.ico",
       "uninstallerIcon": "./bin/ClientApp/build/chip.ico",
       "installerHeaderIcon": "./bin/ClientApp/build/chip.ico",
+      "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}${env.FXDEPS}-setup.${ext}",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
+    },
+    "dmg": {
+      "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}.${ext}"
+    },
+    "deb": {
+      "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}.${ext}"
     }
   }
 }

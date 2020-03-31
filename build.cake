@@ -275,11 +275,21 @@ Task("BuildApp")
             env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
             env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
         }
-        // StartProcess(elec_net_tool_bin, new ProcessSettings { Arguments = elec_args, EnvironmentVariables = env_dict });
+        env_dict.Add("ADDI_NAME", addi_name == "" ? "" : "-"+addi_name);
+        env_dict.Add("FXDEPS", "");
         var cli_path = MakeAbsolute(Directory("../Electron.NET/ElectronNET.CLI/bin/") + File("ElectronNET.CLI.dll"));
-        var elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json /fxdeps";
 
+
+        var elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
         StartProcess(elec_net_tool_bin_local, new ProcessSettings { Arguments = elec_args_local, EnvironmentVariables = env_dict });
+
+        if(IsRunningOnWindows()) 
+        {
+            env_dict["FXDEPS"] = "-fxdependent";
+            elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json /fxdeps";
+            StartProcess(elec_net_tool_bin_local, new ProcessSettings { Arguments = elec_args_local, EnvironmentVariables = env_dict });
+        }
+
     });
 
 
@@ -349,7 +359,6 @@ Task("Build")
     .IsDependentOn("HackWebpack")
     .IsDependentOn("DownloadElectron")
     .IsDependentOn("BuildApp")
-    .IsDependentOn("RenamePacakge")
     .IsDependentOn("CopyPacakge")
     .Does(() =>
 {
