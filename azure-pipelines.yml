@@ -62,7 +62,6 @@ jobs:
       publishLocation: 'pipeline'
       artifactName: 'Wonton.Linux16'
 
-jobs:
 - job: LinuxArm
   pool:
     vmImage: 'ubuntu-latest'
@@ -88,7 +87,6 @@ jobs:
       publishLocation: 'pipeline'
       artifactName: 'Wonton.LinuxArm'
 
-jobs:
 - job: LinuxArm64
   pool:
     vmImage: 'ubuntu-latest'
