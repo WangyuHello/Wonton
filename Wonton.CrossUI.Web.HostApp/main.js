@@ -65,16 +65,13 @@ function createWindow(webPort) {
         frame: false,
         titleBarStyle: "hiddenInset",
         backgroundColor: "#FFF",
-        show: false,
+        show: true,
         webPreferences: {
             nodeIntegration: true
         }
     });
     var loadURL = "http://localhost:" + webPort;
     mainWin.loadURL(loadURL);
-    mainWin.once('ready-to-show', function () {
-        mainWin.show();
-    });
     mainWin.on("maximize", function () {
         mainWin.webContents.send("window-state-maximize", 1);
     });

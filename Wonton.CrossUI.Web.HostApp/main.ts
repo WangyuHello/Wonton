@@ -41,7 +41,7 @@ function createWindow(webPort: number) {
         frame: false,
         titleBarStyle: "hiddenInset",
         backgroundColor: "#FFF",
-        show: false,
+        show: true,
         webPreferences: {
             nodeIntegration: true
         }
@@ -51,9 +51,9 @@ function createWindow(webPort: number) {
     // 加载URL
     mainWin.loadURL(loadURL);
 
-    mainWin.once('ready-to-show', () => {
-        mainWin.show()
-    })
+    // mainWin.once('ready-to-show', () => {
+    //     mainWin.show()
+    // })
 
     // 打开开发者工具
     //mainWin.webContents.openDevTools();
