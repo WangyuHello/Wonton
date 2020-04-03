@@ -117,8 +117,6 @@ function startAspCoreBackend(electronPort: number) {
     function startBackend(aspCoreBackendPort: number) {
         console.log('ASP.NET Core Port: ' + aspCoreBackendPort);
 
-        createWindow(aspCoreBackendPort);
-
         const parameters = [`/electronPort=${electronPort}`, `/electronWebPort=${aspCoreBackendPort}`].concat(process.argv);
         let binaryFile = aspcoreName;
 
@@ -136,6 +134,9 @@ function startAspCoreBackend(electronPort: number) {
         aspcoreProcess.stdout.on('data', (data) => {
             console.log(`stdout: ${decoder.decode(data)}`);
         });
+
+        // 等AspCore启动后再启动窗口
+        createWindow(aspCoreBackendPort);
     }
 }
 

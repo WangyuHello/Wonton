@@ -30,9 +30,9 @@
     "typescript": "^3.8.3"
   },
   "build": {
-    "appId": "edu.Wonton.CrossUI.Web.app",
+    "appId": "edu.Wonton.app",
     "productName": "Wonton",
-    "copyright": "Copyright ? 2019 Wang Yu",
+    "copyright": "Copyright © 2019 Wang Yu",
     "compression": "maximum",
     "directories": {
       "output": "../../../../Wonton.CrossUI.Web/bin/Desktop"
