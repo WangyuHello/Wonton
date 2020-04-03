@@ -62,6 +62,58 @@ jobs:
       publishLocation: 'pipeline'
       artifactName: 'Wonton.Linux16'
 
+jobs:
+- job: LinuxArm
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '3.1.x'
+  
+  - script: dotnet tool install --tool-path tools Cake.Tool
+    displayName: 'Install Cake'
+  
+  - bash: ./tools/dotnet-cake -useMagic=false -targetArch=arm -releaseDir="$(Build.ArtifactStagingDirectory)"
+    displayName: 'Build on Linux'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.LinuxArm'
+
+jobs:
+- job: LinuxArm64
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '3.1.x'
+  
+  - script: dotnet tool install --tool-path tools Cake.Tool
+    displayName: 'Install Cake'
+  
+  - bash: ./tools/dotnet-cake -useMagic=false -targetArch=arm64 -releaseDir="$(Build.ArtifactStagingDirectory)"
+    displayName: 'Build on Linux'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.LinuxArm64'
+
 - job: macOS
   pool:
     vmImage: 'macos-10.15'

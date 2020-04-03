@@ -6,7 +6,7 @@
 var target = Argument("target", "Build");
 var useMagic = Argument<bool>("useMagic", true);
 var elec_target_os = Argument("targetOS", "SameAsHost");
-var elec_target_arch = Argument("targetArch", "SameAsHost");
+var elec_target_arch = Argument("targetArch", "x64"); //x64, arm64, arm(armv7l)
 var fx_deps = Argument<bool>("FxDeps", false);
 var addi_name = Argument("AdditionalName", "");
 var release_dir = Argument("releaseDir", "Build");
@@ -19,6 +19,7 @@ var isHostLinux = false;
 var elec_ver = "8.2.0";
 var elec_target_os2 = "";
 var elec_target_os3 = "";
+var elec_target_arch2 = elec_target_arch;
 var host_os = "";
 var npm_reg = "https://registry.npm.taobao.org";
 
@@ -45,24 +46,29 @@ else if(isHostLinux)
 if(elec_target_os == "mac")
 {
     elec_target_os2 = "darwin";
-    elec_target_os3 = "osx-x64";
+    elec_target_os3 = "osx-" + elec_target_arch;
 }
 if(elec_target_os == "win")
 {
     elec_target_os2 = "win32";
-    elec_target_os3 = "win-x64";
+    elec_target_os3 = "win-" + elec_target_arch;
 }
 if(elec_target_os == "linux")
 {
     elec_target_os2 = "linux";
-    elec_target_os3 = "linux-x64";
+    elec_target_os3 = "linux-" + elec_target_arch;
+}
+
+if (elec_target_arch == "arm")
+{
+    elec_target_arch2 = "armv7l";
 }
 
 var pre_package_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os;
 var backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
 var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
 
-Information("Build for "+elec_target_os+" on "+host_os + ", framework dependent: "+fx_deps);
+Information("Build for "+elec_target_os+" on "+host_os + ", architecture: "+ elec_target_arch +", framework dependent: "+fx_deps);
 Information("Build path: "+build_path);
 Information("Package path: "+pre_package_path);
 
@@ -360,11 +366,11 @@ Task("PackageApp")
 
         if(IsRunningOnWindows())
         {
-            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npx.cmd electron-builder . --"+ elec_target_os +" --x64 -c.electronVersion="+ elec_ver +"\"", EnvironmentVariables = env_dict});
+            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npx.cmd electron-builder . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver +"\"", EnvironmentVariables = env_dict});
         }
         else
         {
-            StartProcess("npx", new ProcessSettings { Arguments = "electron-builder . --"+ elec_target_os +" --x64 -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
+            StartProcess("npx", new ProcessSettings { Arguments = "electron-builder . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
         }
     });
 });
