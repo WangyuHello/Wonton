@@ -30,11 +30,11 @@ app.allowRendererProcessReuse = true;
 
 startBackend();
 
-//app.on('ready', () => {
-//    console.log('ready');
-//});
+app.on('ready', () => {
+    createWindow();
+});
 
-function createWindow(webPort: number) {
+function createWindow() {
     // 创建浏览器窗口
     mainWin = new BrowserWindow({
         width: 1000,
@@ -48,9 +48,9 @@ function createWindow(webPort: number) {
         }
     });
 
-    let loadURL = `http://localhost:${webPort}`;
     // 加载URL
-    mainWin.loadURL(loadURL);
+    // let loadURL = `http://localhost:${webPort}`;
+    // mainWin.loadURL(loadURL);
 
     // mainWin.once('ready-to-show', () => {
     //     mainWin.show()
@@ -142,8 +142,9 @@ function startAspCoreBackend(electronPort: number) {
             console.log(line);
             if (line.trim().includes("ELECTRONASPNETCORESTAERTED")) {
                 console.log("Captured start signal");
-                // 等AspCore启动后再启动窗口
-                createWindow(aspCoreBackendPort);
+                // 加载URL
+                let loadURL = `http://localhost:${aspCoreBackendPort}`;
+                mainWin.loadURL(loadURL);
             }
         });
     }
