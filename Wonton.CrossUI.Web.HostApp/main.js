@@ -65,12 +65,16 @@ function createWindow(webPort) {
         frame: false,
         titleBarStyle: "hiddenInset",
         backgroundColor: "#FFF",
+        show: false,
         webPreferences: {
             nodeIntegration: true
         }
     });
     var loadURL = "http://localhost:" + webPort;
     mainWin.loadURL(loadURL);
+    mainWin.once('ready-to-show', function () {
+        mainWin.show();
+    });
     mainWin.on("maximize", function () {
         mainWin.webContents.send("window-state-maximize", 1);
     });
@@ -112,7 +116,6 @@ function startAspCoreBackend(electronPort) {
     });
     function startBackend(aspCoreBackendPort) {
         console.log('ASP.NET Core Port: ' + aspCoreBackendPort);
-        createWindow(aspCoreBackendPort);
         var parameters = ["/electronPort=" + electronPort, "/electronWebPort=" + aspCoreBackendPort].concat(process.argv);
         var binaryFile = aspcoreName;
         var os = require('os');
@@ -126,6 +129,7 @@ function startAspCoreBackend(electronPort) {
         aspcoreProcess.stdout.on('data', function (data) {
             console.log("stdout: " + decoder.decode(data));
         });
+        createWindow(aspCoreBackendPort);
     }
 }
 electron_1.ipcMain.on('working-status', function (e, arg) {

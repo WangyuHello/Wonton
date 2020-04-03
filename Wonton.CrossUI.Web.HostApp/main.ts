@@ -41,6 +41,7 @@ function createWindow(webPort: number) {
         frame: false,
         titleBarStyle: "hiddenInset",
         backgroundColor: "#FFF",
+        show: false,
         webPreferences: {
             nodeIntegration: true
         }
@@ -49,6 +50,10 @@ function createWindow(webPort: number) {
     let loadURL = `http://localhost:${webPort}`;
     // 加载URL
     mainWin.loadURL(loadURL);
+
+    mainWin.once('ready-to-show', () => {
+        mainWin.show()
+    })
 
     // 打开开发者工具
     //mainWin.webContents.openDevTools();
