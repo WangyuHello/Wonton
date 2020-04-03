@@ -26,6 +26,7 @@ if (!mainInstance) {
     app.quit();
 }
 
+app.allowRendererProcessReuse = true;
 
 startBackend();
 
@@ -137,11 +138,14 @@ function startAspCoreBackend(electronPort: number) {
         const decoder = new TextDecoder('utf-8');
 
         aspcoreProcess.stdout.on('data', (data) => {
-            console.log(`stdout: ${decoder.decode(data)}`);
+            let line = decoder.decode(data);
+            console.log(line);
+            if (line.trim().includes("ELECTRONASPNETCORESTAERTED")) {
+                console.log("Captured start signal");
+                // 等AspCore启动后再启动窗口
+                createWindow(aspCoreBackendPort);
+            }
         });
-
-        // 等AspCore启动后再启动窗口
-        createWindow(aspCoreBackendPort);
     }
 }
 

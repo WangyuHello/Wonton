@@ -75,29 +75,11 @@ namespace Wonton.CrossUI.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-//            Task.Run(async () =>
-//            {
-//                var window = await Electron.WindowManager.CreateWindowAsync(
-//                    new BrowserWindowOptions
-//                    {
-//                        TitleBarStyle = TitleBarStyle.hiddenInset,
-//                        Frame = false,
-//                        Width = 1000,
-//                        Height = 650,
-//                        BackgroundColor = "#FFF"
-//                    });
-//                window.OnClosed += lifetime.StopApplication;
-//                ElectronIPC.SetWindow(window);
-//                ElectronIPC.Initialize(window);
-//#if DEBUG
-//                window.WebContents.OpenDevTools(new OpenDevToolsOptions
-//                {
-//                    Mode = DevToolsMode.detach
-//                });
-//#endif
-//            });
 
-//            ElectronIPC.SetMenu();
+            lifetime.ApplicationStarted.Register(() =>
+            {
+                Console.WriteLine("ELECTRONASPNETCORESTAERTED");
+            });
         }
 
         
