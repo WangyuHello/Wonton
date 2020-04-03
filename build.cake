@@ -366,11 +366,11 @@ Task("PackageApp")
 
         if(IsRunningOnWindows())
         {
-            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npx.cmd electron-builder . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver +"\"", EnvironmentVariables = env_dict});
+            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"..\\..\\..\\node_modules\\.bin\\electron-builder.cmd . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver +"\"", EnvironmentVariables = env_dict});
         }
         else
         {
-            StartProcess("npx", new ProcessSettings { Arguments = "electron-builder . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
+            StartProcess("../../../node_modules/.bin/electron-builder", new ProcessSettings { Arguments = ". --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
         }
     });
 });
