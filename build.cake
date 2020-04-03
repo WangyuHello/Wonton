@@ -6,6 +6,8 @@
 var target = Argument("target", "Build");
 var useMagic = Argument<bool>("useMagic", true);
 var elec_target_os = Argument("targetOS", "SameAsHost");
+var elec_target_arch = Argument("targetArch", "SameAsHost");
+var fx_deps = Argument<bool>("FxDeps", false);
 var addi_name = Argument("AdditionalName", "");
 var release_dir = Argument("releaseDir", "Build");
 var clean_node = Argument<bool>("CleanNode", false);
@@ -15,31 +17,10 @@ var isHostWin = false;
 var isHostLinux = false;
 
 var elec_ver = "8.2.0";
-var elec_args = "";
-var elec_cache_dir = "";
-var elec_mirror_zip = "";
-var elec_mirror_sha = "";
-var elec_zip_name = "";
-var elec_zip_full_name = "";
 var elec_target_os2 = "";
+var elec_target_os3 = "";
 var host_os = "";
-
 var npm_reg = "https://registry.npm.taobao.org";
-var build_path = "";
-
-void Rename(string dir, string addi_name, string ext)
-{
-    var arcs = System.IO.Directory.EnumerateFiles(dir, "*."+ext);
-    foreach (var f in arcs)
-    {
-        var n = System.IO.Path.GetFileNameWithoutExtension(f);
-        n = n + "-" + addi_name;
-        var f2 = System.IO.Path.Combine(dir, n + "." + ext);
-        System.IO.File.Move(f, f2, true);
-        Information("重命名: "+f2);
-    }
-}
-
 
 isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
 isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
@@ -47,52 +28,51 @@ isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(Sys
 
 if(isHostMac)
 {
-    if(elec_target_os == "SameAsHost") { elec_target_os = "osx"; }
+    if(elec_target_os == "SameAsHost") { elec_target_os = "mac"; }
     host_os = "macOS";
-    var HOME = EnvironmentVariable("HOME");
-    elec_cache_dir = System.IO.Path.Combine(HOME, "Library", "Caches", "electron"); 
 }
 else if(isHostWin)
 {
     if(elec_target_os == "SameAsHost") { elec_target_os = "win"; }
     host_os = "Windows";
-    var LOCALAPPDATA = EnvironmentVariable("LOCALAPPDATA");
-    elec_cache_dir = System.IO.Path.Combine(LOCALAPPDATA, "electron", "Cache");
 }
 else if(isHostLinux)
 {
     host_os = "Linux";
     if(elec_target_os == "SameAsHost") { elec_target_os = "linux"; }
-    var HOME = EnvironmentVariable("HOME");
-    elec_cache_dir = System.IO.Path.Combine(HOME, ".cache", "electron"); 
 }
 
-if(elec_target_os == "osx")
+if(elec_target_os == "mac")
 {
     elec_target_os2 = "darwin";
+    elec_target_os3 = "osx-x64";
 }
 if(elec_target_os == "win")
 {
     elec_target_os2 = "win32";
+    elec_target_os3 = "win-x64";
 }
 if(elec_target_os == "linux")
 {
     elec_target_os2 = "linux";
+    elec_target_os3 = "linux-x64";
 }
 
-elec_args = "build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
-elec_mirror_zip = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
-elec_mirror_sha = "https://npm.taobao.org/mirrors/electron/"+elec_ver+"/SHASUMS256.txt";
-elec_zip_name = "electron-v"+elec_ver+"-"+ elec_target_os2 +"-x64.zip";
-elec_zip_full_name = System.IO.Path.Combine(elec_cache_dir, elec_zip_name);
+var pre_package_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os;
+var backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
 
-Information("Electron Cache Dir: "+ elec_cache_dir);
-Information("Build for "+elec_target_os+" on "+host_os);
-Information("Electron name "+elec_zip_name);
-Information("Electron full name "+elec_zip_full_name);
+Information("Build for "+elec_target_os+" on "+host_os + ", framework dependent: "+fx_deps);
 
-build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
+var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
 Information("Build path "+build_path);
+
+var env_dict = new Dictionary<string, string>();
+if(useMagic)
+{
+    env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
+    env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
+    env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
+}
 
 
 Task("BuildNative")
@@ -144,45 +124,19 @@ Task("BuildNative")
     }
 });
 
-Task("Install Electron NET CLI")
+Task("InstallClientApp")
     .Does(()=> 
 {
-    Information("安装 ElectronNET.CLI");
-    DoInDirectory("Wonton.CrossUI.Web", () => {
-        StartProcess("dotnet", "tool install --tool-path tools ElectronNET.CLI");
-    });
-});
-
-Task("NpmInstall")
-    .Does(()=> 
-{
-    Information("Npm install");
-    DoInDirectory(System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp"), () => {
-        var npms = new NpmInstallSettings();
-        var arg = "install";
-        if(useMagic) 
-        {
-            npms.Registry = new Uri(npm_reg);
-            arg = arg + " --registry="+npm_reg;
-        }
-        if(IsRunningOnWindows())
-        {
-            NpmInstall(npms);
-        }
-        else
-        {
-            StartProcess("npm", new ProcessSettings { Arguments = arg });
-        }
-    });
+    NpmInstallElectronWithRegistry(System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp"));
 });
 
 Task("HackWebpack")
     .Does(()=> 
 {
-    Information("Hack webpack config");
     // var render_config = "target: isEnvProduction ? 'electron-renderer' : isEnvDevelopment && 'web'";
     var render_config = "target: 'electron-renderer'";
     var config_file = System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp", "node_modules", "react-scripts", "config", "webpack.config.js");
+    Information("Hack webpack config: "+config_file);
     var config_contents = System.IO.File.ReadAllLines(config_file);
     List<string> modified_contents = new List<string>();
     var modified = false;
@@ -210,107 +164,7 @@ Task("HackWebpack")
     }
 });
 
-bool CheckSHA(string electron_file)
-{
-    if(!DirectoryExists(elec_cache_dir)) return false;
-    if(!FileExists(elec_zip_full_name)) return false;
-
-    bool correct = false;
-    DoInDirectory(elec_cache_dir, () => {
-        DelFile("SHASUMS256.txt");
-        DownloadFile(elec_mirror_sha, "SHASUMS256.txt");
-        var sha256 = CalculateFileHash(elec_zip_full_name, HashAlgorithm.SHA256).ToHex();
-        Information("已下载的 Electron: " + sha256);
-        var shas = FileReadLines("SHASUMS256.txt");
-        foreach(var sha in shas)
-        {
-            var parts = sha.Split(new [] { ' ', '*' });
-            var target_sha = parts[0];
-            var zip_name = parts[2];
-            if(zip_name == elec_zip_name)
-            {
-                if(target_sha == sha256)
-                {
-                    Information("SHA256 正确＜（＾－＾）＞");
-                    correct = true;
-                    break;
-                }
-                else
-                {
-                    Information("SHA256 错误，将重新下载");
-                }
-            }
-        }
-    });
-    return correct;
-}
-
-Task("DownloadElectron")
-    .WithCriteria(useMagic && (!CheckSHA(elec_zip_full_name)))
-    .Does(()=> 
-{
-    if(!DirectoryExists(elec_cache_dir))
-    {
-        CreateDirectory(elec_cache_dir);
-    }
-    DelFile(elec_zip_full_name);
-    Information("正在下载 Electron");
-    DoInDirectory(elec_cache_dir, () => {
-        DownloadFile(elec_mirror_zip, elec_zip_name);
-    });
-});
-
-Task("BuildApp")
-    .Does(() =>
-{
-    Information("构建App");
-    DoInDirectory("Wonton.CrossUI.Web", () => {
-        var elec_net_tool_bin = System.IO.Path.Combine(".", "tools", "electronize");
-        var elec_net_tool_bin_local = "dotnet";
-        // DotNetCoreTool(".", "electronize", elec_args, new DotNetCoreToolSettings{ ToolPath = "tools" } );
-        var env_dict = new Dictionary<string, string>();
-        if(useMagic)
-        {
-            env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
-            env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
-            env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
-        }
-        env_dict.Add("ADDI_NAME", addi_name == "" ? "" : "-"+addi_name);
-        env_dict.Add("FXDEPS", "");
-        var cli_path = MakeAbsolute(Directory("../Electron.NET/ElectronNET.CLI/bin/") + File("ElectronNET.CLI.dll"));
-
-
-        var elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json";
-        StartProcess(elec_net_tool_bin_local, new ProcessSettings { Arguments = elec_args_local, EnvironmentVariables = env_dict });
-
-        if(IsRunningOnWindows()) 
-        {
-            env_dict["FXDEPS"] = "-fxdependent";
-            elec_args_local = cli_path + " build /target "+ elec_target_os +" /package-json ./ClientApp/electron.package.json /fxdeps";
-            StartProcess(elec_net_tool_bin_local, new ProcessSettings { Arguments = elec_args_local, EnvironmentVariables = env_dict });
-        }
-
-    });
-
-
-    if(release_dir != "") //拷贝到Release目录
-    {
-
-    }
-});
-
-Task("RenamePacakge")
-    .WithCriteria(!string.IsNullOrEmpty(addi_name))
-    .Does(() =>
-{
-    Information("重命名: "+addi_name);    
-    Rename(build_path, addi_name, "7z");
-    Rename(build_path, addi_name, "dmg");
-    Rename(build_path, addi_name, "deb");
-    Rename(build_path, addi_name, "zip");
-});
-
-Task("CopyPacakge")
+Task("CopyPackage")
     .WithCriteria(!string.IsNullOrEmpty(release_dir))
     .Does(() =>
 {
@@ -353,13 +207,11 @@ Task("BuildElectronCLI")
 });
 
 Task("Build")
-    .IsDependentOn("BuildElectronCLI")
     .IsDependentOn("BuildNative")
-    .IsDependentOn("NpmInstall")
+    .IsDependentOn("InstallClientApp")
     .IsDependentOn("HackWebpack")
-    .IsDependentOn("DownloadElectron")
-    .IsDependentOn("BuildApp")
-    .IsDependentOn("CopyPacakge")
+    .IsDependentOn("PackageApp")
+    .IsDependentOn("CopyPackage")
     .Does(() =>
 {
 
@@ -398,46 +250,123 @@ Task("Clean")
     DelDir("Wonton.CrossUI.Web/obj");
     DelDir("Wonton.CrossUI.Web/logs");
     DelDir("Wonton.CrossUI.Web/ClientApp/build");
+    DelDir("Wonton.CrossUI.Web.HostApp/bin");
+    DelDir("Wonton.CrossUI.Web.HostApp/obj");
+    DelFile("Wonton.CrossUI.Web.HostApp/main.js");
     DelDir("Wonton.Test/bin");
     DelDir("Wonton.Test/obj");
     DelDir("Wonton.WinUI.UWP/bin");
     DelDir("Wonton.WinUI.UWP/obj");
     DelDir("Wonton.WinUI.WPF/bin");
     DelDir("Wonton.WinUI.WPF/obj");
-    DelDir("Electron.NET/ElectronNET.API/bin");
-    DelDir("Electron.NET/ElectronNET.API/obj");
-    DelDir("Electron.NET/ElectronNET.CLI/bin");
-    DelDir("Electron.NET/ElectronNET.CLI/obj");
 
     if(clean_node)
     {
         DelDir("Wonton.CrossUI.Web/ClientApp/node_modules");
         DelDir("Wonton.CrossUI.Web/ElectronHost/node_modules");
+        DelDir("Wonton.CrossUI.Web.HostApp/node_modules");
     }
 });
 
-Task("InstallElectronHost")
-    .Does(() =>
+void NpmInstallElectronWithRegistry(string dir, bool production = false)
 {
-    DoInDirectory("Wonton.CrossUI.Web/ElectronHost", () => {
-        var env_dict = new Dictionary<string, string>();
-        var npms = new NpmInstallSettings();
-        if(useMagic)
+    DoInDirectory(dir, () => {
+        var install = "i";
+        if(production)
         {
-            env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
-            env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
-            env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
+            install = install + "  --production";
         }
         if(IsRunningOnWindows())
         {
-            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npm.cmd i\"", EnvironmentVariables = env_dict });
+            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npm.cmd "+ install +"\"", EnvironmentVariables = env_dict });
+            
         }
         else
         {
-            StartProcess("npm", new ProcessSettings { Arguments = "i", EnvironmentVariables = env_dict });
+            StartProcess("npm", new ProcessSettings { Arguments = install, EnvironmentVariables = env_dict });
+        }
+    });
+}
+
+Task("InstallHostApp")
+    .Does(() =>
+{
+    NpmInstallElectronWithRegistry("Wonton.CrossUI.Web.HostApp");
+});
+
+Task("BuildHostApp")
+    .IsDependentOn("InstallHostApp")
+    .Does(() =>
+{
+    DoInDirectory("Wonton.CrossUI.Web.HostApp", () => {
+        if(IsRunningOnWindows())
+        {
+            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npm.cmd run build\""});
+        }
+        else
+        {
+            StartProcess("npm", new ProcessSettings { Arguments = "run build" });
+        }
+    });
+});
+
+Task("PublishBackendApp")
+    .Does(() =>
+{
+    Information("Pre-package path: "+ pre_package_path);
+    DelDir(backend_bin_path);
+    var config = new DotNetCorePublishSettings 
+    { 
+        Configuration = "Release",
+        OutputDirectory = backend_bin_path
+    };
+    if(!fx_deps)
+    {
+        config.Runtime = elec_target_os3;
+        config.SelfContained = true;
+    }
+    DotNetCorePublish("Wonton.CrossUI.Web/Wonton.CrossUI.Web.csproj", config);
+});
+
+Task("CopyHostApp")
+    .Does(()=> 
+{
+    var electron_files = GetFiles("Wonton.CrossUI.Web.HostApp/*.js");
+    var electron_files2 = GetFiles("Wonton.CrossUI.Web.HostApp/*.json");
+    CopyFiles(electron_files, pre_package_path);
+    CopyFiles(electron_files2, pre_package_path);
+});
+
+Task("InstallPrepackageHostApp")
+    .Does(()=> 
+{
+    NpmInstallElectronWithRegistry(pre_package_path, true);
+});
+
+Task("PackageApp")
+    .IsDependentOn("BuildHostApp")
+    .IsDependentOn("PublishBackendApp")
+    .IsDependentOn("CopyHostApp")
+    .IsDependentOn("InstallPrepackageHostApp")
+    .Does(() => 
+{
+    DoInDirectory(pre_package_path, () => 
+    {
+        env_dict.Add("ADDI_NAME", addi_name == "" ? "" : "-"+addi_name);
+        env_dict.Add("FXDEPS", "");
+        if(fx_deps)
+        {
+            env_dict["FXDEPS"] = "-fxdependent";
         }
 
-
+        if(IsRunningOnWindows())
+        {
+            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npx.cmd electron-builder . --"+ elec_target_os +" --x64 -c.electronVersion="+ elec_ver +"\"", EnvironmentVariables = env_dict});
+        }
+        else
+        {
+            StartProcess("npx electron-builder . --win --x64 -c.electronVersion="+ elec_ver, new ProcessSettings { EnvironmentVariables = env_dict });
+        }
     });
 });
 

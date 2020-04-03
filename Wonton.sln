@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wonton.CrossUI.Web", "Wonto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wonton.Test", "Wonton.Test\Wonton.Test.csproj", "{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Wonton.CrossUI.Web.HostApp", "Wonton.CrossUI.Web.HostApp\Wonton.CrossUI.Web.HostApp.njsproj", "{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,26 @@ Global
 		{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}.Release|x64.Build.0 = Release|Any CPU
 		{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}.Release|x86.ActiveCfg = Release|Any CPU
 		{44F40CB6-8C12-46A3-BDE8-C91C99437BC4}.Release|x86.Build.0 = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|x64.Build.0 = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|ARM.Build.0 = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|ARM64.Build.0 = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|x64.ActiveCfg = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|x64.Build.0 = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

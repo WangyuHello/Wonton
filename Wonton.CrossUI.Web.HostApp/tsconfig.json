@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "target": "es5",
+    "baseUrl": ".",
+    "paths": {
+      "*": [ "node_modules/*" ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

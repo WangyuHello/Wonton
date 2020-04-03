@@ -1,48 +1,84 @@
 {
-  "executable": "Wonton.CrossUI.Web",
-  "splashscreen": {
-    "imageFile": "ClientApp/build/icons/256x256.png"
+  "name": "wonton",
+  "description": "GUI for FPGA",
+  "version": "1.0.9",
+  "main": "main.js",
+  "author": {
+    "name": "Wang Yu",
+    "email": "wwangyuu@outlook.com",
+    "url": "https://www.github.com/WangyuHello"
   },
-  "singleInstance": true,
+  "license": "MIT",
+  "homepage": "https://www.github.com/WangyuHello/Wonton",
+  "repository": "https://www.github.com/WangyuHello/Wonton",
+  "maintainer": "Wang Yu",
+  "scripts": {
+    "prestart": "tsc",
+    "start": "electron .",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "electron-updater": "^4.3.0",
+    "portscanner": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/node": "^12.0.12",
+    "@types/portscanner": "^2.1.0",
+    "electron": "^8.2.0",
+    "typescript": "^3.8.3"
+  },
   "build": {
     "appId": "edu.Wonton.CrossUI.Web.app",
     "productName": "Wonton",
-    "copyright": "Copyright © 2019 Wang Yu",
-    "buildVersion": "1.0.9",
+    "copyright": "Copyright ? 2019 Wang Yu",
     "compression": "maximum",
     "directories": {
-      "output": "../../../bin/Desktop"
+      "output": "../../../../Wonton.CrossUI.Web/bin/Desktop"
     },
     "extraResources": [
       {
         "from": "./bin",
         "to": "bin",
-        "filter": [ "**/*" ]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "files": [
       {
         "from": "./ElectronHostHook/node_modules",
         "to": "ElectronHostHook/node_modules",
-        "filter": [ "**/*" ]
+        "filter": [
+          "**/*"
+        ]
       },
       "**/*"
     ],
     "win": {
       "icon": "./bin/ClientApp/build/chip.ico",
       "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}${env.FXDEPS}.${ext}",
-      "target": [ "7z", "nsis" ]
+      "target": [
+        "7z",
+        "nsis"
+      ]
     },
     "mac": {
       "icon": "./bin/ClientApp/build/chip.icns",
       "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}.${ext}",
-      "target": [ "7z", "dmg" ]
+      "target": [
+        "7z",
+        "dmg"
+      ]
     },
     "linux": {
       "icon": "./bin/ClientApp/build/icons",
       "artifactName": "${productName}-${version}-${os}-${arch}${env.ADDI_NAME}.${ext}",
       "category": "Education",
-      "target": [ "7z", "deb" ]
+      "target": [
+        "7z",
+        "deb"
+      ]
     },
     "nsis": {
       "oneClick": false,

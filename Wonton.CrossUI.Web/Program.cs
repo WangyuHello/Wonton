@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.CommandLine;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Wonton.CrossUI.Web.Extensions;
 
 namespace Wonton.CrossUI.Web
 {

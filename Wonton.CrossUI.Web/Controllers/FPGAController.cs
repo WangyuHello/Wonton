@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
-using ElectronNET.API;
-using ElectronNET.API.Entities;
 using Wonton.Common;
 using Wonton.CrossUI.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +51,7 @@ namespace Wonton.CrossUI.Web.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Program失败");
-                Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program失败"));
+                //Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program失败"));
                 return new FPGAResponse()
                 {
                     Message = e.Message,
@@ -61,7 +59,7 @@ namespace Wonton.CrossUI.Web.Controllers
                 };
             }
             _logger.LogInformation("Program成功");
-            Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program成功"));
+            //Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program成功"));
             return new FPGAResponse()
             {
                 Message = "成功",
@@ -80,7 +78,7 @@ namespace Wonton.CrossUI.Web.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "ioopen失败");
-                Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "FPGA未连接"));
+                //Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "FPGA未连接"));
                 return new FPGAResponse()
                 {
                     Message = e.Message,
@@ -242,7 +240,7 @@ namespace Wonton.CrossUI.Web.Controllers
         {
             await System.IO.File.WriteAllTextAsync(filename, data.data);
             _logger.LogInformation("已保存项目: "+ filename);
-            Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "已保存"));
+            //Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "已保存"));
 
             return new FPGAResponse()
             {
