@@ -364,7 +364,7 @@ Task("PackageApp")
         }
         else
         {
-            StartProcess("npx", new ProcessSettings { Arguments = "electron-builder . --win --x64 -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
+            StartProcess("npx", new ProcessSettings { Arguments = "electron-builder . --"+ elec_target_os +" --x64 -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
         }
     });
 });
