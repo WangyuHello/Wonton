@@ -60,11 +60,11 @@ if(elec_target_os == "linux")
 
 var pre_package_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os;
 var backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
+var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
 
 Information("Build for "+elec_target_os+" on "+host_os + ", framework dependent: "+fx_deps);
-
-var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
-Information("Build path "+build_path);
+Information("Build path: "+build_path);
+Information("Package path: "+pre_package_path);
 
 var env_dict = new Dictionary<string, string>();
 if(useMagic)
@@ -313,7 +313,6 @@ Task("BuildHostApp")
 Task("PublishBackendApp")
     .Does(() =>
 {
-    Information("Pre-package path: "+ pre_package_path);
     DelDir(backend_bin_path);
     var config = new DotNetCorePublishSettings 
     { 
@@ -365,7 +364,7 @@ Task("PackageApp")
         }
         else
         {
-            StartProcess("npx electron-builder . --win --x64 -c.electronVersion="+ elec_ver, new ProcessSettings { EnvironmentVariables = env_dict });
+            StartProcess("npx", new ProcessSettings { Arguments = "electron-builder . --win --x64 -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
         }
     });
 });
