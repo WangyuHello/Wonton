@@ -22,7 +22,6 @@
     "portscanner": "^2.2.0"
   },
   "devDependencies": {
-    "@types/electron": "^1.6.10",
     "@types/node": "^12.0.12",
     "@types/portscanner": "^2.1.0",
     "electron": "^8.2.0",
