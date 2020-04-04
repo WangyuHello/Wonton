@@ -220,7 +220,12 @@ export default class ProjectManager {
             },
             body: JSON.stringify(transmit, null, 4)
         });
-        await response.json();
+        const data = await response.json();
+        if (data.status === true) {
+            let myNotification = new Notification('馄饨FPGA', {
+                body: '已保存'
+            });
+        }
     }
 
     RegisterRefreshTitle = (titlecallback) => {
