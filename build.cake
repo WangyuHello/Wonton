@@ -338,8 +338,10 @@ Task("CopyHostApp")
 {
     var electron_files = GetFiles("Wonton.CrossUI.Web.HostApp/*.js");
     var electron_files2 = GetFiles("Wonton.CrossUI.Web.HostApp/*.json");
+    var electron_files3 = GetFiles("Wonton.CrossUI.Web.HostApp/*.html");
     CopyFiles(electron_files, pre_package_path);
     CopyFiles(electron_files2, pre_package_path);
+    CopyFiles(electron_files3, pre_package_path);
 });
 
 Task("InstallPrepackageHostApp")

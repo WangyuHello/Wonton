@@ -52,6 +52,10 @@ function createWindow() {
     // let loadURL = `http://localhost:${webPort}`;
     // mainWin.loadURL(loadURL);
 
+    // 加载Skeleton
+    const loadSkeletonUrl = path.join(__dirname, 'skeleton.html');
+    mainWin.loadURL('file://' + loadSkeletonUrl);
+
     // mainWin.once('ready-to-show', () => {
     //     mainWin.show()
     // })
