@@ -123,7 +123,12 @@ jobs:
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
-      version: '3.1.101'
+      version: '3.1.x'
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '13.x' 
+      checkLatest: false # Optional
   
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
@@ -148,12 +153,12 @@ jobs:
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
-      version: '3.1.101'
+      version: '3.1.x'
 
   - task: NodeTool@0
     inputs:
-      versionSpec: '12.x' 
-      #checkLatest: false # Optional
+      versionSpec: '13.x' 
+      checkLatest: false # Optional
   
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
