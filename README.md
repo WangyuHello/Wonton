@@ -38,7 +38,7 @@
 - NodeJS : https://nodejs.org/en/
 - .NET Core SDK: https://dotnet.microsoft.com/download
 
-## 自动编译步骤
+## 编译步骤
 
 1. 安装 NodeJS https://nodejs.org/en/
     
@@ -86,103 +86,7 @@
     ./tools/dotnet-cake -useMagic=false
     ```
 
-6. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
-
-## 手动编译步骤
-
-### 首次编译
-
-1. 安装 NodeJS https://nodejs.org/en/
-    
-    LTS和Current版本均可
-
-2. 安装 .NET Core SDK https://dotnet.microsoft.com/download
-
-    需 >= 3.1 版本，请勿安装 Runtime 版本
-
-3. 克隆源代码仓库
-
-    ```powershell
-    git clone --recursive https://github.com/WangyuHello/Wonton.git
-    ```
-
-4. 在 Wonton.CrossUI.Web 目录运行
-
-    ```powershell
-    dotnet tool install --tool-path tools ElectronNET.CLI
-    ```
-
-4. 在 Wonton.CrossUI.Web 目录运行
-
-    ```powershell
-    dotnet build -c Release
-    ```
-
-6. 在 Wonton.CrossUI.Web\ClientApp 目录运行，此步骤可能需要较长时间，视网络状况。
-
-    ```powershell
-    npm i
-    ```
-
-7. 修改 Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config\webpack.config.js 文件, 在 ```return``` 函数中添加一个字段 ```target: 'electron-renderer'``` （注意逗号）然后保存。
-
-    ![webpack](./Imgs/target.png)
-
-8. 如果是海外用户请跳过此步骤
-
-    - 配置Electron
-
-    1. 找到**Electron缓存目录**，如果没有可自行创建。
-
-        Windows： ```%LOCALAPPDATA%\electron\Cache``` <br>
-        macOS:  ```~/Library/Caches/electron/``` <br>
-        Linux: ```~/.cache/electron/```
-
-    2. 从淘宝镜像下载Electron包
-
-        Windows： https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-win32-x64.zip <br>
-        macOS:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-darwin-x64.zip <br>
-        Linux:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-linux-x64.zip
-
-    3. 将上述下载的zip包存放在**Electron缓存目录**中
-
-9. 在 Wonton.CrossUI.Web 目录运行如下命令，此步骤可能需要较长时间，视网络状况。如果出现Electron无法下载问题，请查看[Electron无法下载](####Electron无法下载)
-
-    编译 Windows 版本
-    ```powershell
-    .\tools\electronize build /target win /package-json .\ClientApp\electron.package.json
-    ```
-
-    或者，编译 macOS 版本
-    ```bash
-    ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
-    ```
-
-    或者，编译 Linux 版本
-    ```bash
-    ./tools/electronize build /target linux /package-json ./ClientApp/electron.package.json
-    ```
-10. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
-
-### 非首次编译
-
-1. 在 Wonton.CrossUI.Web 目录运行
-
-    编译 Windows 版本
-    ```powershell
-    .\tools\electronize build /target win /package-json .\ClientApp\electron.package.json
-    ```
-
-    或者，编译 macOS 版本
-    ```bash
-    ./tools/electronize build /target osx /package-json ./ClientApp/electron.package.json
-    ```
-
-    或者，编译 Linux 版本
-    ```bash
-    ./tools/electronize build /target linux /package-json ./ClientApp/electron.package.json
-    ```
-2. 编译后的文件在 Wonton.CrossUI.Web\bin\Desktop 目录下
+6. 编译后的文件在 Build 目录下
 
 # 驱动编译指南
 
@@ -220,7 +124,7 @@
 
 2. 如果想要撤销驱动编译，请删除 **NativeDeps.zip** 、VLFDDriver、SharpVLFD目录。
 
-### 问题解决
+# 问题解决
 
 #### Electron无法下载
 
