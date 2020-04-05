@@ -200,18 +200,6 @@ Task("CopyToRelease")
     CopyFiles(files, release_dir);
 });
 
-Task("BuildElectronCLI")
-  .Does(() =>
-{
-    Information("构建CLI");
-    DotNetCoreBuild("Electron.NET/ElectronNET.CLI/ElectronNET.CLI.csproj", new DotNetCoreBuildSettings 
-    { 
-        Configuration = "Release",
-        OutputDirectory = "Electron.NET/ElectronNET.CLI/bin/"
-    });
-
-});
-
 Task("Build")
     .IsDependentOn("BuildNative")
     .IsDependentOn("InstallClientApp")
