@@ -222,7 +222,7 @@ export default class ProjectManager {
         });
         const data = await response.json();
         if (data.status === true) {
-            let myNotification = new Notification('馄饨FPGA', {
+            new Notification('馄饨FPGA', {
                 body: '已保存'
             });
         }

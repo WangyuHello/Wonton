@@ -474,16 +474,16 @@ export class Title extends Component {
 
                     {isMac ? <div /> : 
                     <div className="clickTitle">
-                        <a className="btn btn-min" href="#" onClick={this.ClickMin}>
+                        <a className="btn btn-min" href="/#" onClick={this.ClickMin}>
                             {/* <span className="systemIcon">&#xE921;</span> */}
                             <span className="systemIcon">&#xeaba;</span>
                         </a>
-                        <a className="btn btn-max" href="#" onClick={this.ClickMaxRestore}>
+                        <a className="btn btn-max" href="/#" onClick={this.ClickMaxRestore}>
                             {/* <img src={this.state.isMaximized ? restore : maximize} /> */}
                             {this.state.isMaximized ? <span className="systemIcon">&#xeabb;</span> : <span className="systemIcon">&#xeab9;</span>}
                         </a>
                         {/* <div className="window-icon codicon codicon-chrome-maximize"></div> */}
-                        <a className="btn btn-close" href="#" onClick={this.ClickClose}>
+                        <a className="btn btn-close" href="/#" onClick={this.ClickClose}>
                             {/* <img src={close} /> */}
                             <span className="systemIcon">&#xeab8;</span>
                             {/* <span className="systemIcon2">&#xe106;</span> */}

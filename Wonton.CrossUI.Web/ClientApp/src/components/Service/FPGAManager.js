@@ -173,12 +173,12 @@ export default class FPGAManager {
         const response = await fetch('/api/fpga/program?bitfile=' + bitfile);
         const data = await response.json();
         if (data.status === false) {
-            let myNotification = new Notification('馄饨FPGA', {
+            new Notification('馄饨FPGA', {
                 body: 'Program失败'
             });
         }
         else {
-            let myNotification = new Notification('馄饨FPGA', {
+            new Notification('馄饨FPGA', {
                 body: 'Program成功'
             });
         }
@@ -189,7 +189,7 @@ export default class FPGAManager {
         const response = await fetch('/api/fpga/ioopen');
         const data = await response.json();
         if (data.status === false) {
-            let myNotification = new Notification('馄饨FPGA', {
+            new Notification('馄饨FPGA', {
                 body: 'FPGA连接失败'
             });
         }
