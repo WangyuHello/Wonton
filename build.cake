@@ -137,40 +137,6 @@ Task("InstallClientApp")
     NpmInstallElectronWithRegistry(System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp"));
 });
 
-Task("HackWebpack")
-    .Does(()=> 
-{
-    // var render_config = "target: isEnvProduction ? 'electron-renderer' : isEnvDevelopment && 'web'";
-    var render_config = "target: 'electron-renderer'";
-    var config_file = System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp", "node_modules", "react-scripts", "config", "webpack.config.js");
-    Information("Hack webpack config: "+config_file);
-    var config_contents = System.IO.File.ReadAllLines(config_file);
-    List<string> modified_contents = new List<string>();
-    var modified = false;
-    foreach (var line in config_contents)
-    {
-        if (line.Contains(render_config))
-        {
-            modified = true;
-            break;
-        }
-    }
-
-    if (!modified)
-    {
-        foreach (var line in config_contents)
-        {
-            modified_contents.Add(line);
-            if (line.Contains("mode: isEnvProduction"))
-            {
-                modified_contents.Add("    " + render_config + ",");
-            }
-        }
-
-        System.IO.File.WriteAllText(config_file, string.Join(Environment.NewLine, modified_contents));
-    }
-});
-
 Task("CopyPackage")
     .WithCriteria(!string.IsNullOrEmpty(release_dir))
     .Does(() =>
@@ -204,7 +170,6 @@ Task("CopyToRelease")
 Task("Build")
     .IsDependentOn("BuildNative")
     .IsDependentOn("InstallClientApp")
-    .IsDependentOn("HackWebpack")
     .IsDependentOn("PackageApp")
     .IsDependentOn("CopyPackage")
     .Does(() =>
