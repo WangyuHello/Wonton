@@ -78,6 +78,7 @@ if(useMagic)
     env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
     env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
     env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
+    env_dict.Add("PUPPETEER_DOWNLOAD_HOST", "https://npm.taobao.org/mirrors/");
 }
 
 
@@ -356,11 +357,11 @@ Task("PackageApp")
 
         if(IsRunningOnWindows())
         {
-            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"..\\..\\..\\node_modules\\.bin\\electron-builder.cmd . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver +"\"", EnvironmentVariables = env_dict});
+            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"..\\..\\..\\node_modules\\.bin\\electron-builder.cmd . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver +" --publish never\"", EnvironmentVariables = env_dict});
         }
         else
         {
-            StartProcess("../../../node_modules/.bin/electron-builder", new ProcessSettings { Arguments = ". --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver, EnvironmentVariables = env_dict });
+            StartProcess("../../../node_modules/.bin/electron-builder", new ProcessSettings { Arguments = ". --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver+" --publish never", EnvironmentVariables = env_dict });
         }
     });
 });
