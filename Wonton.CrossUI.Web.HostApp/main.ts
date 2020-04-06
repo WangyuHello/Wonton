@@ -6,7 +6,8 @@ import * as portscanner from 'portscanner';
 let aspcoreProcess: ChildProcessWithoutNullStreams;
 let mainWin: Electron.BrowserWindow;
 
-let aspcoreName = 'Wonton.CrossUI.Web';
+const aspcoreName = 'Wonton.CrossUI.Web';
+const isDebug = process.env.NODE_ENV === 'development';
 
 const currentBinPath = path.join(__dirname.replace('app.asar', ''), 'bin');
 
@@ -28,7 +29,9 @@ if (!mainInstance) {
 
 app.allowRendererProcessReuse = true;
 
-startBackend();
+if (!isDebug) {
+    startBackend();
+}
 
 app.on('ready', () => {
     createWindow();
@@ -48,20 +51,23 @@ function createWindow() {
         }
     });
 
-    // 加载URL
-    // let loadURL = `http://localhost:${webPort}`;
-    // mainWin.loadURL(loadURL);
+    if (isDebug) {
+        // 加载URL
+        let loadURL = `http://localhost:55405`;
+        mainWin.loadURL(loadURL);
 
-    // 加载Skeleton
-    const loadSkeletonUrl = path.join(__dirname, 'skeleton.html');
-    mainWin.loadURL('file://' + loadSkeletonUrl);
+        // 打开开发者工具
+        mainWin.webContents.openDevTools({mode: "detach"});
+    }
+    else {
+        // 加载Skeleton
+        const loadSkeletonUrl = path.join(__dirname, 'skeleton.html');
+        mainWin.loadURL('file://' + loadSkeletonUrl);
+    }
 
     // mainWin.once('ready-to-show', () => {
     //     mainWin.show()
     // })
-
-    // 打开开发者工具
-    //mainWin.webContents.openDevTools();
 
     mainWin.on("maximize", () => {
         mainWin.webContents.send("window-state-maximize", 1);

@@ -1,6 +1,6 @@
 {
   "name": "wonton",
-  "description": "GUI for FPGA",
+  "description": "Virtual GUI for FPGA",
   "version": "1.0.10",
   "main": "main.js",
   "author": {
@@ -14,7 +14,7 @@
   "maintainer": "Wang Yu",
   "scripts": {
     "prestart": "tsc",
-    "start": "electron .",
+    "start": "cross-env NODE_ENV=development electron .",
     "build": "tsc"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/node": "^12.0.12",
     "@types/portscanner": "^2.1.0",
+    "cross-env": "^7.0.2",
     "electron": "^8.2.0",
     "electron-builder": "^22.4.1",
     "typescript": "^3.8.3"
