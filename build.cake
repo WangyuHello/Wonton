@@ -1,7 +1,5 @@
 #addin nuget:?package=Cake.DoInDirectory&version=3.3.0
-#addin nuget:?package=Cake.Npm&version=0.17.0
 #addin nuget:?package=Cake.CMake&version=1.2.0
-#addin nuget:?package=Cake.FileHelpers&version=3.2.1
 
 var target = Argument("target", "Build");
 var useMagic = Argument<bool>("useMagic", true);
@@ -68,9 +66,13 @@ var pre_package_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os;
 var backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
 var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
 
-Information("Build for "+elec_target_os+" on "+host_os + ", architecture: "+ elec_target_arch +", framework dependent: "+fx_deps);
-Information("Build path: "+build_path);
-Information("Package path: "+pre_package_path);
+Task("Info")
+    .Does(() => 
+{
+    Information("Build for "+elec_target_os+" on "+host_os + ", architecture: "+ elec_target_arch +", framework dependent: "+fx_deps);
+    Information("Build path: "+build_path);
+    Information("Package path: "+pre_package_path);
+});
 
 var env_dict = new Dictionary<string, string>();
 if(useMagic)
@@ -168,8 +170,8 @@ Task("CopyToRelease")
 });
 
 Task("Build")
+    .IsDependentOn("Info")
     .IsDependentOn("BuildNative")
-    .IsDependentOn("InstallClientApp")
     .IsDependentOn("PackageApp")
     .IsDependentOn("CopyPackage")
     .Does(() =>
@@ -271,6 +273,7 @@ Task("BuildHostApp")
 });
 
 Task("PublishBackendApp")
+    .IsDependentOn("InstallClientApp")
     .Does(() =>
 {
     DelDir(backend_bin_path);
