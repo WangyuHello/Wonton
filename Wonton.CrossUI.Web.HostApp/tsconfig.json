@@ -5,7 +5,7 @@
     "noEmitOnError": true,
     "removeComments": true,
     "sourceMap": false,
-    "target": "es5",
+    "target": "es2019",
     "baseUrl": ".",
     "paths": {
       "*": [ "node_modules/*" ]
