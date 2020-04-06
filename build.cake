@@ -9,12 +9,12 @@ var fx_deps = Argument<bool>("FxDeps", false);
 var addi_name = Argument("AdditionalName", "");
 var release_dir = Argument("releaseDir", "Build");
 var clean_node = Argument<bool>("CleanNode", false);
+var elec_ver = Argument("ElectronVersion", "8.2.0");
 
 var isHostMac = false;
 var isHostWin = false;
 var isHostLinux = false;
 
-var elec_ver = "8.2.0";
 var elec_target_os2 = "";
 var elec_target_os3 = "";
 var elec_target_arch2 = elec_target_arch;
@@ -81,6 +81,7 @@ if(useMagic)
     env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
     env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
     env_dict.Add("PUPPETEER_DOWNLOAD_HOST", "https://npm.taobao.org/mirrors/");
+    env_dict.Add("SASS_BINARY_SITE", "http://npm.taobao.org/mirrors/node-sass");
 }
 
 

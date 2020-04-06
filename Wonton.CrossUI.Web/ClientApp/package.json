@@ -38,6 +38,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
+    "node-sass": "^4.13.1",
     "react-app-rewired": "^2.1.5",
     "react-scripts": "^3.4.1",
     "rimraf": "^3.0.2",
