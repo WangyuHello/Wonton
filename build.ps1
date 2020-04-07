@@ -129,4 +129,4 @@ Start-Process "dotnet" -ArgumentList "tool", "install", "--tool-path", $tool_pat
 
 # 运行Build
 $cake_file = Join-Path $tool_path "dotnet-cake"
-Start-Process $cake_file -NoNewWindow -Wait
+Start-Process $cake_file -ArgumentList "-useMagic=$useMagic" -NoNewWindow -Wait

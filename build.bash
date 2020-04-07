@@ -148,4 +148,4 @@ fi
 dotnet tool install --tool-path $tool_path Cake.Tool 2>&1 || { echo ""; }
 
 cake_file="$tool_path/dotnet-cake"
-$cake_file
+$cake_file -useMagic=$useMagic
