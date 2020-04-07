@@ -6,7 +6,7 @@ import * as portscanner from 'portscanner';
 let aspcoreProcess: ChildProcessWithoutNullStreams;
 let mainWin: Electron.BrowserWindow;
 
-const aspcoreName = 'Wonton.CrossUI.Web';
+const aspcoreName = 'wonton-crosui-web-host';
 const isDebug = process.env.NODE_ENV === 'development';
 
 const currentBinPath = path.join(__dirname.replace('app.asar', ''), 'bin');
@@ -29,11 +29,31 @@ if (!mainInstance) {
 
 app.allowRendererProcessReuse = true;
 
-if (!isDebug) {
-    startBackend();
+// if (!isDebug) {
+//     startBackend();
+// }
+
+function startBackend2() {
+    const os = require('os');
+    let binaryFile = aspcoreName;
+    if (os.platform() === 'win32') {
+        binaryFile = binaryFile + '.exe';
+    }
+
+    let binFilePath = path.join(currentBinPath, binaryFile);
+    var options = { cwd: currentBinPath };
+    aspcoreProcess = spawn(binFilePath, options);
+
+    const decoder = new TextDecoder('utf-8');
+
+    aspcoreProcess.stdout.on('data', (data) => {
+        let line = decoder.decode(data);
+        console.log(line);
+    });
 }
 
 app.on('ready', () => {
+    startBackend2();
     createWindow();
 });
 
@@ -61,8 +81,12 @@ function createWindow() {
     }
     else {
         // 加载Skeleton
-        const loadSkeletonUrl = path.join(__dirname, 'skeleton.html');
-        mainWin.loadURL('file://' + loadSkeletonUrl);
+        // const loadSkeletonUrl = path.join(__dirname, 'skeleton.html');
+        // mainWin.loadURL('file://' + loadSkeletonUrl);
+
+        // 加载URL
+        let loadURL = `http://localhost:${55405}`;
+        mainWin.loadURL(loadURL);
     }
 
     // mainWin.once('ready-to-show', () => {
@@ -133,7 +157,7 @@ function startAspCoreBackend(electronPort: number) {
     function startBackend(aspCoreBackendPort: number) {
         console.log('ASP.NET Core Port: ' + aspCoreBackendPort);
 
-        const parameters = [`/electronPort=${electronPort}`, `/electronWebPort=${aspCoreBackendPort}`].concat(process.argv);
+        const parameters = [`/electronPort=${electronPort}`, `/electronWebPort=${55405}`].concat(process.argv);
         let binaryFile = aspcoreName;
 
         const os = require('os');
@@ -150,13 +174,15 @@ function startAspCoreBackend(electronPort: number) {
         aspcoreProcess.stdout.on('data', (data) => {
             let line = decoder.decode(data);
             console.log(line);
-            if (line.trim().includes("ELECTRONASPNETCORESTAERTED")) {
-                console.log("Captured start signal");
-                // 加载URL
-                let loadURL = `http://localhost:${aspCoreBackendPort}`;
-                mainWin.loadURL(loadURL);
-            }
+            // if (line.trim().includes("ELECTRONASPNETCORESTAERTED")) {
+            //     console.log("Captured start signal");
+
+            // }
         });
+
+        // // 加载URL
+        // let loadURL = `http://localhost:${aspCoreBackendPort}`;
+        // mainWin.loadURL(loadURL);
     }
 }
 
