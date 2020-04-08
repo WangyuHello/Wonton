@@ -67,6 +67,7 @@ try {
 catch {}
 
 if (-not $dotnet_exist) {
+    Write-Host "未发现 .NET Core, 将进行安装"
     # 安装 dotnet
     $dotnet_install_url = "https://dot.net/v1/dotnet-install.ps1" # https://dot.net/v1/dotnet-install.sh
     $dotnet_install_file = Join-Path $tool_path "dotnet-install.ps1"
@@ -87,6 +88,7 @@ if (-not $dotnet_exist) {
 }
 
 if (-not $npm_exist) {
+    Write-Host "未发现 NodeJs, 将进行安装"
     # 安装 nodejs
     $node_ext = "zip"
     if ($IsMacOS) {

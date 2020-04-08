@@ -72,14 +72,20 @@ command -v $dotnet_exe >/dev/null 2>&1 || { dotnet_exist=false; }
 command -v $npm_exe >/dev/null 2>&1 || { npm_exist=false; }
 
 if [ "$local_dotnet_exist" = false ]; then
-    echo "使用 Path 的 .NET Core"
+    if [ "$dotnet_exist" = true ]; then
+        echo "使用 Path 的 .NET Core"
+    fi
 fi
 
 if [ "$local_npm_exist" = false ]; then
-    echo "使用 Path 的 NodeJs"
+    if [ "$dotnet_exist" = true ]; then
+        echo "使用 Path 的 NodeJs"
+    fi
+    
 fi
 
 if [ "$dotnet_exist" = false ]; then
+    echo "未发现 .NET Core, 将进行安装"
     # 安装 dotnet
     dotnet_install_url="https://dot.net/v1/dotnet-install.sh"
     dotnet_install_file="$tool_path/dotnet-install.sh"
@@ -118,6 +124,7 @@ do
 done
 
 if [ "$npm_exist" = false ]; then
+    echo "未发现 NodeJs, 将进行安装"
     node_ext="tar.xz"
     node_arc="$node_dist.$node_ext"
     node_downloaded_file="$tool_path/$node_arc"
