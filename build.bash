@@ -152,7 +152,13 @@ if [ "$npm_exist" = false ]; then
     export PATH="$node_dist_path":"$PATH"
 fi
 
-dotnet tool install --tool-path $tool_path Cake.Tool 2>&1 || { echo ""; }
-
 cake_file="$tool_path/dotnet-cake"
+
+if  [ ! -f "$cake_file" ]; then
+    echo "未发现 Cake, 将进行安装"
+    dotnet tool install --tool-path $tool_path Cake.Tool 2>&1 || { echo ""; }
+else
+    echo "发现本地安装的 Cake: $cake_file"
+fi
+
 $cake_file -useMagic=$useMagic

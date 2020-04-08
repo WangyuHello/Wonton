@@ -25,9 +25,9 @@ $local_dotnet_exist = $false
 $npm_exist = $false
 $local_npm_exist = $false
 
-# å¦‚æœæœ¬åœ°å®‰è£…åˆ™ä½¿ç”¨æœ¬åœ°
+# Èç¹û±¾µØ°²×°ÔòÊ¹ÓÃ±¾µØ
 if (Test-Path $dotnet_install_path) {
-    Write-Host "å‘ç°æœ¬åœ°å®‰è£…çš„ .NET Core: $dotnet_install_path"
+    Write-Host "·¢ÏÖ±¾µØ°²×°µÄ .NET Core: $dotnet_install_path"
     $local_dotnet_exist = $true
     $env:Path="$dotnet_install_path;"+$env:Path
     $env:DOTNET_ROOT=$dotnet_install_path
@@ -36,7 +36,7 @@ if (Test-Path $dotnet_install_path) {
 if (Test-Path $node_install_path) {
     if(Test-Path $node_dist_path) 
     {
-        Write-Host "å‘ç°æœ¬åœ°å®‰è£…çš„ Nodejs: $node_dist_path"
+        Write-Host "·¢ÏÖ±¾µØ°²×°µÄ Nodejs: $node_dist_path"
         $local_npm_exist = $true
         if ($IsWindows) {
             $env:Path="$node_dist_path;"+$env:Path
@@ -52,7 +52,7 @@ try {
     $_ = Start-Process -FilePath $dotnet_exe -ArgumentList "--version" -NoNewWindow -PassThru -Wait
     $dotnet_exist = $true
     if (-not $local_dotnet_exist) {
-        Write-Host "ä½¿ç”¨ Path çš„ .NET Core"
+        Write-Host "Ê¹ÓÃ Path µÄ .NET Core"
     }
 }
 catch {}
@@ -61,14 +61,14 @@ try {
     $_ = Start-Process -FilePath $npm_exe -ArgumentList "-v" -NoNewWindow -PassThru -Wait
     $npm_exist = $true
     if (-not $local_npm_exist) {
-        Write-Host "ä½¿ç”¨ Path çš„ NodeJs"
+        Write-Host "Ê¹ÓÃ Path µÄ NodeJs"
     }
 }
 catch {}
 
 if (-not $dotnet_exist) {
-    Write-Host "æœªå‘ç° .NET Core, å°†è¿›è¡Œå®‰è£…"
-    # å®‰è£… dotnet
+    Write-Host "Î´·¢ÏÖ .NET Core, ½«½øĞĞ°²×°"
+    # °²×° dotnet
     $dotnet_install_url = "https://dot.net/v1/dotnet-install.ps1" # https://dot.net/v1/dotnet-install.sh
     $dotnet_install_file = Join-Path $tool_path "dotnet-install.ps1"
     if (-not (Test-Path -Path $tool_path)) {
@@ -77,10 +77,10 @@ if (-not $dotnet_exist) {
     if (-not (Test-Path -Path $dotnet_install_path)) {
         New-Item -Path $dotnet_install_path -ItemType Directory
     }
-    Write-Host "æ­£åœ¨ä¸‹è½½ .NET Core å®‰è£…è„šæœ¬"
+    Write-Host "ÕıÔÚÏÂÔØ .NET Core °²×°½Å±¾"
     Invoke-WebRequest -Uri $dotnet_install_url -OutFile $dotnet_install_file
 
-    Write-Host "æ­£åœ¨å®‰è£… .NET Core"
+    Write-Host "ÕıÔÚ°²×° .NET Core"
     Start-Process -FilePath "powershell" -ArgumentList $dotnet_install_file, "-Channel", "Current", "-Version", "Latest", "-InstallDir", $dotnet_install_path, "-NoPath" -NoNewWindow -Wait
 
     $env:Path="$dotnet_install_path;"+$env:Path
@@ -88,8 +88,8 @@ if (-not $dotnet_exist) {
 }
 
 if (-not $npm_exist) {
-    Write-Host "æœªå‘ç° NodeJs, å°†è¿›è¡Œå®‰è£…"
-    # å®‰è£… nodejs
+    Write-Host "Î´·¢ÏÖ NodeJs, ½«½øĞĞ°²×°"
+    # °²×° nodejs
     $node_ext = "zip"
     if ($IsMacOS) {
         $node_ext = "tar.xz"
@@ -111,10 +111,10 @@ if (-not $npm_exist) {
         $node_url = "$official_node_dist$VERSION/$node_arc";  
     }
     
-    Write-Host "æ­£åœ¨ä¸‹è½½ $node_url"
+    Write-Host "ÕıÔÚÏÂÔØ $node_url"
     Invoke-WebRequest -Uri $node_url -OutFile $node_downloaded_file
 
-    Write-Host "æ­£åœ¨è§£å‹ $node_arc"
+    Write-Host "ÕıÔÚ½âÑ¹ $node_arc"
     if ($IsWindows) {
         Expand-Archive -LiteralPath $node_downloaded_file -DestinationPath $node_install_path
         $env:Path="$node_dist_path;"+$env:Path
@@ -126,9 +126,14 @@ if (-not $npm_exist) {
     }
 }
 
-# å®‰è£…Cake
-Start-Process "dotnet" -ArgumentList "tool", "install", "--tool-path", $tool_path, "Cake.Tool" -NoNewWindow -Wait
-
-# è¿è¡ŒBuild
 $cake_file = Join-Path $tool_path "dotnet-cake"
+if (Test-Path $cake_file) {
+    Write-Host "·¢ÏÖ±¾µØ°²×°µÄ Cake: $cake_file"
+}
+else {
+    # °²×°Cake
+    Start-Process "dotnet" -ArgumentList "tool", "install", "--tool-path", $tool_path, "Cake.Tool" -NoNewWindow -Wait
+}
+
+# ÔËĞĞBuild
 Start-Process $cake_file -ArgumentList "-useMagic=$useMagic" -NoNewWindow -Wait
