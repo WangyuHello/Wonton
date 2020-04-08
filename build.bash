@@ -129,7 +129,7 @@ if [ "$npm_exist" = false ]; then
     node_arc="$node_dist.$node_ext"
     node_downloaded_file="$tool_path/$node_arc"
     official_node_dist="https://nodejs.org/dist/"
-    tuna_node_dist="https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/"
+    tuna_node_dist="https://npm.taobao.org/mirrors/node/"
     node_url=""
 
     if [ "$useMagic" = true ]; then
