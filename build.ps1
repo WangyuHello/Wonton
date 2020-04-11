@@ -1,9 +1,76 @@
-[cmdletbinding()]
-param(
-   [switch]$useMagic
+[CmdletBinding()]
+Param(
+    [string]$Script = "build.cake",
+    [switch]$useMagic,
+    [string]$Target,
+    [string]$Configuration,
+    [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
+    [string]$Verbosity,
+    [switch]$ShowDescription,
+    [Alias("WhatIf", "Noop")]
+    [switch]$DryRun,
+    [switch]$SkipToolPackageRestore,
+    [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
+    [string[]]$ScriptArgs
 )
 
-$dotnet_exe = "dotnet"
+# Attempt to set highest encryption available for SecurityProtocol.
+# PowerShell will not set this by default (until maybe .NET 4.6.x). This
+# will typically produce a message for PowerShell v2 (just an info
+# message though)
+try {
+    # Set TLS 1.2 (3072), then TLS 1.1 (768), then TLS 1.0 (192), finally SSL 3.0 (48)
+    # Use integers because the enumeration values for TLS 1.2 and TLS 1.1 won't
+    # exist in .NET 4.0, even though they are addressable if .NET 4.5+ is
+    # installed (.NET 4.5 is an in-place upgrade).
+    # PowerShell Core already has support for TLS 1.2 so we can skip this if running in that.
+    if (-not $IsCoreCLR) {
+        [System.Net.ServicePointManager]::SecurityProtocol = 3072 -bor 768 -bor 192 -bor 48
+    }
+} catch {
+    Write-Output 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to upgrade to .NET Framework 4.5+ and PowerShell v3'
+}
+
+[Reflection.Assembly]::LoadWithPartialName("System.Security") | Out-Null
+
+function MD5HashFile([string] $filePath)
+{
+    if ([string]::IsNullOrEmpty($filePath) -or !(Test-Path $filePath -PathType Leaf))
+    {
+        return $null
+    }
+
+    [System.IO.Stream] $file = $null;
+    [System.Security.Cryptography.MD5] $md5 = $null;
+    try
+    {
+        $md5 = [System.Security.Cryptography.MD5]::Create()
+        $file = [System.IO.File]::OpenRead($filePath)
+        return [System.BitConverter]::ToString($md5.ComputeHash($file))
+    }
+    finally
+    {
+        if ($null -ne $file)
+        {
+            $file.Dispose()
+        }
+    }
+}
+
+function GetProxyEnabledWebClient
+{
+    $wc = New-Object System.Net.WebClient
+    $proxy = [System.Net.WebRequest]::GetSystemWebProxy()
+    $proxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
+    $wc.Proxy = $proxy
+    return $wc
+}
+
+if(!$PSScriptRoot){
+    $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
+}
+
+$dotnet_exe = if ($IsWindows) {"dotnet.exe"} else {"dotnet"}
 $npm_exe = "npm"
 
 $tool_path = Join-Path $PSScriptRoot "tools"
@@ -26,7 +93,7 @@ $npm_exist = $false
 $local_npm_exist = $false
 
 # 如果本地安装则使用本地
-if (Test-Path $dotnet_install_path) {
+if ((Test-Path $dotnet_install_path) -and (Test-Path (Join-Path $dotnet_install_path $dotnet_exe))) {
     Write-Host "发现本地安装的 .NET Core: $dotnet_install_path"
     $local_dotnet_exist = $true
     $env:Path="$dotnet_install_path;"+$env:Path
@@ -36,35 +103,48 @@ if (Test-Path $dotnet_install_path) {
 if (Test-Path $node_install_path) {
     if(Test-Path $node_dist_path) 
     {
-        Write-Host "发现本地安装的 Nodejs: $node_dist_path"
-        $local_npm_exist = $true
-        if ($IsWindows) {
-            $env:Path="$node_dist_path;"+$env:Path
+        $has_bin = if ($IsWindows) {
+            Test-Path (Join-Path $node_dist_path "npm.cmd")
         }
         else {
-            $node_dist_path = Join-Path $node_dist_path "bin"
-            $env:Path="$node_dist_path;"+$env:Path
+            Test-Path (Join-Path $node_dist_path "bin" "npm")
+        }
+
+        if ($has_bin) {
+            Write-Host "发现本地安装的 Nodejs: $node_dist_path"
+            $local_npm_exist = $true
+            if ($IsWindows) {
+                $env:Path="$node_dist_path;"+$env:Path
+            }
+            else {
+                $node_dist_path = Join-Path $node_dist_path "bin"
+                $env:Path="$node_dist_path;"+$env:Path
+            }
         }
     }
 }
 
 try {
-    $_ = Start-Process -FilePath $dotnet_exe -ArgumentList "--version" -NoNewWindow -PassThru -Wait
+    Invoke-Expression "$dotnet_exe --version" | Out-Null
     $dotnet_exist = $true
     if (-not $local_dotnet_exist) {
         Write-Host "使用 Path 的 .NET Core"
     }
 }
-catch {}
+catch {
+    throw
+}
 
 try {
-    $_ = Start-Process -FilePath $npm_exe -ArgumentList "-v" -NoNewWindow -PassThru -Wait
+    $_ = Invoke-Expression "$npm_exe -v" | Out-Null
     $npm_exist = $true
     if (-not $local_npm_exist) {
         Write-Host "使用 Path 的 NodeJs"
     }
 }
-catch {}
+catch {
+    
+}
 
 if (-not $dotnet_exist) {
     Write-Host "未发现 .NET Core, 将进行安装"
@@ -72,16 +152,22 @@ if (-not $dotnet_exist) {
     $dotnet_install_url = "https://dot.net/v1/dotnet-install.ps1" # https://dot.net/v1/dotnet-install.sh
     $dotnet_install_file = Join-Path $tool_path "dotnet-install.ps1"
     if (-not (Test-Path -Path $tool_path)) {
-        New-Item -Path $tool_path -ItemType Directory
+        New-Item -Path $tool_path -ItemType Directory | Out-Null
     }
     if (-not (Test-Path -Path $dotnet_install_path)) {
-        New-Item -Path $dotnet_install_path -ItemType Directory
+        New-Item -Path $dotnet_install_path -ItemType Directory | Out-Null
     }
     Write-Host "正在下载 .NET Core 安装脚本"
-    Invoke-WebRequest -Uri $dotnet_install_url -OutFile $dotnet_install_file
+    $wc = GetProxyEnabledWebClient
+    $wc.DownloadFile($dotnet_install_url, $dotnet_install_file)
+    # Invoke-WebRequest -Uri $dotnet_install_url -OutFile $dotnet_install_file
 
     Write-Host "正在安装 .NET Core"
-    Start-Process -FilePath "powershell" -ArgumentList $dotnet_install_file, "-Channel", "Current", "-Version", "Latest", "-InstallDir", $dotnet_install_path, "-NoPath" -NoNewWindow -Wait
+    Invoke-Expression "$dotnet_install_file -Channel Current -Version Latest -InstallDir $dotnet_install_path -NoPath"
+    
+    if ($LASTEXITCODE -ne 0) {
+        Throw "An error occurred while installing .NET Core."
+    }
 
     $env:Path="$dotnet_install_path;"+$env:Path
     $env:DOTNET_ROOT=$dotnet_install_path
@@ -112,7 +198,9 @@ if (-not $npm_exist) {
     }
     
     Write-Host "正在下载 $node_url"
-    Invoke-WebRequest -Uri $node_url -OutFile $node_downloaded_file
+    $wc = GetProxyEnabledWebClient
+    $wc.DownloadFile($node_url, $node_downloaded_file)
+    # Invoke-WebRequest -Uri $node_url -OutFile $node_downloaded_file
 
     Write-Host "正在解压 $node_arc"
     if ($IsWindows) {
@@ -120,24 +208,30 @@ if (-not $npm_exist) {
         $env:Path="$node_dist_path;"+$env:Path
     }
     else {
-        Start-Process -FilePath "tar" -ArgumentList "-xJvf", $node_downloaded_file, "-C", $node_install_path -NoNewWindow -Wait
+        Invoke-Expression "tar -xJvf $node_downloaded_file -C $node_install_path"
+        if ($LASTEXITCODE -ne 0) {
+            Throw "An error occurred while installing NodeJs"
+        }
         $node_dist_path = Join-Path $node_dist_path "bin"
         $env:Path="$node_dist_path;"+$env:Path
     }
 }
 
-$cake_bin = "dotnet-cake"
-if ($IsWindows) {
-    $cake_bin = $cake_bin+".exe"
-}
-$cake_file = Join-Path $tool_path $cake_bin
-if (Test-Path $cake_file) {
-    Write-Host "发现本地安装的 Cake: $cake_file"
-}
-else {
-    # 安装Cake
-    Start-Process "dotnet" -ArgumentList "tool", "install", "--tool-path", $tool_path, "Cake.Tool" -NoNewWindow -Wait
-}
+$cake_bin = if ($IsCoreCLR) { "dotnet-cake" } else { "dotnet-cake.exe" }
+$cake_exe = Join-Path $tool_path $cake_bin
+
+Invoke-Expression "$dotnet_exe tool install --tool-path $tool_path Cake.Tool" | Out-Null
+
+$cakeArguments = @()
+if ($Script) { $cakeArguments += "`"$Script`"" }
+if ($Target) { $cakeArguments += "-target=`"$Target`"" }
+if ($Configuration) { $cakeArguments += "-configuration=$Configuration" }
+if ($Verbosity) { $cakeArguments += "-verbosity=$Verbosity" }
+if ($ShowDescription) { $cakeArguments += "-showdescription" }
+if ($DryRun) { $cakeArguments += "-dryrun" }
+$cakeArguments += "-useMagic=$useMagic"
+$cakeArguments += $ScriptArgs
 
 # 运行Build
-Start-Process $cake_file -ArgumentList "-useMagic=$useMagic" -NoNewWindow -Wait
+Invoke-Expression "& $cake_exe $($cakeArguments -join " ")"
+exit $LASTEXITCODE
