@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.DoInDirectory&version=3.3.0
 #addin nuget:?package=Cake.CMake&version=1.2.0
+#addin nuget:?package=Cake.Npm&version=0.17.0
 
 var target = Argument("target", "Build");
 var useMagic = Argument<bool>("useMagic", true);
@@ -11,79 +12,82 @@ var release_dir = Argument("releaseDir", "Build");
 var clean_node = Argument<bool>("CleanNode", false);
 var elec_ver = Argument("ElectronVersion", "8.2.0");
 
-var isHostMac = false;
-var isHostWin = false;
-var isHostLinux = false;
-
 var elec_target_os2 = "";
 var elec_target_os3 = "";
 var elec_target_arch2 = elec_target_arch;
 var host_os = "";
-var npm_reg = "https://registry.npm.taobao.org";
+var env_dict = new Dictionary<string, string>();
+var pre_package_path = "";
+var backend_bin_path = "";
+var build_path = "";
+var electron_builder_bin = "";
 
-isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
-isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
-isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
 
-if(isHostMac)
+Setup(context =>
 {
-    if(elec_target_os == "SameAsHost") { elec_target_os = "mac"; }
-    host_os = "macOS";
-}
-else if(isHostWin)
-{
-    if(elec_target_os == "SameAsHost") { elec_target_os = "win"; }
-    host_os = "Windows";
-}
-else if(isHostLinux)
-{
-    host_os = "Linux";
-    if(elec_target_os == "SameAsHost") { elec_target_os = "linux"; }
-}
+    var isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
+    var isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+    var isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
 
-if(elec_target_os == "mac")
-{
-    elec_target_os2 = "darwin";
-    elec_target_os3 = "osx-" + elec_target_arch;
-}
-if(elec_target_os == "win")
-{
-    elec_target_os2 = "win32";
-    elec_target_os3 = "win-" + elec_target_arch;
-}
-if(elec_target_os == "linux")
-{
-    elec_target_os2 = "linux";
-    elec_target_os3 = "linux-" + elec_target_arch;
-}
+    if(isHostMac)
+    {
+        if(elec_target_os == "SameAsHost") { elec_target_os = "mac"; }
+        host_os = "macOS";
+    }
+    else if(isHostWin)
+    {
+        if(elec_target_os == "SameAsHost") { elec_target_os = "win"; }
+        host_os = "Windows";
+    }
+    else if(isHostLinux)
+    {
+        host_os = "Linux";
+        if(elec_target_os == "SameAsHost") { elec_target_os = "linux"; }
+    }
 
-if (elec_target_arch == "arm")
-{
-    elec_target_arch2 = "armv7l";
-}
+    if(elec_target_os == "mac")
+    {
+        elec_target_os2 = "darwin";
+        elec_target_os3 = "osx-" + elec_target_arch;
+    }
+    if(elec_target_os == "win")
+    {
+        elec_target_os2 = "win32";
+        elec_target_os3 = "win-" + elec_target_arch;
+    }
+    if(elec_target_os == "linux")
+    {
+        elec_target_os2 = "linux";
+        elec_target_os3 = "linux-" + elec_target_arch;
+    }
 
-var pre_package_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os;
-var backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
-var build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
+    if (elec_target_arch == "arm")
+    {
+        elec_target_arch2 = "armv7l";
+    }
 
-Task("Info")
-    .Does(() => 
-{
+    pre_package_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os;
+    backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
+    build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
+
+    var npm_reg = "https://registry.npm.taobao.org";
+
+    if(useMagic)
+    {
+        env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
+        env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
+        env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
+        env_dict.Add("PUPPETEER_DOWNLOAD_HOST", "https://npm.taobao.org/mirrors/");
+        env_dict.Add("SASS_BINARY_SITE", "http://npm.taobao.org/mirrors/node-sass");
+    }
+
+    electron_builder_bin = IsRunningOnWindows() ? "electron-builder.cmd" : "electron-builder";
+    context.Tools.RegisterFile("./Wonton.CrossUI.Web.HostApp/node_modules/.bin/"+electron_builder_bin);
+
     Information("Build for "+elec_target_os+" on "+host_os + ", architecture: "+ elec_target_arch +", framework dependent: "+fx_deps);
     Information("Build path: "+build_path);
     Information("Package path: "+pre_package_path);
 });
-
-var env_dict = new Dictionary<string, string>();
-if(useMagic)
-{
-    env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
-    env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
-    env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
-    env_dict.Add("PUPPETEER_DOWNLOAD_HOST", "https://npm.taobao.org/mirrors/");
-    env_dict.Add("SASS_BINARY_SITE", "http://npm.taobao.org/mirrors/node-sass");
-}
-
 
 Task("BuildNative")
     .WithCriteria(FileExists("NativeDeps.zip"))
@@ -171,7 +175,6 @@ Task("CopyToRelease")
 });
 
 Task("Build")
-    .IsDependentOn("Info")
     .IsDependentOn("BuildNative")
     .IsDependentOn("PackageApp")
     .IsDependentOn("CopyPackage")
@@ -233,21 +236,14 @@ Task("Clean")
 
 void NpmInstallElectronWithRegistry(string dir, bool production = false)
 {
+    var settings = new NpmInstallSettings 
+    {
+        Production = production,
+        EnvironmentVariables = env_dict
+    };
+
     DoInDirectory(dir, () => {
-        var install = "i";
-        if(production)
-        {
-            install = install + "  --production";
-        }
-        if(IsRunningOnWindows())
-        {
-            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npm.cmd "+ install +"\"", EnvironmentVariables = env_dict });
-            
-        }
-        else
-        {
-            StartProcess("npm", new ProcessSettings { Arguments = install, EnvironmentVariables = env_dict });
-        }
+        NpmInstall(settings);
     });
 }
 
@@ -261,15 +257,12 @@ Task("BuildHostApp")
     .IsDependentOn("InstallHostApp")
     .Does(() =>
 {
+    var settings = new NpmRunScriptSettings 
+    {
+        ScriptName = "build"
+    };
     DoInDirectory("Wonton.CrossUI.Web.HostApp", () => {
-        if(IsRunningOnWindows())
-        {
-            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"npm.cmd run build\""});
-        }
-        else
-        {
-            StartProcess("npm", new ProcessSettings { Arguments = "run build" });
-        }
+        NpmRunScript(settings);
     });
 });
 
@@ -315,23 +308,24 @@ Task("PackageApp")
     .IsDependentOn("InstallPrepackageHostApp")
     .Does(() => 
 {
+    var args = new ProcessArgumentBuilder()
+        .Append(".")
+        .Append("--"+elec_target_os)
+        .Append("--"+elec_target_arch2)
+        .Append("-c.electronVersion="+elec_ver)
+        .Append("--publish never");
+
+    env_dict.Add("ADDI_NAME", addi_name == "" ? "" : "-"+addi_name);
+    env_dict.Add("FXDEPS", "");
+    if(fx_deps)
+    {
+        env_dict["FXDEPS"] = "-fxdependent";
+    }
+
     DoInDirectory(pre_package_path, () => 
     {
-        env_dict.Add("ADDI_NAME", addi_name == "" ? "" : "-"+addi_name);
-        env_dict.Add("FXDEPS", "");
-        if(fx_deps)
-        {
-            env_dict["FXDEPS"] = "-fxdependent";
-        }
-
-        if(IsRunningOnWindows())
-        {
-            StartProcess("cmd.exe", new ProcessSettings { Arguments = "/C \"..\\..\\..\\node_modules\\.bin\\electron-builder.cmd . --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver +" --publish never\"", EnvironmentVariables = env_dict});
-        }
-        else
-        {
-            StartProcess("../../../node_modules/.bin/electron-builder", new ProcessSettings { Arguments = ". --"+ elec_target_os +" --"+ elec_target_arch2 +" -c.electronVersion="+ elec_ver+" --publish never", EnvironmentVariables = env_dict });
-        }
+        var electron_builder = Context.Tools.Resolve(electron_builder_bin);
+        StartProcess(electron_builder, new ProcessSettings { Arguments = args, EnvironmentVariables = env_dict});
     });
 });
 
