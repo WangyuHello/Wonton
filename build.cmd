@@ -1,1 +1,4 @@
-start powershell.exe -File build.ps1 %1
+@ECHO OFF
+SETLOCAL
+"powershell.exe" -File build.ps1 -useMagic %*
+pause
