@@ -188,10 +188,10 @@ if (-not $npm_exist) {
     $node_downloaded_file = Join-Path $tool_path $node_arc
 
     $official_node_dist = "https://nodejs.org/dist/"
-    $tuna_node_dist = "https://npm.taobao.org/mirrors/node/"
+    $taobao_node_dist = "https://npm.taobao.org/mirrors/node/"
     $node_url = ""
     if ($useMagic) {
-        $node_url = "$tuna_node_dist$VERSION/$node_arc";  
+        $node_url = "$taobao_node_dist$VERSION/$node_arc";  
     } 
     else {
         $node_url = "$official_node_dist$VERSION/$node_arc";  

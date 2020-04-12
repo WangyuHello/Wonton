@@ -99,7 +99,7 @@ if [ "$dotnet_exist" = false ]; then
     fi
 
     echo "正在下载 .NET Core 安装脚本"
-    wget -O $dotnet_install_file $dotnet_install_url
+    wget -O $dotnet_install_file $dotnet_install_url >/dev/null
 
     echo "正在安装 .NET Core"
     chmod +x $dotnet_install_file
@@ -110,16 +110,16 @@ if [ "$dotnet_exist" = false ]; then
 fi
 
 useMagic=false
+CAKE_ARGUMENTS=()
 
-while [ $# -ne 0 ]
-do
-    name="$1"
-    case "$name" in
-        -useMagic)
-            useMagic=true
-            ;;
+# Parse arguments.
+for i in "$@"; do
+    case $1 in
+        -s|--script) SCRIPT="$2"; shift ;;
+        -useMagic) useMagic=true ;;
+        --) shift; CAKE_ARGUMENTS+=("$@"); break ;;
+        *) CAKE_ARGUMENTS+=("$1") ;;
     esac
-
     shift
 done
 
@@ -129,24 +129,24 @@ if [ "$npm_exist" = false ]; then
     node_arc="$node_dist.$node_ext"
     node_downloaded_file="$tool_path/$node_arc"
     official_node_dist="https://nodejs.org/dist/"
-    tuna_node_dist="https://npm.taobao.org/mirrors/node/"
+    taobao_node_dist="https://npm.taobao.org/mirrors/node/"
     node_url=""
 
     if [ "$useMagic" = true ]; then
-        node_url="$tuna_node_dist$VERSION/$node_arc"
+        node_url="$taobao_node_dist$VERSION/$node_arc"
     else
         node_url="$official_node_dist$VERSION/$node_arc"
     fi
 
     echo "正在下载 $node_url"
-    wget -O $node_downloaded_file $node_url
+    wget -O $node_downloaded_file $node_url >/dev/null
 
     if [ ! -d "$node_install_path" ]; then
         mkdir $node_install_path
     fi
 
     echo "正在解压 $node_arc"
-    tar -xJvf $node_downloaded_file -C $node_install_path
+    tar -xJvf $node_downloaded_file -C $node_install_path >/dev/null
 
     node_dist_path="$node_dist_path/bin"
     export PATH="$node_dist_path":"$PATH"
@@ -154,11 +154,6 @@ fi
 
 cake_file="$tool_path/dotnet-cake"
 
-if  [ ! -f "$cake_file" ]; then
-    echo "未发现 Cake, 将进行安装"
-    dotnet tool install --tool-path $tool_path Cake.Tool 2>&1 || { echo ""; }
-else
-    echo "发现本地安装的 Cake: $cake_file"
-fi
+$dotnet_exe tool install --tool-path $tool_path Cake.Tool >/dev/null 2>&1 || { echo ""; }
 
-$cake_file -useMagic=$useMagic
+exec "$cake_file" "-useMagic=$useMagic" "${CAKE_ARGUMENTS[@]}"
