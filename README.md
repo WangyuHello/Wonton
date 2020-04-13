@@ -36,57 +36,46 @@
 ## 依赖软件
 
 - NodeJS : https://nodejs.org/en/
+
+    LTS 和 Current 版本均可
+
 - .NET Core SDK: https://dotnet.microsoft.com/download
+        
+    需 >= 3.1 版本，请勿安装 Runtime 版本
 
 ## 编译步骤
 
-1. 安装 NodeJS https://nodejs.org/en/
-    
-    LTS 和 Current 版本均可
+1. 克隆源代码仓库
 
-2. 安装 .NET Core SDK https://dotnet.microsoft.com/download
-
-    需 >= 3.1 版本，请勿安装 Runtime 版本
-
-3. 克隆源代码仓库
-
-    ```powershell
-    git clone --recursive https://github.com/WangyuHello/Wonton.git
-    ```
-
-4. 在 Wonton 目录下运行
-
-    ```powershell
-    dotnet tool install --tool-path tools Cake.Tool
-    ```
-
-    > Cake.Tool 只需要安装一次
-
-5. 开始编译，在 Wonton 目录下运行
-
-    Windows
-    ```powershell
-    .\tools\dotnet-cake
-    ```
-
-    macOS、Linux
     ```bash
-    ./tools/dotnet-cake
+    git clone https://github.com/WangyuHello/Wonton.git
     ```
 
-    **如果是海外用户**
+2. 开始编译，在 **Wonton** 目录下运行
 
-    Windows
-    ```powershell
-    .\tools\dotnet-cake -useMagic=false
-    ```
+    > 如果未安装 NodeJS 或者 .NET Core SDK，以下脚本将自动安装
 
-    macOS、Linux
-    ```bash
-    ./tools/dotnet-cake -useMagic=false
-    ```
+    - Windows
+        - 使用 **PowerShell** 运行
+        ```powershell
+        .\build.ps1 -useMagic
+        ```
+        
+        - 或者使用**命令提示符**运行
+        ```cmd
+        .\build.cmd -useMagic
+        ```
+        
+        - 也可双击 **build.cmd** 文件
 
-6. 编译后的文件在 Build 目录下
+    - macOS、Linux
+        ```bash
+        ./build.bash -useMagic
+        ```
+
+    > 如果是海外用户，请去除 -useMagic 选项
+
+3. 编译后的文件在 **Build** 目录下
 
 # 驱动编译指南
 
@@ -104,7 +93,6 @@
 - automake
 - libtool
 - m4
-- libudev-dev
 
 ### Linux
 
@@ -114,11 +102,10 @@
 - automake
 - libtool
 - m4
-- libudev-dev
 
 ## 编译步骤
 
-1. 将 **NativeDeps.zip** 压缩包复制到 Wonton目录下，其余步骤同[自动编译步骤](####自动编译步骤)
+1. 将 **NativeDeps.zip** 压缩包复制到 **Wonton** 目录下，其余步骤同[编译步骤](##编译步骤)
 
     *驱动代码未开源*
 
@@ -138,9 +125,9 @@
 
 3. 从淘宝镜像下载Electron包
 
-    Windows： https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-win32-x64.zip <br>
-    macOS:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-darwin-x64.zip <br>
-    Linux:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-linux-x64.zip
+    Windows： https://npm.taobao.org/mirrors/electron/8.2.0/electron-v8.2.0-win32-x64.zip <br>
+    macOS:    https://npm.taobao.org/mirrors/electron/8.2.0/electron-v8.2.0-darwin-x64.zip <br>
+    Linux:    https://npm.taobao.org/mirrors/electron/8.2.0/electron-v8.2.0-linux-x64.zip
 
 
 4. 将上述下载的zip包存放在Electron缓存目录中即可

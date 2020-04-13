@@ -24,57 +24,89 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 | Travis CI       | [![Build Status](https://www.travis-ci.org/WangyuHello/Wonton.svg?branch=master)](https://www.travis-ci.org/WangyuHello/Wonton)                                                                                                      | [![Build Status](https://www.travis-ci.org/WangyuHello/Wonton.svg?branch=master)](https://www.travis-ci.org/WangyuHello/Wonton)                                                                                                    | [![Build Status](https://www.travis-ci.org/WangyuHello/Wonton.svg?branch=master)](https://www.travis-ci.org/WangyuHello/Wonton)                                                                                                    |
 | Azure Pipelines | [![Build Status](https://dev.azure.com/FudanUniversity/Wonton/_apis/build/status/WangyuHello.Wonton?branchName=master&jobName=Windows)](https://dev.azure.com/FudanUniversity/Wonton/_build/latest?definitionId=1&branchName=master) | [![Build Status](https://dev.azure.com/FudanUniversity/Wonton/_apis/build/status/WangyuHello.Wonton?branchName=master&jobName=macOS)](https://dev.azure.com/FudanUniversity/Wonton/_build/latest?definitionId=1&branchName=master) | [![Build Status](https://dev.azure.com/FudanUniversity/Wonton/_apis/build/status/WangyuHello.Wonton?branchName=master&jobName=Linux)](https://dev.azure.com/FudanUniversity/Wonton/_build/latest?definitionId=1&branchName=master) |
 
-## If you find a bug, please submit an issue
+# Usage
+
+## [Please submit an Issue upon finding a bug](https://github.com/WangyuHello/Wonton/issues)
+## [Documents](https://github.com/WangyuHello/Wonton/wiki/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8%E7%AE%80%E4%BB%8B)
+## [Adding new devices](https://github.com/WangyuHello/Wonton/wiki/%E5%A6%82%E4%BD%95%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84%E5%99%A8%E4%BB%B6)
 
 # Compilation Guide
 
 ## Dependencies
 
 - NodeJS : https://nodejs.org/en/
-- .NET Core SDK: https://dotnet.microsoft.com/download
-
-## Compilation Steps
-
-1. Install NodeJS https://nodejs.org/en/
 
     LTS and Current versions are both supported
 
-2. Install .NET Core SDK https://dotnet.microsoft.com/download
+- .NET Core SDK: https://dotnet.microsoft.com/download
 
-    Requires .NET Core SDK version >= 3.1 , do not install Runtime versions
+    Requires .NET Core SDK version >= 3.1, please do not install Runtime versions
 
-3. Run the scripts under Wonton directory
+## Compilation Steps
 
-    ```
-    dotnet tool install --tool-path tools Cake.Tool
-    ```
+1. Clone the repository
 
-    > Cake.Tool only needs to be installed once
-
-4. Start compiling and run the scripts under Wonton directory
-
-    Windows
-    ```powershell
-    .\tools\dotnet-cake
-    ```
-
-    macOS、Linux
     ```bash
-    ./tools/dotnet-cake
-    ```
+    git clone https://github.com/WangyuHello/Wonton.git
+    ``` 
 
-    **If you are not in mainland China**
+2. To start compiling, run the scripts under **Wonton** directory
 
-    Windows
-    ```powershell
-    .\tools\dotnet-cake -useMagic=false
-    ```
+    > If you did not install NodeJS or .NET Core SDK, the following script will install them automatically.
 
-    macOS、Linux
-    ```bash
-    ./tools/dotnet-cake -useMagic=false
-    ```
-5. Compiled binaries are located under **Build**
+    - Windows
+        - Use PowerShell
+        ```powershell
+        .\build.ps1 -useMagic
+        ```
+        - Or use cmd
+        ```cmd
+        .\build.cmd -useMagic
+        ```
+        - Or you can double click **build.cmd** file.
+
+    - macOS、Linux
+        ```bash
+        ./build.bash -useMagic
+        ```
+
+    > If you are not in mainland China, please remove the -useMagic option
+
+3. Compiled binaries are located under **Build**
+
+# Driver Compilation Guide
+
+## Dependencies
+
+### Windows
+
+- Visual Studio 2019 (MSVC 142)
+
+### macOS
+
+- Xcode
+- cmake
+- autoconf
+- automake
+- libtool
+- m4
+
+### Linux
+
+- gcc
+- cmake
+- autoconf
+- automake
+- libtool
+- m4
+
+## Compilation Steps
+
+1. Put the **NativeDeps.zip** archive under the **Wonton** directory, and follow the steps in [Compilation Steps](##Compilation Steps)
+
+    *The source code of driver is not opensourced*
+
+2. If you want revoke driver compilation, please delete **NativeDeps.zip** , VLFDDriver, and SharpVLFD directories。
 
 # Troubleshoot
 
@@ -90,9 +122,9 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
 3. Download Electron package from taobao mirror
 
-    Windows： https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-win32-x64.zip <br>
-    macOS:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-darwin-x64.zip <br>
-    Linux:    https://npm.taobao.org/mirrors/electron/7.1.2/electron-v7.1.2-linux-x64.zip
+    Windows： https://npm.taobao.org/mirrors/electron/8.2.0/electron-v8.2.0-win32-x64.zip <br>
+    macOS:    https://npm.taobao.org/mirrors/electron/8.2.0/electron-v8.2.0-darwin-x64.zip <br>
+    Linux:    https://npm.taobao.org/mirrors/electron/8.2.0/electron-v8.2.0-linux-x64.zip
 
 4.  Put the downloaded zip package into **Electron Cache Directory**
 
