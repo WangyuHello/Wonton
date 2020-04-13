@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Stop script on NZEC
-set -e
 # Stop script if unbound variable found (use ${var:-} if intentional)
 set -u
 # By default cmd1 | cmd2 returns exit code of cmd2 regardless of cmd1 success
@@ -99,7 +97,7 @@ if [ "$dotnet_exist" = false ]; then
     fi
 
     echo "正在下载 .NET Core 安装脚本"
-    wget -O $dotnet_install_file $dotnet_install_url >/dev/null
+    curl -s -L $dotnet_install_url -o $dotnet_install_file  >/dev/null
 
     echo "正在安装 .NET Core"
     chmod +x $dotnet_install_file
@@ -139,7 +137,7 @@ if [ "$npm_exist" = false ]; then
     fi
 
     echo "正在下载 $node_url"
-    wget -O $node_downloaded_file $node_url >/dev/null
+    curl -s -L $node_url -o $node_downloaded_file >/dev/null
 
     if [ ! -d "$node_install_path" ]; then
         mkdir $node_install_path
@@ -154,6 +152,6 @@ fi
 
 cake_file="$tool_path/dotnet-cake"
 
-$dotnet_exe tool install --tool-path $tool_path Cake.Tool >/dev/null 2>&1 || { echo ""; }
+$dotnet_exe tool install --tool-path $tool_path Cake.Tool >/dev/null 2>&1
 
 exec "$cake_file" "-useMagic=$useMagic" "${CAKE_ARGUMENTS[@]}"
