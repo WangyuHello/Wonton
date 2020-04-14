@@ -10,7 +10,7 @@ var fx_deps = Argument<bool>("FxDeps", false);
 var addi_name = Argument("AdditionalName", "");
 var release_dir = Argument("releaseDir", "Build");
 var clean_node = Argument<bool>("CleanNode", false);
-var elec_ver = Argument("ElectronVersion", "8.2.0");
+var elec_ver = Argument("ElectronVersion", "8.2.2");
 
 var elec_target_os2 = "";
 var elec_target_os3 = "";
