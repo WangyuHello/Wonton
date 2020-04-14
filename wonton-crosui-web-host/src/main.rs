@@ -2,6 +2,8 @@ use std::env;
 use actix_files as fs;
 use actix_web::{App, HttpServer};
 
+mod coreclr;
+
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     let mut found = false;
