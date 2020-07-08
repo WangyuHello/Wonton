@@ -10,7 +10,7 @@ var fx_deps = Argument<bool>("FxDeps", false);
 var addi_name = Argument("AdditionalName", "");
 var release_dir = Argument("releaseDir", "Build");
 var clean_node = Argument<bool>("CleanNode", false);
-var elec_ver = Argument("ElectronVersion", "8.2.2");
+var elec_ver = Argument("ElectronVersion", "9.1.0");
 
 var elec_target_os2 = "";
 var elec_target_os3 = "";
@@ -309,7 +309,6 @@ Task("PackageApp")
     .Does(() => 
 {
     var args = new ProcessArgumentBuilder()
-        .Append(".")
         .Append("--"+elec_target_os)
         .Append("--"+elec_target_arch2)
         .Append("-c.electronVersion="+elec_ver)
