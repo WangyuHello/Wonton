@@ -77,6 +77,7 @@ Setup(context =>
         env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
         env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
         env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
+        env_dict.Add("ELECTRON_BUILDER_BINARIES_MIRROR", "http://npm.taobao.org/mirrors/electron-builder-binaries/");
         env_dict.Add("PUPPETEER_DOWNLOAD_HOST", "https://npm.taobao.org/mirrors/");
         env_dict.Add("SASS_BINARY_SITE", "http://npm.taobao.org/mirrors/node-sass");
     }
