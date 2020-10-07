@@ -36,7 +36,6 @@ jobs:
       publishLocation: 'pipeline'
       artifactName: 'Wonton.Linux20'
 
-jobs:
 - job: Linux18
   pool:
     vmImage: 'ubuntu-18.04'
