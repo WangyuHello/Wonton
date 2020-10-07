@@ -10,11 +10,36 @@ trigger:
     include:
     - v*
 
+jobs:
+- job: Linux20
+  pool:
+    vmImage: 'ubuntu-20.04'
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '3.1.x'
+  
+  - script: dotnet tool install --tool-path tools Cake.Tool
+    displayName: 'Install Cake'
+  
+  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="ubuntu-20.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
+    displayName: 'Build on Linux'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      publishLocation: 'pipeline'
+      artifactName: 'Wonton.Linux20'
 
 jobs:
-- job: Linux
+- job: Linux18
   pool:
-    vmImage: 'ubuntu-latest'
+    vmImage: 'ubuntu-18.04'
   steps:
   - checkout: self
     submodules: true
@@ -35,7 +60,7 @@ jobs:
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'
       publishLocation: 'pipeline'
-      artifactName: 'Wonton.Linux'
+      artifactName: 'Wonton.Linux18'
 
 - job: Linux16
   pool:
@@ -226,8 +251,11 @@ jobs:
   pool: 
     vmImage: 'ubuntu-latest'
   dependsOn:
-  - Linux
+  - Linux20
+  - Linux18
   - Linux16
+  - LinuxArm
+  - LinuxArm64
   - macOS
   - macOS14
   - Windows
