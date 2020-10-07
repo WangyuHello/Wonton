@@ -140,7 +140,7 @@ catch {
 }
 
 try {
-    $_ = Invoke-Expression "$npm_exe -v" | Out-Null
+    Invoke-Expression "$npm_exe -v" | Out-Null
     $npm_exist = $true
     if (-not $local_npm_exist) {
         Write-Host "使用 Path 的 NodeJs" -ForegroundColor "Green"
@@ -227,6 +227,7 @@ if ((-not $IsCoreCLR) -or $IsWindows) {
 }
 $cake_exe = Join-Path $tool_path $cake_bin
 
+Write-Host "正在安装Cake"
 Invoke-Expression "$dotnet_exe tool install --tool-path $tool_path Cake.Tool" | Out-Null
 
 $cakeArguments = @()
@@ -240,5 +241,6 @@ $cakeArguments += "-useMagic=$useMagic"
 $cakeArguments += $ScriptArgs
 
 # 运行Build
+Write-Host "开始构建"
 Invoke-Expression "$cake_exe $($cakeArguments -join " ")"
 exit $LASTEXITCODE
