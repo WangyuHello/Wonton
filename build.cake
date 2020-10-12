@@ -1,6 +1,8 @@
 #addin nuget:?package=Cake.DoInDirectory&version=3.3.0
 #addin nuget:?package=Cake.CMake&version=1.2.0
 #addin nuget:?package=Cake.Npm&version=0.17.0
+#addin nuget:?package=Cake.Json&version=5.2.0
+#addin nuget:?package=Newtonsoft.Json&version=12.0.2
 
 var target = Argument("target", "Build");
 var useMagic = Argument<bool>("useMagic", true);
@@ -10,8 +12,8 @@ var fx_deps = Argument<bool>("FxDeps", false);
 var addi_name = Argument("AdditionalName", "");
 var release_dir = Argument("releaseDir", "Build");
 var clean_node = Argument<bool>("CleanNode", false);
-var elec_ver = Argument("ElectronVersion", "9.3.1");
 
+var elec_ver = "";
 var elec_target_os2 = "";
 var elec_target_os3 = "";
 var elec_target_arch2 = elec_target_arch;
@@ -22,12 +24,20 @@ var backend_bin_path = "";
 var build_path = "";
 var electron_builder_bin = "";
 
+string GetElectronVersion(string packageJson)
+{
+    var pkgJ = ParseJsonFromFile(File(packageJson));
+    var devDependencies = pkgJ["devDependencies"];
+    return devDependencies["electron"].Value<string>();
+}
 
 Setup(context =>
 {
     var isHostMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
     var isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
     var isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
+
+    elec_ver = GetElectronVersion("Wonton.CrossUI.Web.HostApp/package.json");
 
     if(isHostMac)
     {
@@ -68,7 +78,7 @@ Setup(context =>
 
     pre_package_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os;
     backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
-    build_path = MakeAbsolute(Directory(System.IO.Path.Combine(".", "Wonton.CrossUI.Web", "bin", "Desktop"))).FullPath;
+    build_path = MakeAbsolute(Directory("./Wonton.CrossUI.Web/bin/Desktop")).FullPath;
 
     var npm_reg = "https://registry.npm.taobao.org";
 
@@ -85,7 +95,8 @@ Setup(context =>
     electron_builder_bin = IsRunningOnWindows() ? "electron-builder.cmd" : "electron-builder";
     context.Tools.RegisterFile("./Wonton.CrossUI.Web.HostApp/node_modules/.bin/"+electron_builder_bin);
 
-    Information("Build for "+elec_target_os+" on "+host_os + ", architecture: "+ elec_target_arch +", framework dependent: "+fx_deps);
+    Information("Build for " + elec_target_os+" on "+ host_os + ", architecture: "+ elec_target_arch +", framework dependent: "+fx_deps);
+    Information("Electron Version: " + elec_ver);
     Information("Build path: "+build_path);
     Information("Package path: "+pre_package_path);
 });
@@ -142,7 +153,7 @@ Task("BuildNative")
 Task("InstallClientApp")
     .Does(()=> 
 {
-    NpmInstallElectronWithRegistry(System.IO.Path.Combine("Wonton.CrossUI.Web", "ClientApp"));
+    NpmInstallElectronWithRegistry("Wonton.CrossUI.Web/ClientApp");
 });
 
 Task("CopyPackage")
