@@ -80,11 +80,9 @@ Setup(context =>
     backend_bin_path = "Wonton.CrossUI.Web.HostApp/obj/Desktop/"+elec_target_os+"/bin";
     build_path = MakeAbsolute(Directory("./Wonton.CrossUI.Web/bin/Desktop")).FullPath;
 
-    var npm_reg = "https://registry.npm.taobao.org";
-
     if(useMagic)
     {
-        env_dict.Add("NPM_CONFIG_REGISTRY", npm_reg);
+        env_dict.Add("NPM_CONFIG_REGISTRY", "https://registry.npm.taobao.org");
         env_dict.Add("ELECTRON_CUSTOM_DIR", elec_ver);
         env_dict.Add("ELECTRON_MIRROR", "https://npm.taobao.org/mirrors/electron/");
         env_dict.Add("ELECTRON_BUILDER_BINARIES_MIRROR", "http://npm.taobao.org/mirrors/electron-builder-binaries/");
@@ -189,11 +187,7 @@ Task("CopyToRelease")
 Task("Build")
     .IsDependentOn("BuildNative")
     .IsDependentOn("PackageApp")
-    .IsDependentOn("CopyPackage")
-    .Does(() =>
-{
-
-});
+    .IsDependentOn("CopyPackage");
 
 void DelDir(string dir)
 {
