@@ -38,117 +38,68 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        text-align: center;
     }
 
-    .spinner {
-        margin: 0px auto;
-        width: 48px;
-        height: 48px;
+    .middle-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .pswp__preloader__icn {
+        opacity:0.75;
+        width: 24px;
+        height: 24px;
+        -webkit-animation: clockwise 500ms linear infinite;
+        animation: clockwise 500ms linear infinite;
+    }
+    
+    /* The idea of animating inner circle is based on Polymer loading indicator by Keanu Lee https://blog.keanulee.com/2014/10/20/the-tale-of-three-spinners.html */
+    .pswp__preloader__cut {
         position: relative;
-    }
-   
-    .container1 > div, .container2 > div, .container3 > div {
         width: 12px;
-        height: 12px;
-        background-color: #333;
-    
-        border-radius: 100%;
+        height: 24px;
+        overflow: hidden;
         position: absolute;
-        -webkit-animation: bouncedelay 1.2s infinite ease-in-out;
-        animation: bouncedelay 1.2s infinite ease-in-out;
-        -webkit-animation-fill-mode: both;
-        animation-fill-mode: both;
+        top: 0;
+        left: 0;
     }
-   
-    .spinner .spinner-container {
+    
+    .pswp__preloader__donut {
+        box-sizing: border-box;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #000;
+        border-radius: 50%;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
         position: absolute;
-        width: 100%;
-        height: 100%;
+        top: 0;
+        left: 0;
+        background: none;
+        margin:0;
+        -webkit-animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+        animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
     }
     
-    .container2 {
-        -webkit-transform: rotateZ(45deg);
-        transform: rotateZ(45deg);
+    @-webkit-keyframes clockwise {
+        0% { -webkit-transform: rotate(0deg) }
+        100% { -webkit-transform: rotate(360deg) }
     }
-    
-    .container3 {
-        -webkit-transform: rotateZ(90deg);
-        transform: rotateZ(90deg);
+    @keyframes clockwise {
+        0% { transform: rotate(0deg) }
+        100% { transform: rotate(360deg) }
     }
-    
-    .circle1 { top: 0; left: 0; }
-    .circle2 { top: 0; right: 0; }
-    .circle3 { right: 0; bottom: 0; }
-    .circle4 { left: 0; bottom: 0; }
-    
-    .container2 .circle1 {
-        -webkit-animation-delay: -1.1s;
-        animation-delay: -1.1s;
+    @-webkit-keyframes donut-rotate {
+        0% { -webkit-transform: rotate(0) }
+        50% { -webkit-transform: rotate(-140deg) }
+        100% { -webkit-transform: rotate(0) }
     }
-    
-    .container3 .circle1 {
-        -webkit-animation-delay: -1.0s;
-        animation-delay: -1.0s;
-    }
-    
-    .container1 .circle2 {
-        -webkit-animation-delay: -0.9s;
-        animation-delay: -0.9s;
-    }
-    
-    .container2 .circle2 {
-        -webkit-animation-delay: -0.8s;
-        animation-delay: -0.8s;
-    }
-    
-    .container3 .circle2 {
-        -webkit-animation-delay: -0.7s;
-        animation-delay: -0.7s;
-    }
-    
-    .container1 .circle3 {
-        -webkit-animation-delay: -0.6s;
-        animation-delay: -0.6s;
-    }
-    
-    .container2 .circle3 {
-        -webkit-animation-delay: -0.5s;
-        animation-delay: -0.5s;
-    }
-    
-    .container3 .circle3 {
-        -webkit-animation-delay: -0.4s;
-        animation-delay: -0.4s;
-    }
-    
-    .container1 .circle4 {
-        -webkit-animation-delay: -0.3s;
-        animation-delay: -0.3s;
-    }
-    
-    .container2 .circle4 {
-        -webkit-animation-delay: -0.2s;
-        animation-delay: -0.2s;
-    }
-    
-    .container3 .circle4 {
-        -webkit-animation-delay: -0.1s;
-        animation-delay: -0.1s;
-    }
-    
-    @-webkit-keyframes bouncedelay {
-        0%, 80%, 100% { -webkit-transform: scale(0.0) }
-        40% { -webkit-transform: scale(1.0) }
-    }
-    
-    @keyframes bouncedelay {
-        0%, 80%, 100% {
-        transform: scale(0.0);
-        -webkit-transform: scale(0.0);
-        } 40% {
-        transform: scale(1.0);
-        -webkit-transform: scale(1.0);
-        }
+    @keyframes donut-rotate {
+        0% { transform: rotate(0) }
+        50% { transform: rotate(-140deg) }
+        100% { transform: rotate(0) }
     }
 </style>
 
@@ -157,27 +108,19 @@
     <div class="container">
         <div class="upside"></div>
         <div class="downside">
-            <div></div>
-            <div class="spinner">
-                <div class="spinner-container container1">
-                    <div class="circle1"></div>
-                    <div class="circle2"></div>
-                    <div class="circle3"></div>
-                    <div class="circle4"></div>
-                </div>
-                <div class="spinner-container container2">
-                    <div class="circle1"></div>
-                    <div class="circle2"></div>
-                    <div class="circle3"></div>
-                    <div class="circle4"></div>
-                </div>
-                <div class="spinner-container container3">
-                    <div class="circle1"></div>
-                    <div class="circle2"></div>
-                    <div class="circle3"></div>
-                    <div class="circle4"></div>
-                </div>
+            <div>
+                
             </div>
+            <div class="middle-container">
+                <div></div>
+                <div class="pswp__preloader__icn">
+                    <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+
             <div></div>
         </div>
     </div>
