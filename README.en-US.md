@@ -1,7 +1,7 @@
 <div align="center">
     <img src="./Imgs/chip.png" width="128"/>
     <br>
-    <font size=14>Wonton FPGA</font>
+    <font size="+4">Wonton FPGA</font>
 </div>
 
 <br>
