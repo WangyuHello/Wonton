@@ -1,8 +1,12 @@
-# 馄饨
+<div align="center">
+    <img src="./Imgs/chip.png" width="128"/>
+    <br>
+    <div style="font-size: 3rem; font-weight: bold;">馄饨FPGA</div>
+</div>
 
-![chip32](./Imgs/chip32.png) **民以食为天**
+<br>
 
-![wonton](./Imgs/wonton2.gif)
+<center>
 
 多语言文档：[English](./README.en-US.md), [简体中文](./README.md)
 
@@ -12,6 +16,8 @@
 ![platform](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%20|%20macOS%20|%20Linux-blue?style=flat-square)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/WangyuHello/Wonton?label=%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC&style=flat-square)
 ![GitHub All Releases](https://img.shields.io/github/downloads/WangyuHello/Wonton/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&style=flat-square)
+
+</center>
 
 | Windows | macOS | Linux |
 |:------------------------:|:------------------------:|:---------------------------:|

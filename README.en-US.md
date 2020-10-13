@@ -1,8 +1,12 @@
-# Wonton
+<div align="center">
+    <img src="./Imgs/chip.png" width="128"/>
+    <br>
+    <div style="font-size: 3rem; font-weight: bold;">Wonton FPGA</div>
+</div>
 
-![chip32](./Imgs/chip32.png) **Hunger breeds discontentment**
+<br>
 
-![wonton](./Imgs/wonton2.gif)
+<center>
 
 Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
@@ -12,6 +16,8 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 ![platform](https://img.shields.io/badge/platform-Windows%20|%20macOS%20|%20Linux-blue?style=flat-square)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/WangyuHello/Wonton?style=flat-square)
 ![GitHub All Releases](https://img.shields.io/github/downloads/WangyuHello/Wonton/total?style=flat-square)
+
+</center>
 
 | Windows | macOS | Linux |
 |:------------------------:|:------------------------:|:---------------------------:|
