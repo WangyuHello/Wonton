@@ -6,7 +6,7 @@
 
 <br>
 
-<center>
+<div align="center">
 
 Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 
@@ -17,7 +17,7 @@ Multilingual README：[English](./README.en-US.md), [简体中文](./README.md)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/WangyuHello/Wonton?style=flat-square)
 ![GitHub All Releases](https://img.shields.io/github/downloads/WangyuHello/Wonton/total?style=flat-square)
 
-</center>
+</div>
 
 | Windows | macOS | Linux |
 |:------------------------:|:------------------------:|:---------------------------:|
