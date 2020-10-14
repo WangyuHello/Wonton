@@ -1,8 +1,9 @@
-<div align="center">
+<h1 align="center">
     <img src="./Imgs/chip.png" width="128"/>
-    <br>
-    <font size="+4">馄饨FPGA</font>
-</div>
+</h1>
+<h2 align="center">
+    <img src="./Imgs/title.svg" />
+</h2>
 
 <br>
 
