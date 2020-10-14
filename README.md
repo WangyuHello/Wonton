@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="./Imgs/chip.png" width="128"/>
+    <img src="./Imgs/chip.svg" width="128"/>
 </h1>
 <h2 align="center">
     <img src="./Imgs/title.svg" />
