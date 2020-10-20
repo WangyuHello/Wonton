@@ -96,13 +96,15 @@ Setup(context =>
     electron_builder_bin = IsRunningOnWindows() ? "electron-builder.cmd" : "electron-builder";
     context.Tools.RegisterFile("./Wonton.CrossUI.Web.HostApp/node_modules/.bin/"+electron_builder_bin);
 
-    Information("Host OS            : " + host_os);
-    Information("Target OS          : " + elec_target_os);
-    Information("Target Architecture: " + elec_target_arch);
-    Information("Framework Dependent: " + fx_deps);
-    Information("Electron Version   : " + elec_ver);
-    Information("Wonton Version     : " + wonton_version);
-    Information("Release Directory  : " + release_dir);
+    Information("Host OS              : " + System.Runtime.InteropServices.RuntimeInformation.OSDescription);
+    Information("Host Architecture    : " + System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture);
+    Information("Target OS            : " + elec_target_os);
+    Information("Target Architecture  : " + elec_target_arch);
+    Information("Framework Dependent  : " + fx_deps);
+    Information("Electron Version     : " + elec_ver);
+    Information("Wonton Version       : " + wonton_version);
+    Information("Release Directory    : " + release_dir);
+    Information("Use Magic            : " + useMagic);
 });
 
 Task("BuildNative")
