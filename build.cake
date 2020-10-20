@@ -37,7 +37,10 @@ Setup(context =>
     var isHostWin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
     var isHostLinux = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
 
-    elec_ver = GetElectronVersion("Wonton.CrossUI.Web.HostApp/package.json");
+    var pkgJ = ParseJsonFromFile(File("Wonton.CrossUI.Web.HostApp/package.json"));
+    var devDependencies = pkgJ["devDependencies"];
+    elec_ver = devDependencies["electron"].Value<string>();
+    var wonton_version = pkgJ["version"].Value<string>();
 
     if(isHostMac)
     {
@@ -93,10 +96,13 @@ Setup(context =>
     electron_builder_bin = IsRunningOnWindows() ? "electron-builder.cmd" : "electron-builder";
     context.Tools.RegisterFile("./Wonton.CrossUI.Web.HostApp/node_modules/.bin/"+electron_builder_bin);
 
-    Information("Build for " + elec_target_os+" on "+ host_os + ", architecture: "+ elec_target_arch +", framework dependent: "+fx_deps);
-    Information("Electron Version: " + elec_ver);
-    Information("Build path: "+build_path);
-    Information("Package path: "+pre_package_path);
+    Information("Host OS            : " + host_os);
+    Information("Target OS          : " + elec_target_os);
+    Information("Target Architecture: " + elec_target_arch);
+    Information("Framework Dependent: " + fx_deps);
+    Information("Electron Version   : " + elec_ver);
+    Information("Wonton Version     : " + wonton_version);
+    Information("Release Directory  : " + release_dir);
 });
 
 Task("BuildNative")
