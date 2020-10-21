@@ -316,7 +316,7 @@ jobs:
       ls -la $(Build.ArtifactStagingDirectory)
     displayName: 'List artifacts'
 
-  - pwsh: Import-Module EPS -Scope Local -Force
+  - pwsh: Install-Module EPS -Scope CurrentUser -Force
     displayName: 'Install Dependences'
 
   - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1 -ReleasePath $(Build.ArtifactStagingDirectory)
