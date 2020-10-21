@@ -268,13 +268,7 @@ jobs:
     inputs:
       buildType: 'current'
       itemPattern: '**'
-      targetPath: '$(System.DefaultWorkingDirectory)/Build'
-
-  - script: dotnet tool install --tool-path tools Cake.Tool
-    displayName: 'Install Cake'
-  
-  - bash: ./tools/dotnet-cake -target="CopyToRelease" -useMagic=false -releaseDir="$(Build.ArtifactStagingDirectory)"
-    displayName: 'Copy Release'
+      targetPath: '$(Build.ArtifactStagingDirectory)'
 
   - script: |
       ls -la $(Build.ArtifactStagingDirectory)
@@ -306,7 +300,7 @@ jobs:
       itemPattern: '**'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
-  - pwsh: Install-Module EPS
+  - pwsh: Install-Module EPS -Scope CurrentUser -Force
     displayName: 'Install Dependences'
 
   - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1
