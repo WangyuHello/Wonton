@@ -269,3 +269,5 @@ VLFDDriver/
 SharpVLFD/
 NativeDeps.zip
 build.sh
+
+PackageManager/chocolatey/wonton

@@ -14,22 +14,14 @@ var release_dir = Argument("releaseDir", "Build");
 var clean_node = Argument<bool>("CleanNode", false);
 
 var elec_ver = "";
-var elec_target_os2 = "";
 var elec_target_os3 = "";
 var elec_target_arch2 = elec_target_arch;
-var host_os = "";
 var env_dict = new Dictionary<string, string>();
 var pre_package_path = "";
 var backend_bin_path = "";
 var build_path = "";
 var electron_builder_bin = "";
-
-string GetElectronVersion(string packageJson)
-{
-    var pkgJ = ParseJsonFromFile(File(packageJson));
-    var devDependencies = pkgJ["devDependencies"];
-    return devDependencies["electron"].Value<string>();
-}
+var wonton_version = "";
 
 Setup(context =>
 {
@@ -40,37 +32,31 @@ Setup(context =>
     var pkgJ = ParseJsonFromFile(File("Wonton.CrossUI.Web.HostApp/package.json"));
     var devDependencies = pkgJ["devDependencies"];
     elec_ver = devDependencies["electron"].Value<string>();
-    var wonton_version = pkgJ["version"].Value<string>();
+    wonton_version = pkgJ["version"].Value<string>();
 
     if(isHostMac)
     {
         if(elec_target_os == "SameAsHost") { elec_target_os = "mac"; }
-        host_os = "macOS";
     }
     else if(isHostWin)
     {
         if(elec_target_os == "SameAsHost") { elec_target_os = "win"; }
-        host_os = "Windows";
     }
     else if(isHostLinux)
     {
-        host_os = "Linux";
         if(elec_target_os == "SameAsHost") { elec_target_os = "linux"; }
     }
 
     if(elec_target_os == "mac")
     {
-        elec_target_os2 = "darwin";
         elec_target_os3 = "osx-" + elec_target_arch;
     }
     if(elec_target_os == "win")
     {
-        elec_target_os2 = "win32";
         elec_target_os3 = "win-" + elec_target_arch;
     }
     if(elec_target_os == "linux")
     {
-        elec_target_os2 = "linux";
         elec_target_os3 = "linux-" + elec_target_arch;
     }
 

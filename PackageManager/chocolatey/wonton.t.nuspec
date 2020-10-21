@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>wonton</id>
+    <version><%= $version %></version>
+    <title>Wonton (Install)</title>
+    <authors>Wang Yu</authors>
+    <projectUrl>https://github.com/WangyuHello/Wonton/</projectUrl>
+    <iconUrl>https://github.com/WangyuHello/Wonton/raw/master/Imgs/chip.png</iconUrl>
+    <tags>wonton fpga electron</tags>
+    <summary>Virtual GUI for FPGA</summary>
+    <description>Virtual GUI for FPGA</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
