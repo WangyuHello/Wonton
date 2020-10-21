@@ -4,7 +4,7 @@
   <metadata>
     <id>wonton</id>
     <version><%= $version %></version>
-    <title>Wonton (Install)</title>
+    <title>Wonton</title>
     <authors>Wang Yu</authors>
     <projectUrl>https://github.com/WangyuHello/Wonton/</projectUrl>
     <iconUrl>https://github.com/WangyuHello/Wonton/raw/master/Imgs/chip.png</iconUrl>

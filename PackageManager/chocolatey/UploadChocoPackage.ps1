@@ -16,7 +16,6 @@ Write-Host "Wonton Version: $Version"
 $cur = Get-Location
 Set-Location "$PSScriptRoot/wonton"
 
-Invoke-Expression "choco apikey -k $API_KEY -source https://push.chocolatey.org/"
-Invoke-Expression "choco push wonton.$Version.nupkg -s https://push.chocolatey.org/"
+Invoke-Expression "choco push wonton.$Version.nupkg -k $API_KEY -s https://push.chocolatey.org/"
 
 Set-Location $cur
