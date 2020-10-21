@@ -13,9 +13,14 @@ $pkgJson = ConvertFrom-Json $pkgJsonFile
 $Version = $pkgJson.version
 Write-Host "Wonton Version: $Version"
 
-$cur = Get-Location
-Set-Location "$PSScriptRoot/wonton"
+$cur_tag = Invoke-Expression "git tag --points-at HEAD"
 
-Invoke-Expression "choco push wonton.$Version.nupkg -k $API_KEY -s https://push.chocolatey.org/"
+if ($cur_tag -and $cur_tag.StartsWith("v")) {
+    $cur = Get-Location
+    Set-Location "$PSScriptRoot/wonton"
+    Invoke-Expression "choco push wonton.$Version.nupkg -k $API_KEY -s https://push.chocolatey.org/"
+    Set-Location $cur
+} else {
+    Write-Host "No tag matched. Skip uploading"
+}
 
-Set-Location $cur

@@ -290,24 +290,27 @@ jobs:
       releaseNotesSource: 'inline'
       addChangeLog: false
   
-# - job: ChocolateyRelease
-#   pool:
-#     vmImage: 'windows-latest'
-#   dependsOn:
-#   - Windows
-#   steps:
-#   - checkout: self
-#     submodules: true
-#     persistCredentials: true
+- job: ChocolateyRelease
+  pool:
+    vmImage: 'windows-latest'
+  dependsOn:
+  - Windows
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
   
-#   - task: DownloadPipelineArtifact@2
-#     inputs:
-#       buildType: 'current'
-#       itemPattern: '**'
-#       targetPath: '$(System.DefaultWorkingDirectory)/Build'
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      itemPattern: '**'
+      targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
-#   - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1
-#     displayName: 'Create Chocolatey Package'
+  - pwsh: Install-Module EPS
+    displayName: 'Install Dependences'
+
+  - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1
+    displayName: 'Create Chocolatey Package'
   
-#   - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1
-#     displayName: 'Upload Chocolatey Package'
+  - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1
+    displayName: 'Upload Chocolatey Package'
