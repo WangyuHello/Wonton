@@ -304,9 +304,9 @@ jobs:
     inputs:
       buildType: 'current'
       itemPattern: '**'
-      targetPath: '$(System.DefaultWorkingDirectory)/Build'
+      targetPath: '$(System.DefaultWorkingDirectory)\Build'
 
-  - pwsh: Import-Module EPS -Scope CurrentUser -Force
+  - pwsh: Import-Module EPS -Scope Local -Force
     displayName: 'Install Dependences'
 
   - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1
