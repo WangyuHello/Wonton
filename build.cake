@@ -164,20 +164,6 @@ Task("CopyPackage")
     CopyFiles(files, release_dir);
 });
 
-Task("CopyToRelease")
-  .Does(() =>
-{
-    Information(release_dir);
-    var files = GetFiles("./Build/**/*.7z");
-    CopyFiles(files, release_dir);
-    files = GetFiles("./Build/**/*.deb");
-    CopyFiles(files, release_dir);
-    files = GetFiles("./Build/**/*.dmg");
-    CopyFiles(files, release_dir);
-    files = GetFiles("./Build/**/*.exe");
-    CopyFiles(files, release_dir);
-});
-
 Task("Build")
     .IsDependentOn("BuildNative")
     .IsDependentOn("PackageApp")

@@ -212,7 +212,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - powershell: ./tools/dotnet-cake -useMagic=false -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - pwsh: ./tools/dotnet-cake -useMagic=false -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Windows'
 
   - task: PublishPipelineArtifact@1
@@ -237,7 +237,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - powershell: ./tools/dotnet-cake -useMagic=false -FxDeps=true -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - pwsh: ./tools/dotnet-cake -useMagic=false -FxDeps=true -releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Windows'
 
   - task: PublishPipelineArtifact@1
@@ -270,15 +270,8 @@ jobs:
       itemPattern: '**'
       targetPath: '$(System.DefaultWorkingDirectory)/Build'
 
-  - script: dotnet tool install --tool-path tools Cake.Tool
-    displayName: 'Install Cake'
-  
-  - bash: ./tools/dotnet-cake -target="CopyToRelease" -useMagic=false -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - pwsh: ./PackageManager/github/CopyToRelease.ps1 -From Build -Release $(Build.ArtifactStagingDirectory)
     displayName: 'Copy Release'
-
-  - script: |
-      ls -la $(Build.ArtifactStagingDirectory)
-    displayName: 'List artifacts'
 
   - task: GitHubRelease@1
     inputs:
@@ -306,15 +299,8 @@ jobs:
       itemPattern: '**'
       targetPath: '$(System.DefaultWorkingDirectory)\Build'
 
-  - script: dotnet tool install --tool-path tools Cake.Tool
-    displayName: 'Install Cake'
-  
-  - pwsh: ./tools/dotnet-cake -target="CopyToRelease" -useMagic=false -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - pwsh: ./PackageManager/github/CopyToRelease.ps1 -From Build -Release $(Build.ArtifactStagingDirectory)
     displayName: 'Copy Release'
-
-  - script: |
-      ls -la $(Build.ArtifactStagingDirectory)
-    displayName: 'List artifacts'
 
   - pwsh: Install-Module EPS -Scope CurrentUser -Force
     displayName: 'Install Dependences'
