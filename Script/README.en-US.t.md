@@ -49,25 +49,25 @@ You can download Wonton installation package for any platform below
 | Ubuntu 18.04                    |  armv7       | [.deb][rl-ubuntu18-arm]   |  [.7z][rl-pkg-ubuntu18-arm]   |
 | Ubuntu 18.04                    |  arm64       | [.deb][rl-ubuntu18-arm64] |  [.7z][rl-pkg-ubuntu18-arm64] |
 
-[rl-windows]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-setup.exe
-[rl-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-fxdependent-setup.exe
-[rl-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-20.04.deb
-[rl-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-18.04.deb
-[rl-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-16.04.deb
-[rl-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.14.dmg
-[rl-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.15.dmg
-[rl-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-armv7l.deb
-[rl-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-arm64.deb
+[rl-windows]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-win-setup.exe
+[rl-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-win-fxdependent-setup.exe
+[rl-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-amd64-ubuntu-20.04.deb
+[rl-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-amd64-ubuntu-18.04.deb
+[rl-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-amd64-ubuntu-16.04.deb
+[rl-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-mac-10.14.dmg
+[rl-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-mac-10.15.dmg
+[rl-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-armv7l.deb
+[rl-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-arm64.deb
 
-[rl-pkg-windows]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-x64.7z
-[rl-pkg-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-x64-fxdependent.7z
-[rl-pkg-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-20.04.7z
-[rl-pkg-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-18.04.7z
-[rl-pkg-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-16.04.7z
-[rl-pkg-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.14.7z
-[rl-pkg-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.15.7z
-[rl-pkg-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-armv7l.7z
-[rl-pkg-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-arm64.7z
+[rl-pkg-windows]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-win-x64.7z
+[rl-pkg-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-win-x64-fxdependent.7z
+[rl-pkg-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-amd64-ubuntu-20.04.7z
+[rl-pkg-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-amd64-ubuntu-18.04.7z
+[rl-pkg-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-amd64-ubuntu-16.04.7z
+[rl-pkg-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-mac-10.14.7z
+[rl-pkg-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-mac-10.15.7z
+[rl-pkg-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-armv7l.7z
+[rl-pkg-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v<%= $version %>/Wonton-<%= $version %>-linux-arm64.7z
 
 ## Install from Package Manager
 
@@ -76,7 +76,7 @@ You can download Wonton installation package for any platform below
     If you have Chocolatey installed
 
     ```bash
-    choco install wonton -y --version=1.0.11
+    choco install wonton -y --version=<%= $version %>
     ```
 - macOS / Linux
 
@@ -186,18 +186,28 @@ You can download Wonton installation package for any platform below
 
 3. Download Electron package from taobao mirror
 
-    Windows： https://npm.taobao.org/mirrors/electron/10.1.4/electron-v10.1.4-win32-x64.zip <br>
-    macOS:    https://npm.taobao.org/mirrors/electron/10.1.4/electron-v10.1.4-darwin-x64.zip <br>
-    Linux:    https://npm.taobao.org/mirrors/electron/10.1.4/electron-v10.1.4-linux-x64.zip
+    Windows： https://npm.taobao.org/mirrors/electron/<%= $elec_version %>/electron-v<%= $elec_version %>-win32-x64.zip <br>
+    macOS:    https://npm.taobao.org/mirrors/electron/<%= $elec_version %>/electron-v<%= $elec_version %>-darwin-x64.zip <br>
+    Linux:    https://npm.taobao.org/mirrors/electron/<%= $elec_version %>/electron-v<%= $elec_version %>-linux-x64.zip
 
 4.  Put the downloaded zip package into **Electron Cache Directory**
 
 # Contributors ✨
 
 <table>
+<%-
+$row = $contributors.Count / 6
+$pointer = 0
+for ($i = 0; $i -lt $row; $i++) { -%>
     <tr>
-        <td align="center"><a href="https://github.com/WangyuHello"><img src="https://avatars2.githubusercontent.com/u/16507233?v=4" width="100px;" alt="WangyuHello" style="border-radius:50%;"/><br /><sub><b>WangyuHello</b></sub></a></td>
-        <td align="center"><a href="https://github.com/GeraltShi"><img src="https://avatars0.githubusercontent.com/u/25215492?v=4" width="100px;" alt="GeraltShi" style="border-radius:50%;"/><br /><sub><b>GeraltShi</b></sub></a></td>
-        <td align="center"><a href="https://github.com/ImgBotApp"><img src="https://avatars1.githubusercontent.com/u/31427850?v=4" width="100px;" alt="ImgBotApp" style="border-radius:50%;"/><br /><sub><b>ImgBotApp</b></sub></a></td>
+<%- for(;$pointer -lt $contributors.Count; $pointer++) { 
+    $cur = $contributors[$pointer]
+    $cur_html_url = $cur.html_url
+    $cur_avatar_url = $cur.avatar_url
+    $cur_login = $cur.login
+-%>
+        <td align="center"><a href="<%= $cur_html_url %>"><img src="<%= $cur_avatar_url %>" width="100px;" alt="<%= $cur_login %>" style="border-radius:50%;"/><br /><sub><b><%= $cur_login %></b></sub></a></td>
+<%- } -%>
     </tr>
+<%- } -%>
 </table>
