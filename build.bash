@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Stop script if unbound variable found (use ${var:-} if intentional)
-set -u
+# set -u
 # By default cmd1 | cmd2 returns exit code of cmd2 regardless of cmd1 success
 # This is causing it to fail
 set -o pipefail
