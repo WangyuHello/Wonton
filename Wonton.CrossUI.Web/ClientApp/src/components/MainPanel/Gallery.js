@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { push as Menu } from 'react-burger-menu';
-import { DeviceItem } from '../DeviceItem/DeviceItem';
+import { DeviceItem } from './DeviceItem';
 
 import './Gallery.css';
 import { deviceMap } from "../Devices/Devices";

@@ -1,0 +1,142 @@
+.sevenseg {
+    height: 78px;
+    display: inline-block;
+}
+
+#panel {
+    height: 94px;
+    width: 78px;
+    background-color: #43506C;
+    position: absolute;
+    margin-left: -38px;
+    margin-top: -8px;
+    border-radius: 4px;
+}
+
+.sevenseg #a {
+    width: 32px;
+    height: 4px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 0px;
+    margin-left: -16px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.sevenseg #g {
+    width: 32px;
+    height: 4px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 38px;
+    margin-left: -16px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.sevenseg #d {
+    width: 32px;
+    height: 4px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 74px;
+    margin-left: -16px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.sevenseg #b {
+    width: 4px;
+    height: 32px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 4px;
+    margin-left: 16px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.sevenseg #c {
+    width: 4px;
+    height: 32px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 42px;
+    margin-left: 16px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.sevenseg #f {
+    width: 4px;
+    height: 32px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 4px;
+    margin-left: -20px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.sevenseg #e {
+    width: 4px;
+    height: 32px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 42px;
+    margin-left: -20px;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.sevenseg #h {
+    width: 6px;
+    height: 6px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    margin-top: 72px;
+    margin-left: 24px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+#a.on {
+    background: #ffffff;
+}
+
+#b.on {
+    background: #ffffff;
+}
+
+#c.on {
+    background: #ffffff;
+}
+
+#d.on {
+    background: #ffffff;
+}
+
+#e.on {
+    background: #ffffff;
+}
+
+#f.on {
+    background: #ffffff;
+}
+
+#g.on {
+    background: #ffffff;
+}
+
+#h.on {
+    background: #ffffff;
+}

@@ -2,10 +2,13 @@ import { LED } from "./LED/LED";
 import { LEDCore } from "./LED/LEDCore";
 import { HButton } from "./HButton/HButton";
 import { HButtonCore } from "./HButton/HButtonCore";
+import { SevenSegmentLED } from "./SevenSegmentLED/SevenSegmentLED";
+import { SevenSegmentLEDCore } from "./SevenSegmentLED/SevenSegmentLEDCore";
 
 export const deviceMap = new Map([
     ['LED', [LED, LEDCore]],
-    ['HButton', [HButton, HButtonCore]]
+    ['HButton', [HButton, HButtonCore]],
+    ['SevenSegmentLED', [SevenSegmentLED, SevenSegmentLEDCore]]
 ])
 
 export class Devices {
