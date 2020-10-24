@@ -6,13 +6,13 @@ export default class FPGAManager {
     readCount = 0
 
     subscribedInstances = new Map() //响应输出的Instance i1 => {data: [0], refresh: 回调函数}
-    hardwarePortsMap = new Map() //输出端口映射 32 => {instance: "i2", index: 0}
-    inputPortsMap = new Map() //输入端口映射 i1 => [31]
+    hardwarePortsMap = new Map() //从FPGA输入端口映射 32 => [{instance: "i2", index: 0}, ...] 支持多订阅
+    inputPortsMap = new Map() //输出到FPGA端口映射 i1 => [31]
     projectInstancePortsMap = new Map() // i1 => ["sec_out[0]"] 包含输入输出
 
-    hardwareValues = [] //输出数据 [0,0,0,0,......0] 64位
+    hardwareValues = [] //从FPGA输入数据 [0,0,0,0,......0] 64位
 
-    inputValues = [] //输入数据 [0,0,0,0,......0] 64位
+    inputValues = [] //输出到FPGA数据 [0,0,0,0,......0] 64位
 
     projectPortsMap = new Map();
 
@@ -26,23 +26,48 @@ export default class FPGAManager {
         this.projectInstancePortsMap = new Map();
     }
 
+    // 根据端口映射表将从FPGA输入的64bit数据分发到各个组件上
     Update = () => {
-        this.hardwarePortsMap.forEach((m, key, map) => {
-            const value = this.hardwareValues[key];
-            const ins = m.instance;
-            const insPort = m.index;
+        this.hardwarePortsMap.forEach((ms, key) => { //key: 第32个数 m: [{instance: "i2", index: 0}, ...]
+            const value = this.hardwareValues[key]; //第32个数的值
 
-            if (this.subscribedInstances.has(ins)) { //可能被删除
-                var subIns = this.subscribedInstances.get(ins);
-                subIns.data[insPort] = value;
-            }
+            // console.log(ms)
+
+            ms.forEach(m => { //遍历所有订阅
+                const ins = m.instance;
+                const insPortIndex = m.index;
+    
+                if (this.subscribedInstances.has(ins)) { //可能被删除
+                    var subIns = this.subscribedInstances.get(ins);
+                    subIns.data[insPortIndex] = value;
+                }
+            });
         });
     }
 
     MapOutputPorts = (projectPortName, instance, instancePortIndex) => {
         let hardwarePortName = this.projectPortsMap.get(projectPortName);
         let hardwarePortIndex = outputPortsMapping.get(hardwarePortName);
-        this.hardwarePortsMap.set(hardwarePortIndex, {instance: instance, index: instancePortIndex});
+
+        if (this.hardwarePortsMap.has(hardwarePortIndex)) {
+            let ms = this.hardwarePortsMap.get(hardwarePortIndex)
+            
+            let found = false;
+
+            for (var i = 0; i < ms.length; i++) {  
+                if (ms[i].instance === instance) {
+                    ms[i].index = instancePortIndex
+                    found = true
+                }
+            }  
+
+            if (!found) {
+                ms.push({instance: instance, index: instancePortIndex})
+            }
+            // this.hardwarePortsMap.set(hardwarePortIndex, ms);
+        } else {
+            this.hardwarePortsMap.set(hardwarePortIndex, [{instance: instance, index: instancePortIndex}]);
+        }
         
         let project_ports = this.projectInstancePortsMap.get(instance);
         project_ports[instancePortIndex] = projectPortName;
@@ -154,6 +179,7 @@ export default class FPGAManager {
     prevTime = 0
     d = new Date()
 
+    // 调用回调函数更新每个组件的界面值
     Cycle = () => {
 
         const currentTime = this.d.getTime();
@@ -163,7 +189,9 @@ export default class FPGAManager {
         }
         this.prevTime = currentTime; //单位毫秒
 
-        this.subscribedInstances.forEach((ins, key, map) => {
+        console.log(this.subscribedInstances.get("i1").data)
+
+        this.subscribedInstances.forEach((ins) => {
             ins.refresh(ins.data, deltaTime);
         });
     }
@@ -213,6 +241,8 @@ export default class FPGAManager {
         return data.status;
     }
 
+    // 从服务器端获取4个int16数, 含64个1bit数
+    // 需要将其拆分到一个64位数组里(hardwareValues)
     Split = (i16values) => {
         //遍历所有i16
         i16values.forEach((i16data, index, arr) => {

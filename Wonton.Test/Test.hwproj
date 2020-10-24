@@ -1,0 +1,256 @@
+{
+    "subscribedInstances": {
+        "i1": {
+            "data": [
+                1
+            ]
+        },
+        "i2": {
+            "data": [
+                0
+            ]
+        },
+        "i3": {
+            "data": [
+                1
+            ]
+        },
+        "i4": {
+            "data": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        "i6": {
+            "data": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                1,
+                0,
+                1
+            ]
+        }
+    },
+    "hardwarePortsMap": {
+        "4": [
+            {
+                "instance": "i6",
+                "index": 7
+            }
+        ],
+        "10": [
+            {
+                "instance": "i1",
+                "index": 0
+            },
+            {
+                "instance": "i4",
+                "index": 0
+            },
+            {
+                "instance": "i6",
+                "index": 0
+            }
+        ],
+        "11": [
+            {
+                "instance": "i4",
+                "index": 0
+            },
+            {
+                "instance": "i2",
+                "index": 0
+            },
+            {
+                "instance": "i6",
+                "index": 1
+            }
+        ],
+        "12": [
+            {
+                "instance": "i6",
+                "index": 2
+            },
+            {
+                "instance": "i3",
+                "index": 0
+            },
+            {
+                "instance": "i4",
+                "index": 2
+            }
+        ],
+        "13": [
+            {
+                "instance": "i4",
+                "index": 3
+            },
+            {
+                "instance": "i6",
+                "index": 3
+            }
+        ],
+        "14": [
+            {
+                "instance": "i4",
+                "index": 3
+            },
+            {
+                "instance": "i6",
+                "index": 4
+            }
+        ],
+        "15": [
+            {
+                "instance": "i6",
+                "index": 5
+            }
+        ]
+    },
+    "inputPortsMap": {
+        "i7": [
+            0
+        ]
+    },
+    "projectInstancePortsMap": {
+        "i1": [
+            "sec_out[0]"
+        ],
+        "i2": [
+            "sec_out[1]"
+        ],
+        "i3": [
+            "sec_out[2]"
+        ],
+        "i4": [
+            "sec_out[0]",
+            "sec_out[1]",
+            "sec_out[2]",
+            "sec_out[3]",
+            "sec_out[0]",
+            "",
+            "",
+            ""
+        ],
+        "i6": [
+            "sec_out[0]",
+            "sec_out[1]",
+            "sec_out[2]",
+            "sec_out[3]",
+            "sec_out[4]",
+            "sec_out[5]",
+            "min_out[0]",
+            "min_out[0]"
+        ],
+        "i7": [
+            "rst_n"
+        ]
+    },
+    "layout": [
+        {
+            "i": "i1",
+            "device": "LED",
+            "x": 0,
+            "y": 0,
+            "w": 3,
+            "h": 3,
+            "minW": 3,
+            "minH": 3
+        },
+        {
+            "i": "i2",
+            "device": "LED",
+            "x": 3,
+            "y": 0,
+            "w": 3,
+            "h": 3,
+            "minW": 3,
+            "minH": 3
+        },
+        {
+            "i": "i3",
+            "device": "LED",
+            "x": 6,
+            "y": 0,
+            "w": 3,
+            "h": 3,
+            "minW": 3,
+            "minH": 3
+        },
+        {
+            "i": "i4",
+            "device": "SevenSegmentLED",
+            "x": 6,
+            "y": 4,
+            "w": 4,
+            "h": 5,
+            "minW": 3,
+            "minH": 3
+        },
+        {
+            "i": "i6",
+            "device": "LEDMatrix4t4",
+            "x": 10,
+            "y": 4,
+            "w": 4,
+            "h": 5,
+            "minW": 3,
+            "minH": 3
+        },
+        {
+            "i": "i7",
+            "device": "HButton",
+            "x": 15,
+            "y": 0,
+            "w": 3,
+            "h": 3,
+            "minW": 3,
+            "minH": 3
+        }
+    ],
+    "projectPortsMap": {
+        "clk": "P77",
+        "rst_n": "P151",
+        "mode": "P148",
+        "set_hr": "P150",
+        "set_min": "P152",
+        "hr_out[0]": "P7",
+        "hr_out[1]": "P6",
+        "hr_out[2]": "P5",
+        "hr_out[3]": "P4",
+        "min_out[0]": "P9",
+        "min_out[1]": "P8",
+        "min_out[2]": "P16",
+        "min_out[3]": "P15",
+        "min_out[4]": "P11",
+        "min_out[5]": "P10",
+        "sec_out[0]": "P20",
+        "sec_out[1]": "P18",
+        "sec_out[2]": "P17",
+        "sec_out[3]": "P22",
+        "sec_out[4]": "P21",
+        "sec_out[5]": "P23",
+        "hr_alarm[0]": "P44",
+        "hr_alarm[1]": "P45",
+        "hr_alarm[2]": "P46",
+        "hr_alarm[3]": "P43",
+        "min_alarm[0]": "P40",
+        "min_alarm[1]": "P41",
+        "min_alarm[2]": "P42",
+        "min_alarm[3]": "P33",
+        "min_alarm[4]": "P34",
+        "min_alarm[5]": "P35",
+        "alarm": "P36"
+    },
+    "bitfile": "E:\\Documents\\Repo\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
+    "projectName": "Test"
+}
