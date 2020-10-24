@@ -7,7 +7,7 @@ export class SevenSegmentLED extends Component {
     
     static defaultProps = {
         name: '七段数码管',
-        input: [0, 0, 0, 0, 0, 0, 0, 0], //
+        input: [0, 0, 0, 0, 0, 0, 0, 0],
         ports: ['输入a', '输入b', '输入c', '输入d', '输入e', '输入f', '输入g', '输入h'],
         portsDirs: ['输入', '输入', '输入', '输入', '输入', '输入', '输入', '输入']
     }

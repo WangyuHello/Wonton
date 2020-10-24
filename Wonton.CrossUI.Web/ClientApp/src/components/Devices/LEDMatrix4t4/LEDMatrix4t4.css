@@ -1,0 +1,171 @@
+.LEDMatrix {
+    display: inline-block;
+    height: 80px;
+}
+
+.LEDMatrix #panel {
+    height: 92px;
+    width: 92px;
+    background-color: #43506C;
+    position: absolute;
+    margin-left: -48px;
+    margin-top: -8px;
+    border-radius: 4px;
+}
+
+.LEDMatrix span {
+    width: 16px;
+    height: 16px;
+    background: #3D6198;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.LEDMatrix #dot0_0 {
+    margin-top: 0px;
+    margin-left: -40px;
+}
+
+.LEDMatrix #dot0_1 {
+    margin-top: 0px;
+    margin-left: -20px;
+}
+
+.LEDMatrix #dot0_2 {
+    margin-top: 0px;
+    margin-left: 0px;
+}
+
+.LEDMatrix #dot0_3 {
+    margin-top: 0px;
+    margin-left: 20px;
+}
+
+
+.LEDMatrix #dot1_0 {
+    margin-top: 20px;
+    margin-left: -40px;
+}
+
+.LEDMatrix #dot1_1 {
+    margin-top: 20px;
+    margin-left: -20px;
+}
+
+.LEDMatrix #dot1_2 {
+    margin-top: 20px;
+    margin-left: 0px;
+}
+
+.LEDMatrix #dot1_3 {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.LEDMatrix #dot2_0 {
+    margin-top: 40px;
+    margin-left: -40px;
+}
+
+.LEDMatrix #dot2_1 {
+    margin-top: 40px;
+    margin-left: -20px;
+}
+
+.LEDMatrix #dot2_2 {
+    margin-top: 40px;
+    margin-left: 0px;
+}
+
+.LEDMatrix #dot2_3 {
+    margin-top: 40px;
+    margin-left: 20px;
+}
+
+.LEDMatrix #dot3_0 {
+    margin-top: 60px;
+    margin-left: -40px;
+}
+
+.LEDMatrix #dot3_1 {
+    margin-top: 60px;
+    margin-left: -20px;
+}
+
+.LEDMatrix #dot3_2 {
+    margin-top: 60px;
+    margin-left: 0px;
+}
+
+.LEDMatrix #dot3_3 {
+    margin-top: 60px;
+    margin-left: 20px;
+}
+
+#dot0_0.on {
+    background: #ffffff;
+}
+
+#dot0_1.on {
+    background: #ffffff;
+}
+
+#dot0_2.on {
+    background: #ffffff;
+}
+
+#dot0_3.on {
+    background: #ffffff;
+}
+
+#dot1_0.on {
+    background: #ffffff;
+}
+
+#dot1_1.on {
+    background: #ffffff;
+}
+
+#dot1_2.on {
+    background: #ffffff;
+}
+
+#dot1_3.on {
+    background: #ffffff;
+}
+
+
+#dot2_0.on {
+    background: #ffffff;
+}
+
+#dot2_1.on {
+    background: #ffffff;
+}
+
+#dot2_2.on {
+    background: #ffffff;
+}
+
+#dot2_3.on {
+    background: #ffffff;
+}
+
+
+#dot3_0.on {
+    background: #ffffff;
+}
+
+#dot3_1.on {
+    background: #ffffff;
+}
+
+#dot3_2.on {
+    background: #ffffff;
+}
+
+#dot3_3.on {
+    background: #ffffff;
+}

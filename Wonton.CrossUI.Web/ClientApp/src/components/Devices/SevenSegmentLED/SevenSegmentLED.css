@@ -3,7 +3,7 @@
     display: inline-block;
 }
 
-#panel {
+.sevenseg #panel {
     height: 94px;
     width: 78px;
     background-color: #43506C;
