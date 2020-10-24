@@ -49,25 +49,25 @@ You can download Wonton installation package for any platform below
 | Ubuntu 18.04                    |  armv7       | [.deb][rl-ubuntu18-arm]   |  [.7z][rl-pkg-ubuntu18-arm]   |
 | Ubuntu 18.04                    |  arm64       | [.deb][rl-ubuntu18-arm64] |  [.7z][rl-pkg-ubuntu18-arm64] |
 
-[rl-windows]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-setup.exe
-[rl-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-fxdependent-setup.exe
-[rl-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-20.04.deb
-[rl-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-18.04.deb
-[rl-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-16.04.deb
-[rl-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.14.dmg
-[rl-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.15.dmg
-[rl-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-armv7l.deb
-[rl-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-arm64.deb
+[rl-windows]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-win-setup.exe
+[rl-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-win-fxdependent-setup.exe
+[rl-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-amd64-ubuntu-20.04.deb
+[rl-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-amd64-ubuntu-18.04.deb
+[rl-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-amd64-ubuntu-16.04.deb
+[rl-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-mac-10.14.dmg
+[rl-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-mac-10.15.dmg
+[rl-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-armv7l.deb
+[rl-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-arm64.deb
 
-[rl-pkg-windows]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-x64.7z
-[rl-pkg-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-win-x64-fxdependent.7z
-[rl-pkg-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-20.04.7z
-[rl-pkg-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-18.04.7z
-[rl-pkg-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-amd64-ubuntu-16.04.7z
-[rl-pkg-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.14.7z
-[rl-pkg-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-mac-10.15.7z
-[rl-pkg-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-armv7l.7z
-[rl-pkg-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v1.0.11/Wonton-1.0.11-linux-arm64.7z
+[rl-pkg-windows]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-win-x64.7z
+[rl-pkg-windows-fxdep]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-win-x64-fxdependent.7z
+[rl-pkg-ubuntu20]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-amd64-ubuntu-20.04.7z
+[rl-pkg-ubuntu18]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-amd64-ubuntu-18.04.7z
+[rl-pkg-ubuntu16]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-amd64-ubuntu-16.04.7z
+[rl-pkg-macos14]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-mac-10.14.7z
+[rl-pkg-macos15]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-mac-10.15.7z
+[rl-pkg-ubuntu18-arm]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-armv7l.7z
+[rl-pkg-ubuntu18-arm64]: https://github.com/WangyuHello/Wonton/releases/download/v1.1.0/Wonton-1.1.0-linux-arm64.7z
 
 ## Install from Package Manager
 
@@ -76,7 +76,7 @@ You can download Wonton installation package for any platform below
     If you have Chocolatey installed
 
     ```bash
-    choco install wonton -y --version=1.0.11
+    choco install wonton -y --version=1.1.0
     ```
 - macOS / Linux
 
