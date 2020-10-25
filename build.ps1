@@ -2,6 +2,8 @@
 Param(
     [string]$Script = "build.cake",
     [switch]$useMagic,
+    [string]$node_version = "12.19.0",
+    [string]$dotnet_version = "3.1.403",
     [string]$Target,
     [string]$Configuration,
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
@@ -75,25 +77,27 @@ $npm_exe = "npm"
 
 if ((-not $IsCoreCLR) -or $IsWindows) {
     $dotnet_exe = "$dotnet_exe.exe"
+    $npm_exe = "$npm_exe.cmd"
 }
+
+$node_version = "v$node_version"
 
 $tool_path = Join-Path $PSScriptRoot "tools"
-$dotnet_install_path = Join-Path $tool_path "dotnet"
+$dotnet_install_path = Join-Path (Join-Path $tool_path "dotnet") "dotnet-sdk-$dotnet_version"
 $node_install_path = Join-Path $tool_path "node"
-$VERSION = "v13.12.0"
-$DISTRO = "win-x64"
+$node_distro = "win-x64"
 if ($IsMacOS) {
-    $DISTRO = "darwin-x64"
+    $node_distro = "darwin-x64"
 }
 elseif ($IsLinux) {
-    $DISTRO = "linux-x64"
+    $node_distro = "linux-x64"
 }
-$node_dist = "node-$VERSION-$DISTRO"
+$node_dist = "node-$node_version-$node_distro"
 $node_dist_path = Join-Path $node_install_path $node_dist
 
-$dotnet_exist = $false
+# $dotnet_exist = $false
 $local_dotnet_exist = $false
-$npm_exist = $false
+# $npm_exist = $false
 $local_npm_exist = $false
 
 # 如果本地安装则使用本地
@@ -108,10 +112,10 @@ if (Test-Path $node_install_path) {
     if(Test-Path $node_dist_path) 
     {
         $has_bin = if ((-not $IsCoreCLR) -or $IsWindows) {
-            Test-Path (Join-Path $node_dist_path "npm.cmd")
+            Test-Path (Join-Path $node_dist_path $npm_exe)
         }
         else {
-            Test-Path (Join-Path $node_dist_path "bin" "npm")
+            Test-Path (Join-Path $node_dist_path "bin" $npm_exe)
         }
 
         if ($has_bin) {
@@ -128,30 +132,30 @@ if (Test-Path $node_install_path) {
     }
 }
 
-try {
-    Invoke-Expression "$dotnet_exe --version" | Out-Null
-    $dotnet_exist = $true
-    if (-not $local_dotnet_exist) {
-        Write-Host "使用 Path 的 .NET Core" -ForegroundColor "Green"
-    }
-}
-catch {
+# try {
+#     Invoke-Expression "$dotnet_exe --version" | Out-Null
+#     $dotnet_exist = $true
+#     if (-not $local_dotnet_exist) {
+#         Write-Host "使用 Path 的 .NET Core" -ForegroundColor "Green"
+#     }
+# }
+# catch {
     
-}
+# }
 
-try {
-    Invoke-Expression "$npm_exe -v" | Out-Null
-    $npm_exist = $true
-    if (-not $local_npm_exist) {
-        Write-Host "使用 Path 的 NodeJs" -ForegroundColor "Green"
-    }
-}
-catch {
+# try {
+#     Invoke-Expression "$npm_exe -v" | Out-Null
+#     $npm_exist = $true
+#     if (-not $local_npm_exist) {
+#         Write-Host "使用 Path 的 NodeJs" -ForegroundColor "Green"
+#     }
+# }
+# catch {
     
-}
+# }
 
-if (-not $dotnet_exist) {
-    Write-Host "未发现 .NET Core, 将进行安装" -ForegroundColor "Yellow"
+if (-not $local_dotnet_exist) {
+    Write-Host "未发现本地 .NET Core, 将进行安装" -ForegroundColor "Yellow"
     # 安装 dotnet
     $dotnet_install_url = "https://dot.net/v1/dotnet-install.ps1" # https://dot.net/v1/dotnet-install.sh
     $dotnet_install_file = Join-Path $tool_path "dotnet-install.ps1"
@@ -166,8 +170,8 @@ if (-not $dotnet_exist) {
     $wc.DownloadFile($dotnet_install_url, $dotnet_install_file)
     # Invoke-WebRequest -Uri $dotnet_install_url -OutFile $dotnet_install_file
 
-    Write-Host "正在安装 .NET Core"
-    Invoke-Expression "$dotnet_install_file -Channel Current -Version Latest -InstallDir $dotnet_install_path -NoPath"
+    Write-Host "正在安装 .NET Core $dotnet_version"
+    Invoke-Expression "$dotnet_install_file -Channel Current -Version $dotnet_version -InstallDir $dotnet_install_path -NoPath"
     
     if ($LASTEXITCODE -ne 0) {
         Throw "An error occurred while installing .NET Core."
@@ -177,8 +181,8 @@ if (-not $dotnet_exist) {
     $env:DOTNET_ROOT=$dotnet_install_path
 }
 
-if (-not $npm_exist) {
-    Write-Host "未发现 NodeJs, 将进行安装" -ForegroundColor "Yellow"
+if (-not $local_npm_exist) {
+    Write-Host "未发现本地 NodeJs, 将进行安装" -ForegroundColor "Yellow"
     # 安装 nodejs
     $node_ext = "zip"
     if ($IsMacOS) {
@@ -195,10 +199,10 @@ if (-not $npm_exist) {
     $taobao_node_dist = "https://npm.taobao.org/mirrors/node/"
     $node_url = ""
     if ($useMagic) {
-        $node_url = "$taobao_node_dist$VERSION/$node_arc";  
+        $node_url = "$taobao_node_dist$node_version/$node_arc";  
     } 
     else {
-        $node_url = "$official_node_dist$VERSION/$node_arc";  
+        $node_url = "$official_node_dist$node_version/$node_arc";  
     }
     
     Write-Host "正在下载 $node_url"
@@ -219,6 +223,7 @@ if (-not $npm_exist) {
         $node_dist_path = Join-Path $node_dist_path "bin"
         $env:Path="$node_dist_path;"+$env:Path
     }
+    Remove-Item $node_downloaded_file -Force
 }
 
 $cake_bin = "dotnet-cake"
@@ -227,7 +232,7 @@ if ((-not $IsCoreCLR) -or $IsWindows) {
 }
 $cake_exe = Join-Path $tool_path $cake_bin
 
-Write-Host "正在安装Cake"
+Write-Host "正在安装 Cake" -ForegroundColor "Green"
 Invoke-Expression "$dotnet_exe tool install --tool-path $tool_path Cake.Tool" | Out-Null
 
 $cakeArguments = @()
