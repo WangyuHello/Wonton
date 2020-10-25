@@ -74,10 +74,14 @@ if(!$PSScriptRoot){
 
 $dotnet_exe = "dotnet"
 $npm_exe = "npm"
+$dotnet_install_script = "dotnet-install"
 
-if ((-not $IsCoreCLR) -or $IsWindows) {
+if ($IsWindows) {
     $dotnet_exe = "$dotnet_exe.exe"
     $npm_exe = "$npm_exe.cmd"
+    $dotnet_install_script = "$dotnet_install_script.ps1"
+} else {
+    $dotnet_install_script = "$dotnet_install_script.sh"
 }
 
 $node_version = "v$node_version"
@@ -93,7 +97,7 @@ elseif ($IsLinux) {
     $node_distro = "linux-x64"
 }
 $node_dist = "node-$node_version-$node_distro"
-$node_dist_path = Join-Path $node_install_path $node_dist
+$node_dist_path = if($IsWindows) { Join-Path $node_install_path $node_dist } else { Join-Path (Join-Path $node_install_path $node_dist) "bin" }
 
 # $dotnet_exist = $false
 $local_dotnet_exist = $false
@@ -108,29 +112,13 @@ if ((Test-Path $dotnet_install_path) -and (Test-Path (Join-Path $dotnet_install_
     $env:DOTNET_ROOT=$dotnet_install_path
 }
 
-if (Test-Path $node_install_path) {
-    if(Test-Path $node_dist_path) 
-    {
-        $has_bin = if ((-not $IsCoreCLR) -or $IsWindows) {
-            Test-Path (Join-Path $node_dist_path $npm_exe)
-        }
-        else {
-            Test-Path (Join-Path $node_dist_path "bin" $npm_exe)
-        }
-
-        if ($has_bin) {
-            Write-Host "发现本地安装的 Nodejs: $node_dist_path" -ForegroundColor "Green"
-            $local_npm_exist = $true
-            if ((-not $IsCoreCLR) -or $IsWindows) {
-                $env:Path="$node_dist_path;"+$env:Path
-            }
-            else {
-                $node_dist_path = Join-Path $node_dist_path "bin"
-                $env:Path="$node_dist_path;"+$env:Path
-            }
-        }
-    }
+if((Test-Path $node_dist_path) -and (Test-Path (Join-Path $node_dist_path $npm_exe))) 
+{
+    Write-Host "发现本地安装的 Nodejs: $node_dist_path" -ForegroundColor "Green"
+    $local_npm_exist = $true
+    $env:Path="$node_dist_path;"+$env:Path
 }
+
 
 # try {
 #     Invoke-Expression "$dotnet_exe --version" | Out-Null
@@ -157,8 +145,8 @@ if (Test-Path $node_install_path) {
 if (-not $local_dotnet_exist) {
     Write-Host "未发现本地 .NET Core, 将进行安装" -ForegroundColor "Yellow"
     # 安装 dotnet
-    $dotnet_install_url = "https://dot.net/v1/dotnet-install.ps1" # https://dot.net/v1/dotnet-install.sh
-    $dotnet_install_file = Join-Path $tool_path "dotnet-install.ps1"
+    $dotnet_install_url = "https://dot.net/v1/$dotnet_install_script" # https://dot.net/v1/dotnet-install.sh
+    $dotnet_install_file = Join-Path $tool_path $dotnet_install_script
     if (-not (Test-Path -Path $tool_path)) {
         New-Item -Path $tool_path -ItemType Directory | Out-Null
     }
@@ -171,10 +159,14 @@ if (-not $local_dotnet_exist) {
     # Invoke-WebRequest -Uri $dotnet_install_url -OutFile $dotnet_install_file
 
     Write-Host "正在安装 .NET Core $dotnet_version"
-    Invoke-Expression "$dotnet_install_file -Channel Current -Version $dotnet_version -InstallDir $dotnet_install_path -NoPath"
-    
+    if ($IsWindows) {
+        Invoke-Expression "$dotnet_install_file -Channel Current -Version $dotnet_version -InstallDir $dotnet_install_path -NoPath"
+    } else {
+        Invoke-Expression "bash $dotnet_install_file --channel Current --version $dotnet_version --install-dir $dotnet_install_path --no-path"
+    }
+
     if ($LASTEXITCODE -ne 0) {
-        Throw "An error occurred while installing .NET Core."
+        Throw "安装 .NET Core 时发生错误"
     }
 
     $env:Path="$dotnet_install_path;"+$env:Path
@@ -184,25 +176,18 @@ if (-not $local_dotnet_exist) {
 if (-not $local_npm_exist) {
     Write-Host "未发现本地 NodeJs, 将进行安装" -ForegroundColor "Yellow"
     # 安装 nodejs
-    $node_ext = "zip"
-    if ($IsMacOS) {
-        $node_ext = "tar.xz"
-    }
-    elseif ($IsLinux) {
-        $node_ext = "tar.xz"
-    }
+    $node_ext = if($IsWindows) { "zip" } else { "tar.xz" }
 
     $node_arc = "$node_dist.$node_ext"
     $node_downloaded_file = Join-Path $tool_path $node_arc
 
     $official_node_dist = "https://nodejs.org/dist/"
     $taobao_node_dist = "https://npm.taobao.org/mirrors/node/"
-    $node_url = ""
-    if ($useMagic) {
-        $node_url = "$taobao_node_dist$node_version/$node_arc";  
+    $node_url = if ($useMagic) {
+        "$taobao_node_dist$node_version/$node_arc";  
     } 
     else {
-        $node_url = "$official_node_dist$node_version/$node_arc";  
+        "$official_node_dist$node_version/$node_arc";  
     }
     
     Write-Host "正在下载 $node_url"
@@ -210,24 +195,27 @@ if (-not $local_npm_exist) {
     $wc.DownloadFile($node_url, $node_downloaded_file)
     # Invoke-WebRequest -Uri $node_url -OutFile $node_downloaded_file
 
+    if (-not (Test-Path -Path $node_install_path)) {
+        New-Item -Path $node_install_path -ItemType Directory | Out-Null
+    }
+
     Write-Host "正在解压 $node_arc"
-    if ((-not $IsCoreCLR) -or $IsWindows) {
+    if ($IsWindows) {
         Expand-Archive -LiteralPath $node_downloaded_file -DestinationPath $node_install_path
-        $env:Path="$node_dist_path;"+$env:Path
     }
     else {
-        Invoke-Expression "tar -xJvf $node_downloaded_file -C $node_install_path"
+        Invoke-Expression "tar -xJf $node_downloaded_file -C $node_install_path"
         if ($LASTEXITCODE -ne 0) {
-            Throw "An error occurred while installing NodeJs"
+            Throw "解压 NodeJs 时发生错误"
         }
-        $node_dist_path = Join-Path $node_dist_path "bin"
-        $env:Path="$node_dist_path;"+$env:Path
     }
+
+    $env:Path="$node_dist_path;"+$env:Path
     Remove-Item $node_downloaded_file -Force
 }
 
 $cake_bin = "dotnet-cake"
-if ((-not $IsCoreCLR) -or $IsWindows) {
+if ($IsWindows) {
     $cake_bin = "$cake_bin.exe"
 }
 $cake_exe = Join-Path $tool_path $cake_bin

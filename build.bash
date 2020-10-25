@@ -140,7 +140,7 @@ if [ "$local_npm_exist" = false ]; then
     fi
 
     echo "正在解压 $node_arc"
-    tar -xJvf $node_downloaded_file -C $node_install_path >/dev/null
+    tar -xJf $node_downloaded_file -C $node_install_path >/dev/null
 
     node_dist_path="$node_dist_path/bin"
     export PATH="$node_dist_path":"$PATH"
