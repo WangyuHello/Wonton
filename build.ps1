@@ -68,7 +68,18 @@ function GetProxyEnabledWebClient
     return $wc
 }
 
-if(!$PSScriptRoot){
+function IsOnWindows {
+    if (-not $IsCoreCLR) { # powershell 5
+        return $true
+    } else {               # powershell core
+        if ($IsWindows) {
+            return $true
+        }
+        return $false
+    }
+}
+
+if(!$PSScriptRoot) { # powershell 5
     $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
@@ -76,7 +87,7 @@ $dotnet_exe = "dotnet"
 $npm_exe = "npm"
 $dotnet_install_script = "dotnet-install"
 
-if ($IsWindows) {
+if (IsOnWindows) {
     $dotnet_exe = "$dotnet_exe.exe"
     $npm_exe = "$npm_exe.cmd"
     $dotnet_install_script = "$dotnet_install_script.ps1"
@@ -97,7 +108,7 @@ elseif ($IsLinux) {
     $node_distro = "linux-x64"
 }
 $node_dist = "node-$node_version-$node_distro"
-$node_dist_path = if($IsWindows) { Join-Path $node_install_path $node_dist } else { Join-Path (Join-Path $node_install_path $node_dist) "bin" }
+$node_dist_path = if(IsOnWindows) { Join-Path $node_install_path $node_dist } else { Join-Path (Join-Path $node_install_path $node_dist) "bin" }
 
 # $dotnet_exist = $false
 $local_dotnet_exist = $false
@@ -159,7 +170,7 @@ if (-not $local_dotnet_exist) {
     # Invoke-WebRequest -Uri $dotnet_install_url -OutFile $dotnet_install_file
 
     Write-Host "正在安装 .NET Core $dotnet_version"
-    if ($IsWindows) {
+    if (IsOnWindows) {
         Invoke-Expression "$dotnet_install_file -Channel Current -Version $dotnet_version -InstallDir $dotnet_install_path -NoPath"
     } else {
         Invoke-Expression "bash $dotnet_install_file --channel Current --version $dotnet_version --install-dir $dotnet_install_path --no-path"
@@ -176,7 +187,7 @@ if (-not $local_dotnet_exist) {
 if (-not $local_npm_exist) {
     Write-Host "未发现本地 NodeJs, 将进行安装" -ForegroundColor "Yellow"
     # 安装 nodejs
-    $node_ext = if($IsWindows) { "zip" } else { "tar.xz" }
+    $node_ext = if(IsOnWindows) { "zip" } else { "tar.xz" }
 
     $node_arc = "$node_dist.$node_ext"
     $node_downloaded_file = Join-Path $tool_path $node_arc
@@ -200,7 +211,7 @@ if (-not $local_npm_exist) {
     }
 
     Write-Host "正在解压 $node_arc"
-    if ($IsWindows) {
+    if (IsOnWindows) {
         Expand-Archive -LiteralPath $node_downloaded_file -DestinationPath $node_install_path
     }
     else {
@@ -215,7 +226,7 @@ if (-not $local_npm_exist) {
 }
 
 $cake_bin = "dotnet-cake"
-if ($IsWindows) {
+if (IsOnWindows) {
     $cake_bin = "$cake_bin.exe"
 }
 $cake_exe = Join-Path $tool_path $cake_bin
