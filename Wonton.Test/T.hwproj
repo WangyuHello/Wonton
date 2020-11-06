@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup>
+    <Bitfile>E:\Documents\Repo\Wonton\Wonton.Test\AlarmClock_fde_dc.bit</Bitfile>
+  </PropertyGroup>
+
+  <DeviceGroup>
+    <LED Name="i1" X="0" Y="0" Width="3" Height="3" Input="sec_out[0]" />
+    <LED Name="i2" X="3" Y="0" Width="3" Height="3" Input="sec_out[1]" />
+    <LED Name="i3" X="6" Y="0" Width="3" Height="3" Input="sec_out[2]" />
+    <SevenSegmentLED Name="i4" X="6" Y="4" Width="4" Height="5" Input="sec_out[0:5]"/>
+    <LEDMatrix4t4 Name="i6" X="10" Y="4" Width="4" Height="5" Input="sec_out[0:5],min_out[0:1]"/>
+    <HButton Name="i7" X="15" Y="0" Width="3" Height="3" Output="rst_n" />
+  </DeviceGroup>
+
+  <PortGroup>
+    <Connection Pin="clk" Pad="P77" />
+    <Connection Pin="rst_n" Pad="P151" />
+    <Connection Pin="mode" Pad="P148" />
+    <Connection Pin="set_hr" Pad="P150" />
+    <Connection Pin="set_min" Pad="P152" />
+    <Connection Pin="hr_out[0]" Pad="P77" />
+  </PortGroup>
+</Project>

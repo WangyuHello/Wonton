@@ -15,9 +15,7 @@ export class LEDMatrix4t4Core extends Component {
         ]
     }
 
-
     render() {
-
         return (      
             <div className="LEDMatrix">
                 <div id="panel"></div>

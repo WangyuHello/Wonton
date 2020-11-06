@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faMicrochip, faPlay, faStop, faServer, faSave, faFolderOpen, faPlus, faFile, faStore } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faMicrochip, faPlay, faStop, faSave, faFolderOpen, faPlus, faFile, faStore, faCalculator } from '@fortawesome/free-solid-svg-icons'
 import Switch from "react-switch";
 import { CSSTransition } from "react-transition-group";
 import './Title.css'
@@ -466,7 +466,7 @@ export class Title extends Component {
 
                 <div className="myTitle">
                     <div style={{ display: 'flex', alignItems: 'top', marginLeft: titleLeftMargin, marginTop: '8px'}}>
-                        <FontAwesomeIcon style={{width:'20px', height:'20px', color: 'white', marginTop: "5px"}} icon={faServer}/>
+                        <FontAwesomeIcon style={{width:'20px', height:'20px', color: 'white', marginTop: "5px"}} icon={faCalculator}/>
                         <div className="titleName">馄饨FPGA</div>
                     </div>
 

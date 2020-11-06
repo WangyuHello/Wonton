@@ -13,8 +13,20 @@ export class LEDMatrix4t4 extends Component {
     }
 
     state = {
-        inputs: [0, 0, 0, 0, 0, 0, 0, 0], 
-    }
+        onOff: [
+            [false, false, false, false],
+            [false, false, false, false],
+            [false, false, false, false],
+            [false, false, false, false]
+        ],
+        onffDeltaTime: [
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]
+        ]
+    } 
+    // 视觉暂留现象约0.4s
 
     componentDidMount() {
         let ins = this.props.instance;
@@ -22,12 +34,36 @@ export class LEDMatrix4t4 extends Component {
         let that = this;
 
         manager.Subscribe(ins, this.props.ports, (inputs, deltaTime) => {
+            let l_onOff = [
+                [false, false, false, false],
+                [false, false, false, false],
+                [false, false, false, false],
+                [false, false, false, false]
+            ]
+    
+            let row_sel = inputs.slice(0, 4)
+            let col_sel = inputs.slice(4, 8)
+    
+            for (let r = 0; r < row_sel.length; r++) {
+                const ele = row_sel[r];
+                if(ele ===  1) {
+                    let new_row = col_sel.map(val => val === 1 ? true : false)
+                    let old_row = that.state.onOff[r]
+                    l_onOff[r] = new_row
+                }
+                else {
+                    let new_row = [false,false,false,false]
+                    l_onOff[r] = new_row
+                }
+            }
+
             that.setState({
-                inputs: inputs
+                onOff: l_onOff
             });
         });
 
-        manager.RegisterProjectPorts(this.props.instance, this.state.inputs.length);
+        let length = this.state.onOff.map(v => v.length).reduce((prev, curr) => prev + curr);
+        manager.RegisterProjectPorts(this.props.instance, length);
     }
 
     componentWillUnmount() {
@@ -36,22 +72,8 @@ export class LEDMatrix4t4 extends Component {
     }
 
     render() {
-        
-        let onOff = [
-            [false, false, false, false],
-            [false, false, false, false],
-            [false, false, false, false],
-            [false, false, false, false]
-        ]
-
-        let row_sel = this.state.inputs.slice(0, 4)
-        let col_sel = this.state.inputs.slice(4, 8)
-
-        let selcted_row = row_sel.indexOf(1)
-        onOff[selcted_row] = col_sel
-
         return (      
-            <LEDMatrix4t4Core onOff={onOff}/>
+            <LEDMatrix4t4Core onOff={this.state.onOff}/>
         );
     }
 }
