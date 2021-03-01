@@ -1,0 +1,1435 @@
+$date Tue Feb  2 23:21:19 2021
+$end
+$version VCD Tracer "Nestor" Release v.3.0.2
+$end
+$timescale 1 us
+$end
+$var wire 1 alarm alarm $end
+$var wire 4 hr_alarm hr_alarm $end
+$var wire 4 hr_out hr_out $end
+$var wire 6 min_alarm min_alarm $end
+$var wire 6 min_out min_out $end
+$var wire 6 sec_out sec_out $end
+$enddefinitions $end
+$dumpvars
+bx alarm
+bxxxx hr_alarm
+bxxxx hr_out
+bxxxxxx min_alarm
+bxxxxxx min_out
+bxxxxxx sec_out
+$end
+#0
+b0 alarm
+b1100 hr_alarm
+b1100 hr_out
+b000000 min_alarm
+b000000 min_out
+b000000 sec_out
+#3
+b1 alarm
+b000001 sec_out
+#4
+b000010 sec_out
+#5
+b000011 sec_out
+#6
+b000100 sec_out
+#7
+b000101 sec_out
+#8
+b000110 sec_out
+#9
+b000111 sec_out
+#10
+b001000 sec_out
+#11
+b001001 sec_out
+#12
+b001010 sec_out
+#13
+b001011 sec_out
+#14
+b001100 sec_out
+#15
+b001101 sec_out
+#16
+b001110 sec_out
+#17
+b001111 sec_out
+#18
+b010000 sec_out
+#19
+b010001 sec_out
+#20
+b010010 sec_out
+#21
+b010011 sec_out
+#22
+b010100 sec_out
+#23
+b010101 sec_out
+#24
+b010110 sec_out
+#25
+b010111 sec_out
+#26
+b011000 sec_out
+#27
+b011001 sec_out
+#28
+b011010 sec_out
+#29
+b011011 sec_out
+#30
+b011100 sec_out
+#31
+b011101 sec_out
+#32
+b011110 sec_out
+#33
+b011111 sec_out
+#34
+b100000 sec_out
+#35
+b100001 sec_out
+#36
+b100010 sec_out
+#37
+b100011 sec_out
+#38
+b100100 sec_out
+#39
+b100101 sec_out
+#40
+b100110 sec_out
+#41
+b100111 sec_out
+#42
+b101000 sec_out
+#43
+b101001 sec_out
+#44
+b101010 sec_out
+#45
+b101011 sec_out
+#46
+b101100 sec_out
+#47
+b101101 sec_out
+#48
+b101110 sec_out
+#49
+b101111 sec_out
+#50
+b110000 sec_out
+#51
+b110001 sec_out
+#52
+b110010 sec_out
+#53
+b110011 sec_out
+#54
+b110100 sec_out
+#55
+b110101 sec_out
+#56
+b110110 sec_out
+#57
+b110111 sec_out
+#58
+b111000 sec_out
+#59
+b111001 sec_out
+#60
+b111010 sec_out
+#61
+b111011 sec_out
+#62
+b000001 min_out
+b000000 sec_out
+#63
+b0 alarm
+b000001 sec_out
+#64
+b000010 sec_out
+#65
+b000011 sec_out
+#66
+b000100 sec_out
+#67
+b000101 sec_out
+#68
+b000110 sec_out
+#69
+b000111 sec_out
+#70
+b001000 sec_out
+#71
+b001001 sec_out
+#72
+b001010 sec_out
+#73
+b001011 sec_out
+#74
+b001100 sec_out
+#75
+b001101 sec_out
+#76
+b001110 sec_out
+#77
+b001111 sec_out
+#78
+b010000 sec_out
+#79
+b010001 sec_out
+#80
+b010010 sec_out
+#81
+b010011 sec_out
+#82
+b010100 sec_out
+#83
+b010101 sec_out
+#84
+b010110 sec_out
+#85
+b010111 sec_out
+#86
+b011000 sec_out
+#87
+b011001 sec_out
+#88
+b011010 sec_out
+#89
+b011011 sec_out
+#90
+b011100 sec_out
+#91
+b011101 sec_out
+#92
+b011110 sec_out
+#93
+b011111 sec_out
+#94
+b100000 sec_out
+#95
+b100001 sec_out
+#96
+b100010 sec_out
+#97
+b100011 sec_out
+#98
+b100100 sec_out
+#99
+b100101 sec_out
+#100
+b100110 sec_out
+#101
+b100111 sec_out
+#102
+b101000 sec_out
+#103
+b101001 sec_out
+#104
+b101010 sec_out
+#105
+b101011 sec_out
+#106
+b101100 sec_out
+#107
+b101101 sec_out
+#108
+b101110 sec_out
+#109
+b101111 sec_out
+#110
+b110000 sec_out
+#111
+b110001 sec_out
+#112
+b110010 sec_out
+#113
+b110011 sec_out
+#114
+b110100 sec_out
+#115
+b110101 sec_out
+#116
+b110110 sec_out
+#117
+b110111 sec_out
+#118
+b111000 sec_out
+#119
+b111001 sec_out
+#120
+b111010 sec_out
+#121
+b111011 sec_out
+#122
+b000010 min_out
+b000000 sec_out
+#123
+b000001 sec_out
+#124
+b000010 sec_out
+#125
+b000011 sec_out
+#126
+b000100 sec_out
+#127
+b000101 sec_out
+#128
+b000110 sec_out
+#129
+b000111 sec_out
+#130
+b001000 sec_out
+#131
+b001001 sec_out
+#132
+b001010 sec_out
+#133
+b001011 sec_out
+#134
+b001100 sec_out
+#135
+b001101 sec_out
+#136
+b001110 sec_out
+#137
+b001111 sec_out
+#138
+b010000 sec_out
+#139
+b010001 sec_out
+#140
+b010010 sec_out
+#141
+b010011 sec_out
+#142
+b010100 sec_out
+#143
+b010101 sec_out
+#144
+b010110 sec_out
+#145
+b010111 sec_out
+#146
+b011000 sec_out
+#147
+b011001 sec_out
+#148
+b011010 sec_out
+#149
+b011011 sec_out
+#150
+b011100 sec_out
+#151
+b011101 sec_out
+#152
+b011110 sec_out
+#153
+b011111 sec_out
+#154
+b100000 sec_out
+#155
+b100001 sec_out
+#156
+b100010 sec_out
+#157
+b100011 sec_out
+#158
+b100100 sec_out
+#159
+b100101 sec_out
+#160
+b100110 sec_out
+#161
+b100111 sec_out
+#162
+b101000 sec_out
+#163
+b101001 sec_out
+#164
+b101010 sec_out
+#165
+b101011 sec_out
+#166
+b101100 sec_out
+#167
+b101101 sec_out
+#168
+b101110 sec_out
+#169
+b101111 sec_out
+#170
+b110000 sec_out
+#171
+b110001 sec_out
+#172
+b110010 sec_out
+#173
+b110011 sec_out
+#174
+b110100 sec_out
+#175
+b110101 sec_out
+#176
+b110110 sec_out
+#177
+b110111 sec_out
+#178
+b111000 sec_out
+#179
+b111001 sec_out
+#180
+b111010 sec_out
+#181
+b111011 sec_out
+#182
+b000011 min_out
+b000000 sec_out
+#183
+b000001 sec_out
+#184
+b000010 sec_out
+#185
+b000011 sec_out
+#186
+b000100 sec_out
+#187
+b000101 sec_out
+#188
+b000110 sec_out
+#189
+b000111 sec_out
+#190
+b001000 sec_out
+#191
+b001001 sec_out
+#192
+b001010 sec_out
+#193
+b001011 sec_out
+#194
+b001100 sec_out
+#195
+b001101 sec_out
+#196
+b001110 sec_out
+#197
+b001111 sec_out
+#198
+b010000 sec_out
+#199
+b010001 sec_out
+#200
+b010010 sec_out
+#201
+b010011 sec_out
+#202
+b010100 sec_out
+#203
+b010101 sec_out
+#204
+b010110 sec_out
+#205
+b010111 sec_out
+#206
+b011000 sec_out
+#207
+b011001 sec_out
+#208
+b011010 sec_out
+#209
+b011011 sec_out
+#210
+b011100 sec_out
+#211
+b011101 sec_out
+#212
+b011110 sec_out
+#213
+b011111 sec_out
+#214
+b100000 sec_out
+#215
+b100001 sec_out
+#216
+b100010 sec_out
+#217
+b100011 sec_out
+#218
+b100100 sec_out
+#219
+b100101 sec_out
+#220
+b100110 sec_out
+#221
+b100111 sec_out
+#222
+b101000 sec_out
+#223
+b101001 sec_out
+#224
+b101010 sec_out
+#225
+b101011 sec_out
+#226
+b101100 sec_out
+#227
+b101101 sec_out
+#228
+b101110 sec_out
+#229
+b101111 sec_out
+#230
+b110000 sec_out
+#231
+b110001 sec_out
+#232
+b110010 sec_out
+#233
+b110011 sec_out
+#234
+b110100 sec_out
+#235
+b110101 sec_out
+#236
+b110110 sec_out
+#237
+b110111 sec_out
+#238
+b111000 sec_out
+#239
+b111001 sec_out
+#240
+b111010 sec_out
+#241
+b111011 sec_out
+#242
+b000100 min_out
+b000000 sec_out
+#243
+b000001 sec_out
+#244
+b000010 sec_out
+#245
+b000011 sec_out
+#246
+b000100 sec_out
+#247
+b000101 sec_out
+#248
+b000110 sec_out
+#249
+b000111 sec_out
+#250
+b001000 sec_out
+#251
+b001001 sec_out
+#252
+b001010 sec_out
+#253
+b001011 sec_out
+#254
+b001100 sec_out
+#255
+b001101 sec_out
+#256
+b001110 sec_out
+#257
+b001111 sec_out
+#258
+b010000 sec_out
+#259
+b010001 sec_out
+#260
+b010010 sec_out
+#261
+b010011 sec_out
+#262
+b010100 sec_out
+#263
+b010101 sec_out
+#264
+b010110 sec_out
+#265
+b010111 sec_out
+#266
+b011000 sec_out
+#267
+b011001 sec_out
+#268
+b011010 sec_out
+#269
+b011011 sec_out
+#270
+b011100 sec_out
+#271
+b011101 sec_out
+#272
+b011110 sec_out
+#273
+b011111 sec_out
+#274
+b100000 sec_out
+#275
+b100001 sec_out
+#276
+b100010 sec_out
+#277
+b100011 sec_out
+#278
+b100100 sec_out
+#279
+b100101 sec_out
+#280
+b100110 sec_out
+#281
+b100111 sec_out
+#282
+b101000 sec_out
+#283
+b101001 sec_out
+#284
+b101010 sec_out
+#285
+b101011 sec_out
+#286
+b101100 sec_out
+#287
+b101101 sec_out
+#288
+b101110 sec_out
+#289
+b101111 sec_out
+#290
+b110000 sec_out
+#291
+b110001 sec_out
+#292
+b110010 sec_out
+#293
+b110011 sec_out
+#294
+b110100 sec_out
+#295
+b110101 sec_out
+#296
+b110110 sec_out
+#297
+b110111 sec_out
+#298
+b111000 sec_out
+#299
+b111001 sec_out
+#300
+b111010 sec_out
+#301
+b111011 sec_out
+#302
+b000101 min_out
+b000000 sec_out
+#303
+b000001 sec_out
+#304
+b000010 sec_out
+#305
+b000011 sec_out
+#306
+b000100 sec_out
+#307
+b000101 sec_out
+#308
+b000110 sec_out
+#309
+b000111 sec_out
+#310
+b001000 sec_out
+#311
+b001001 sec_out
+#312
+b001010 sec_out
+#313
+b001011 sec_out
+#314
+b001100 sec_out
+#315
+b001101 sec_out
+#316
+b001110 sec_out
+#317
+b001111 sec_out
+#318
+b010000 sec_out
+#319
+b010001 sec_out
+#320
+b010010 sec_out
+#321
+b010011 sec_out
+#322
+b010100 sec_out
+#323
+b010101 sec_out
+#324
+b010110 sec_out
+#325
+b010111 sec_out
+#326
+b011000 sec_out
+#327
+b011001 sec_out
+#328
+b011010 sec_out
+#329
+b011011 sec_out
+#330
+b011100 sec_out
+#331
+b011101 sec_out
+#332
+b011110 sec_out
+#333
+b011111 sec_out
+#334
+b100000 sec_out
+#335
+b100001 sec_out
+#336
+b100010 sec_out
+#337
+b100011 sec_out
+#338
+b100100 sec_out
+#339
+b100101 sec_out
+#340
+b100110 sec_out
+#341
+b100111 sec_out
+#342
+b101000 sec_out
+#343
+b101001 sec_out
+#344
+b101010 sec_out
+#345
+b101011 sec_out
+#346
+b101100 sec_out
+#347
+b101101 sec_out
+#348
+b101110 sec_out
+#349
+b101111 sec_out
+#350
+b110000 sec_out
+#351
+b110001 sec_out
+#352
+b110010 sec_out
+#353
+b110011 sec_out
+#354
+b110100 sec_out
+#355
+b110101 sec_out
+#356
+b110110 sec_out
+#357
+b110111 sec_out
+#358
+b111000 sec_out
+#359
+b111001 sec_out
+#360
+b111010 sec_out
+#361
+b111011 sec_out
+#362
+b000110 min_out
+b000000 sec_out
+#363
+b000001 sec_out
+#364
+b000010 sec_out
+#365
+b000011 sec_out
+#366
+b000100 sec_out
+#367
+b000101 sec_out
+#368
+b000110 sec_out
+#369
+b000111 sec_out
+#370
+b001000 sec_out
+#371
+b001001 sec_out
+#372
+b001010 sec_out
+#373
+b001011 sec_out
+#374
+b001100 sec_out
+#375
+b001101 sec_out
+#376
+b001110 sec_out
+#377
+b001111 sec_out
+#378
+b010000 sec_out
+#379
+b010001 sec_out
+#380
+b010010 sec_out
+#381
+b010011 sec_out
+#382
+b010100 sec_out
+#383
+b010101 sec_out
+#384
+b010110 sec_out
+#385
+b010111 sec_out
+#386
+b011000 sec_out
+#387
+b011001 sec_out
+#388
+b011010 sec_out
+#389
+b011011 sec_out
+#390
+b011100 sec_out
+#391
+b011101 sec_out
+#392
+b011110 sec_out
+#393
+b011111 sec_out
+#394
+b100000 sec_out
+#395
+b100001 sec_out
+#396
+b100010 sec_out
+#397
+b100011 sec_out
+#398
+b100100 sec_out
+#399
+b100101 sec_out
+#400
+b100110 sec_out
+#401
+b100111 sec_out
+#402
+b101000 sec_out
+#403
+b101001 sec_out
+#404
+b101010 sec_out
+#405
+b101011 sec_out
+#406
+b101100 sec_out
+#407
+b101101 sec_out
+#408
+b101110 sec_out
+#409
+b101111 sec_out
+#410
+b110000 sec_out
+#411
+b110001 sec_out
+#412
+b110010 sec_out
+#413
+b110011 sec_out
+#414
+b110100 sec_out
+#415
+b110101 sec_out
+#416
+b110110 sec_out
+#417
+b110111 sec_out
+#418
+b111000 sec_out
+#419
+b111001 sec_out
+#420
+b111010 sec_out
+#421
+b111011 sec_out
+#422
+b000111 min_out
+b000000 sec_out
+#423
+b000001 sec_out
+#424
+b000010 sec_out
+#425
+b000011 sec_out
+#426
+b000100 sec_out
+#427
+b000101 sec_out
+#428
+b000110 sec_out
+#429
+b000111 sec_out
+#430
+b001000 sec_out
+#431
+b001001 sec_out
+#432
+b001010 sec_out
+#433
+b001011 sec_out
+#434
+b001100 sec_out
+#435
+b001101 sec_out
+#436
+b001110 sec_out
+#437
+b001111 sec_out
+#438
+b010000 sec_out
+#439
+b010001 sec_out
+#440
+b010010 sec_out
+#441
+b010011 sec_out
+#442
+b010100 sec_out
+#443
+b010101 sec_out
+#444
+b010110 sec_out
+#445
+b010111 sec_out
+#446
+b011000 sec_out
+#447
+b011001 sec_out
+#448
+b011010 sec_out
+#449
+b011011 sec_out
+#450
+b011100 sec_out
+#451
+b011101 sec_out
+#452
+b011110 sec_out
+#453
+b011111 sec_out
+#454
+b100000 sec_out
+#455
+b100001 sec_out
+#456
+b100010 sec_out
+#457
+b100011 sec_out
+#458
+b100100 sec_out
+#459
+b100101 sec_out
+#460
+b100110 sec_out
+#461
+b100111 sec_out
+#462
+b101000 sec_out
+#463
+b101001 sec_out
+#464
+b101010 sec_out
+#465
+b101011 sec_out
+#466
+b101100 sec_out
+#467
+b101101 sec_out
+#468
+b101110 sec_out
+#469
+b101111 sec_out
+#470
+b110000 sec_out
+#471
+b110001 sec_out
+#472
+b110010 sec_out
+#473
+b110011 sec_out
+#474
+b110100 sec_out
+#475
+b110101 sec_out
+#476
+b110110 sec_out
+#477
+b110111 sec_out
+#478
+b111000 sec_out
+#479
+b111001 sec_out
+#480
+b111010 sec_out
+#481
+b111011 sec_out
+#482
+b001000 min_out
+b000000 sec_out
+#483
+b000001 sec_out
+#484
+b000010 sec_out
+#485
+b000011 sec_out
+#486
+b000100 sec_out
+#487
+b000101 sec_out
+#488
+b000110 sec_out
+#489
+b000111 sec_out
+#490
+b001000 sec_out
+#491
+b001001 sec_out
+#492
+b001010 sec_out
+#493
+b001011 sec_out
+#494
+b001100 sec_out
+#495
+b001101 sec_out
+#496
+b001110 sec_out
+#497
+b001111 sec_out
+#498
+b010000 sec_out
+#499
+b010001 sec_out
+#500
+b010010 sec_out
+#501
+b010011 sec_out
+#502
+b010100 sec_out
+#503
+b010101 sec_out
+#504
+b010110 sec_out
+#505
+b010111 sec_out
+#506
+b011000 sec_out
+#507
+b011001 sec_out
+#508
+b011010 sec_out
+#509
+b011011 sec_out
+#510
+b011100 sec_out
+#511
+b011101 sec_out
+#512
+b011110 sec_out
+#513
+b011111 sec_out
+#514
+b100000 sec_out
+#515
+b100001 sec_out
+#516
+b100010 sec_out
+#517
+b100011 sec_out
+#518
+b100100 sec_out
+#519
+b100101 sec_out
+#520
+b100110 sec_out
+#521
+b100111 sec_out
+#522
+b101000 sec_out
+#523
+b101001 sec_out
+#524
+b101010 sec_out
+#525
+b101011 sec_out
+#526
+b101100 sec_out
+#527
+b101101 sec_out
+#528
+b101110 sec_out
+#529
+b101111 sec_out
+#530
+b110000 sec_out
+#531
+b110001 sec_out
+#532
+b110010 sec_out
+#533
+b110011 sec_out
+#534
+b110100 sec_out
+#535
+b110101 sec_out
+#536
+b110110 sec_out
+#537
+b110111 sec_out
+#538
+b111000 sec_out
+#539
+b111001 sec_out
+#540
+b111010 sec_out
+#541
+b111011 sec_out
+#542
+b001001 min_out
+b000000 sec_out
+#543
+b000001 sec_out
+#544
+b000010 sec_out
+#545
+b000011 sec_out
+#546
+b000100 sec_out
+#547
+b000101 sec_out
+#548
+b000110 sec_out
+#549
+b000111 sec_out
+#550
+b001000 sec_out
+#551
+b001001 sec_out
+#552
+b001010 sec_out
+#553
+b001011 sec_out
+#554
+b001100 sec_out
+#555
+b001101 sec_out
+#556
+b001110 sec_out
+#557
+b001111 sec_out
+#558
+b010000 sec_out
+#559
+b010001 sec_out
+#560
+b010010 sec_out
+#561
+b010011 sec_out
+#562
+b010100 sec_out
+#563
+b010101 sec_out
+#564
+b010110 sec_out
+#565
+b010111 sec_out
+#566
+b011000 sec_out
+#567
+b011001 sec_out
+#568
+b011010 sec_out
+#569
+b011011 sec_out
+#570
+b011100 sec_out
+#571
+b011101 sec_out
+#572
+b011110 sec_out
+#573
+b011111 sec_out
+#574
+b100000 sec_out
+#575
+b100001 sec_out
+#576
+b100010 sec_out
+#577
+b100011 sec_out
+#578
+b100100 sec_out
+#579
+b100101 sec_out
+#580
+b100110 sec_out
+#581
+b100111 sec_out
+#582
+b101000 sec_out
+#583
+b101001 sec_out
+#584
+b101010 sec_out
+#585
+b101011 sec_out
+#586
+b101100 sec_out
+#587
+b101101 sec_out
+#588
+b101110 sec_out
+#589
+b101111 sec_out
+#590
+b110000 sec_out
+#591
+b110001 sec_out
+#592
+b110010 sec_out
+#593
+b110011 sec_out
+#594
+b110100 sec_out
+#595
+b110101 sec_out
+#596
+b110110 sec_out
+#597
+b110111 sec_out
+#598
+b111000 sec_out
+#599
+b111001 sec_out
+#600
+b111010 sec_out
+#601
+b111011 sec_out
+#602
+b001010 min_out
+b000000 sec_out
+#603
+b000001 sec_out
+#604
+b000010 sec_out
+#605
+b000011 sec_out
+#606
+b000100 sec_out
+#607
+b000101 sec_out
+#608
+b000110 sec_out
+#609
+b000111 sec_out
+#610
+b001000 sec_out
+#611
+b001001 sec_out
+#612
+b001010 sec_out
+#613
+b001011 sec_out
+#614
+b001100 sec_out
+#615
+b001101 sec_out
+#616
+b001110 sec_out
+#617
+b001111 sec_out
+#618
+b010000 sec_out
+#619
+b010001 sec_out
+#620
+b010010 sec_out
+#621
+b010011 sec_out
+#622
+b010100 sec_out
+#623
+b010101 sec_out
+#624
+b010110 sec_out
+#625
+b010111 sec_out
+#626
+b011000 sec_out
+#627
+b011001 sec_out
+#628
+b011010 sec_out
+#629
+b011011 sec_out
+#630
+b011100 sec_out
+#631
+b011101 sec_out
+#632
+b011110 sec_out
+#633
+b011111 sec_out
+#634
+b100000 sec_out
+#635
+b100001 sec_out
+#636
+b100010 sec_out
+#637
+b100011 sec_out
+#638
+b100100 sec_out
+#639
+b100101 sec_out
+#640
+b100110 sec_out
+#641
+b100111 sec_out
+#642
+b101000 sec_out
+#643
+b101001 sec_out
+#644
+b101010 sec_out
+#645
+b101011 sec_out
+#646
+b101100 sec_out
+#647
+b101101 sec_out
+#648
+b101110 sec_out
+#649
+b101111 sec_out
+#650
+b110000 sec_out
+#651
+b110001 sec_out
+#652
+b110010 sec_out
+#653
+b110011 sec_out
+#654
+b110100 sec_out
+#655
+b110101 sec_out
+#656
+b110110 sec_out
+#657
+b110111 sec_out
+#658
+b111000 sec_out
+#659
+b111001 sec_out
+#660
+b111010 sec_out
+#661
+b111011 sec_out
+#662
+b001011 min_out
+b000000 sec_out
+#663
+b000001 sec_out
+#664
+b000010 sec_out
+#665
+b000011 sec_out
+#666
+b000100 sec_out
+#667
+b000101 sec_out
+#668
+b000110 sec_out
+#669
+b000111 sec_out
+#670
+b001000 sec_out
+#671
+b001001 sec_out
+#672
+b001010 sec_out
+#673
+b001011 sec_out
+#674
+b001100 sec_out
+#675
+b001101 sec_out
+#676
+b001110 sec_out
+#677
+b001111 sec_out
+#678
+b010000 sec_out
+#679
+b010001 sec_out
+#680
+b010010 sec_out
+#681
+b010011 sec_out
+#682
+b010100 sec_out
+#683
+b010101 sec_out
+#684
+b010110 sec_out
+#685
+b010111 sec_out
+#686
+b011000 sec_out
+#687
+b011001 sec_out
+#688
+b011010 sec_out
+#689
+b011011 sec_out
+#690
+b011100 sec_out
+#691
+b011101 sec_out
+#692
+b011110 sec_out
+#693
+b011111 sec_out
+#694
+b100000 sec_out
+#695
+b100001 sec_out
+#696
+b100010 sec_out
+#697
+b100011 sec_out
+#698
+b100100 sec_out
+#699
+b100101 sec_out

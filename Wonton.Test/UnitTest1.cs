@@ -12,7 +12,7 @@ namespace Wonton.Test
 {
     public class UnitTest1
     {
-        [Fact(Skip = "Tested")]
+        [Fact]
         public void TestFPGA()
         {
             FPGABoard b = new FPGABoard();
@@ -54,7 +54,7 @@ namespace Wonton.Test
 
         }
 
-        [Fact(Skip = "Tested")]
+        [Fact]
         void TestXml()
         {
             XmlDocument xml = new XmlDocument();
@@ -66,11 +66,11 @@ namespace Wonton.Test
             var json = JsonConvert.SerializeXmlNode(design);
         }
 
-        [Fact(Skip = "Tested")]
+        [Fact]
         void TestConfig()
         {
             var render_config = "target: 'electron-renderer'";
-            var config_file = System.IO.Path.Combine(@"F:\Repo\WontonInterface\Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config", "webpack.config.js");
+            var config_file = System.IO.Path.Combine(@"H:\bishe\Wonton\Wonton.CrossUI.Web\ClientApp\node_modules\react-scripts\config", "webpack.config.js");
             var config_contents = File.ReadAllLines(config_file);
             List<string> modified_contents = new List<string>();
             var modified = false;
@@ -98,17 +98,17 @@ namespace Wonton.Test
             }
         }
 
-        [Fact(Skip = "Tested")]
+        [Fact]
         void TestRename()
         {
-            var arcs = Directory.EnumerateFiles(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", "*.7z");
-            var arcs2 = Directory.EnumerateFiles(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", "*.zip");
+            var arcs = Directory.EnumerateFiles(@"H:\bishe\Wonton\Wonton.CrossUI.Web\bin\Desktop", "*.7z");
+            var arcs2 = Directory.EnumerateFiles(@"H:\bishe\Wonton\Wonton.CrossUI.Web\bin\Desktop", "*.zip");
             foreach (var f in arcs)
             {
                 var ext = Path.GetExtension(f);
                 var n = Path.GetFileNameWithoutExtension(f);
                 n = n + "-" + "win10";
-                var f2 = Path.Combine(@"F:\Repo\Wonton\Wonton.CrossUI.Web\bin\Desktop", n + ext);
+                var f2 = Path.Combine(@"H:\bishe\Wonton\Wonton.CrossUI.Web\bin\Desktop", n + ext);
                 File.Move(f, f2, true);
             }
         }
