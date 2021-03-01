@@ -271,6 +271,3 @@ NativeDeps.zip
 build.sh
 
 PackageManager/chocolatey/wonton
-
-package.json
-package-lock.json
