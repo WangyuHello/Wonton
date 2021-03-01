@@ -1,0 +1,35 @@
+<design name="AlarmClock">
+ <port name="clk" position="P77"/>
+ <port name="rst_n" position="P151"/>
+ <port name="mode" position="P148"/>
+ <port name="set_hr" position="P150"/>
+ <port name="set_min" position="P152"/>
+ <port name="hr_out[0]" position="P7"/>
+ <port name="hr_out[1]" position="P6"/>
+ <port name="hr_out[2]" position="P5"/>
+ <port name="hr_out[3]" position="P4"/>
+ <port name="min_out[0]" position="P9"/>
+ <port name="min_out[1]" position="P8"/>
+ <port name="min_out[2]" position="P16"/>
+ <port name="min_out[3]" position="P15"/>
+ <port name="min_out[4]" position="P11"/>
+ <port name="min_out[5]" position="P10"/>
+ <port name="sec_out[0]" position="P20"/>
+ <port name="sec_out[1]" position="P18"/>
+ <port name="sec_out[2]" position="P17"/>
+ <port name="sec_out[3]" position="P22"/>
+ <port name="sec_out[4]" position="P21"/>
+ <port name="sec_out[5]" position="P23"/>
+ <port name="hr_alarm[0]" position="P44"/>
+ <port name="hr_alarm[1]" position="P45"/>
+ <port name="hr_alarm[2]" position="P46"/>
+ <port name="hr_alarm[3]" position="P43"/>
+ <port name="min_alarm[0]" position="P40"/>
+ <port name="min_alarm[1]" position="P41"/>
+ <port name="min_alarm[2]" position="P42"/>
+ <port name="min_alarm[3]" position="P33"/>
+ <port name="min_alarm[4]" position="P34"/>
+ <port name="min_alarm[5]" position="P35"/>
+ <port name="alarm" position="P36"/>
+
+</design>

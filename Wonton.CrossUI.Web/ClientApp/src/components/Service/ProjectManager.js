@@ -101,8 +101,9 @@ export default class ProjectManager {
             this.recentProjects = JSON.parse(res.message);
             return;
         }
-        // console.log(res);
+        console.log(res);
         this.projectInfo = JSON.parse(res.message);
+        console.log(this.projectInfo);
         this.projectFile = res.projectPath;
         
         console.log(`Project Path: ${this.projectFile}`);

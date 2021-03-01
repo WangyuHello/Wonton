@@ -2,7 +2,7 @@
     "subscribedInstances": {
         "i1": {
             "data": [
-                1
+                0
             ]
         },
         "i2": {
@@ -12,12 +12,12 @@
         },
         "i3": {
             "data": [
-                1
+                0
             ]
         },
         "i4": {
             "data": [
-                1,
+                0,
                 0,
                 0,
                 0,
@@ -29,36 +29,28 @@
         },
         "i6": {
             "data": [
-                1,
                 0,
                 0,
-                1,
                 0,
-                1,
                 0,
-                1
+                0,
+                0,
+                0,
+                0
             ]
         }
     },
     "hardwarePortsMap": {
         "4": [
             {
-                "instance": "i6",
-                "index": 7
+                "instance": "i4",
+                "index": 4
             }
         ],
         "10": [
             {
-                "instance": "i1",
-                "index": 0
-            },
-            {
                 "instance": "i4",
-                "index": 0
-            },
-            {
-                "instance": "i6",
-                "index": 0
+                "index": 7
             }
         ],
         "11": [
@@ -102,17 +94,19 @@
         "14": [
             {
                 "instance": "i4",
-                "index": 3
-            },
-            {
-                "instance": "i6",
-                "index": 4
+                "index": 5
             }
         ],
         "15": [
             {
-                "instance": "i6",
-                "index": 5
+                "instance": "i4",
+                "index": 6
+            }
+        ],
+        "undefined": [
+            {
+                "instance": "i4",
+                "index": 7
             }
         ]
     },
@@ -136,10 +130,10 @@
             "sec_out[1]",
             "sec_out[2]",
             "sec_out[3]",
-            "sec_out[0]",
-            "",
-            "",
-            ""
+            "min_out[0]",
+            "请选择",
+            "请选择",
+            "请选择"
         ],
         "i6": [
             "sec_out[0]",
@@ -251,6 +245,6 @@
         "min_alarm[5]": "P35",
         "alarm": "P36"
     },
-    "bitfile": "E:\\Documents\\Repo\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
+    "bitfile": "H:\\bishe\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
     "projectName": "Test"
 }
