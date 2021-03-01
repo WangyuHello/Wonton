@@ -2,7 +2,7 @@
     "subscribedInstances": {
         "i1": {
             "data": [
-                1
+                0
             ]
         },
         "i2": {
@@ -12,12 +12,12 @@
         },
         "i3": {
             "data": [
-                1
+                0
             ]
         },
         "i4": {
             "data": [
-                1,
+                0,
                 0,
                 0,
                 0,
@@ -29,14 +29,14 @@
         },
         "i6": {
             "data": [
-                1,
                 0,
                 0,
-                1,
                 0,
-                1,
                 0,
-                1
+                0,
+                0,
+                0,
+                0
             ]
         }
     },
@@ -251,6 +251,6 @@
         "min_alarm[5]": "P35",
         "alarm": "P36"
     },
-    "bitfile": "E:\\Documents\\Repo\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
+    "bitfile": "D:\\bishe\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
     "projectName": "Test"
 }
