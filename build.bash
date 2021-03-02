@@ -153,4 +153,4 @@ cake_file="$tool_path/dotnet-cake"
 echo "正在安装 Cake"
 $dotnet_exe tool install --tool-path $tool_path Cake.Tool >/dev/null 2>&1
 
-exec "$cake_file" "-useMagic=$useMagic" "${CAKE_ARGUMENTS[@]}"
+exec "$cake_file" "--useMagic=$useMagic" "${CAKE_ARGUMENTS[@]}"
