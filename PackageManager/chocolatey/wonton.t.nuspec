@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/WangyuHello/Wonton/raw/master/Imgs/chip.png</iconUrl>
     <tags>wonton fpga electron</tags>
     <summary>Virtual GUI for FPGA</summary>
-    <description>Virtual GUI for FPGA</description>
+    <description>Virtual GUI for FPGA. Wonton allows you to add virtual widgets (e.g. leds, buttons) on the software GUI and interact with FPGA hardware in realtime. Wonton 是虚拟FPGA外设软件, 用户可以在软件图形界面上添加组件(例如:LED灯,按钮),并实时和FPGA硬件进行交互</description>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />

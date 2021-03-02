@@ -283,30 +283,30 @@ jobs:
       releaseNotesSource: 'inline'
       addChangeLog: false
   
-# - job: ChocolateyRelease
-#   pool:
-#     vmImage: 'windows-latest'
-#   dependsOn:
-#   - Windows
-#   steps:
-#   - checkout: self
-#     submodules: true
-#     persistCredentials: true
+- job: ChocolateyRelease
+  pool:
+    vmImage: 'windows-latest'
+  dependsOn:
+  - Windows
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
   
-#   - task: DownloadPipelineArtifact@2
-#     inputs:
-#       buildType: 'current'
-#       itemPattern: '**'
-#       targetPath: '$(System.DefaultWorkingDirectory)\Build'
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'current'
+      itemPattern: '**'
+      targetPath: '$(System.DefaultWorkingDirectory)\Build'
 
-#   - pwsh: ./PackageManager/github/CopyToRelease.ps1 -From Build -Release $(Build.ArtifactStagingDirectory)
-#     displayName: 'Copy Release'
+  - pwsh: ./PackageManager/github/CopyToRelease.ps1 -From Build -Release $(Build.ArtifactStagingDirectory)
+    displayName: 'Copy Release'
 
-#   - pwsh: Install-Module EPS -Scope CurrentUser -Force
-#     displayName: 'Install Dependences'
+  - pwsh: Install-Module EPS -Scope CurrentUser -Force
+    displayName: 'Install Dependences'
 
-#   - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1 -ReleasePath $(Build.ArtifactStagingDirectory)
-#     displayName: 'Create Chocolatey Package'
+  - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1 -ReleasePath $(Build.ArtifactStagingDirectory)
+    displayName: 'Create Chocolatey Package'
   
-#   - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1 -CommitSHA $(Build.SourceVersion)
-#     displayName: 'Upload Chocolatey Package'
+  - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1 -CommitSHA $(Build.SourceVersion)
+    displayName: 'Upload Chocolatey Package'
