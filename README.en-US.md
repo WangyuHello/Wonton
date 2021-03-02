@@ -186,9 +186,9 @@ You can download Wonton installation package for any platform below
 
 3. Download Electron package from taobao mirror
 
-    Windows： https://npm.taobao.org/mirrors/electron/10.3.0/electron-v10.3.0-win32-x64.zip <br>
-    macOS:    https://npm.taobao.org/mirrors/electron/10.3.0/electron-v10.3.0-darwin-x64.zip <br>
-    Linux:    https://npm.taobao.org/mirrors/electron/10.3.0/electron-v10.3.0-linux-x64.zip
+    Windows： https://npm.taobao.org/mirrors/electron/11.3.0/electron-v11.3.0-win32-x64.zip <br>
+    macOS:    https://npm.taobao.org/mirrors/electron/11.3.0/electron-v11.3.0-darwin-x64.zip <br>
+    Linux:    https://npm.taobao.org/mirrors/electron/11.3.0/electron-v11.3.0-linux-x64.zip
 
 4.  Put the downloaded zip package into **Electron Cache Directory**
 
