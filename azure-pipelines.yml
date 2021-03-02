@@ -308,5 +308,5 @@ jobs:
   - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1 -ReleasePath $(Build.ArtifactStagingDirectory)
     displayName: 'Create Chocolatey Package'
   
-  - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1 -CommitSHA $(Build.SourceVersion)
+  - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1 -API_KEY $(CHOCOLATEY_API_KEY) -CommitSHA $(Build.SourceVersion)
     displayName: 'Upload Chocolatey Package'

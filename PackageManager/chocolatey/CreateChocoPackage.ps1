@@ -1,11 +1,16 @@
 [CmdletBinding()]
 Param(
-    [string]$ReleasePath = "Build"
+    [string]$ReleasePath = ""
 )
+
+$ProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+
+if ($ReleasePath -eq "") {
+    $ReleasePath = Join-Path $ProjectRoot "Build"
+}
 
 Import-Module EPS
 
-$ProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 $pkgJsonFile = Get-Content "$ProjectRoot/Wonton.CrossUI.Web.HostApp/package.json" -Raw
 $pkgJson = ConvertFrom-Json $pkgJsonFile
 $Version = $pkgJson.version
