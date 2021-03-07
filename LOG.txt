@@ -236,4 +236,14 @@ Wonton.Waveform是我写的，一个测试vcdmaker和gtkwave能不能用的程�
 --3.1\2\3
 发现一个bug：项目未保存会跳出消息框提示，但如果wonton没有获取焦点就会报错kill error
 但好像是debug时有release就没有了
+
+现在主要在FPGAController.cs FPGAManager.js ProjectManager.js三者之间盘来盘去
+首先FPGAController是连接FPGAManager这一dll动态链接库的，它响应两个js的请求返回fpga的数据
+ProjectManager.js主要负责初始化pj
+FPGAManager.js主要负责处理数据并显示结果、更新组件
+因此初始化是PM干，改数据是FM干
+这里有一点很坑，标注了：
+FPGAController.cs有一个readxmltojson是用不上的，估计是写了效果不好弃用了，一开始没看出来浪费了不少时间
+readxmltojson对应PM里的ReadProjectIO也没用上（还煞有其事。。。）
+接下来需要一个引脚名称与实际引脚序号的映射，应该会在FPGAManager里加上，一起存起来
 --3.7
