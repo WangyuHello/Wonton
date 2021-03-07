@@ -29,12 +29,14 @@
         },
         "i6": {
             "data": [
-                1,
                 0,
                 0,
                 0,
                 0,
-                1
+                0,
+                0,
+                0,
+                0
             ]
         }
     },
@@ -243,6 +245,7 @@
         "min_alarm[5]": "P35",
         "alarm": "P36"
     },
-    "bitfile": "E:\\Documents\\Repo\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
+    "bitfile": "H:\\bishe\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
+    "xml": "",
     "projectName": "Test"
 }

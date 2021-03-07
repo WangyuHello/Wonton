@@ -111,12 +111,14 @@ export default class ProjectManager {
         
         this.layout = this.projectInfo['layout'];
         this.bitfile = this.projectInfo['bitfile'];
+        this.xml = this.projectInfo['xml'];
         this.projectName = this.projectInfo['projectName'];
         manager.subscribedInstances = this.objToMap(this.projectInfo['subscribedInstances']);
         manager.hardwarePortsMap = this.objToMap(this.projectInfo['hardwarePortsMap']);
         manager.inputPortsMap = this.objToMap(this.projectInfo['inputPortsMap']);
         manager.projectInstancePortsMap = this.objToMap(this.projectInfo['projectInstancePortsMap']);
         manager.projectPortsMap = this.objToMap(this.projectInfo['projectPortsMap']);
+        manager.portsIndexMap = this.objToMap(this.projectInfo['portsIndexMap']);
         //清空
         manager.projectInputPorts.length = 0;
         manager.projectOutputPorts.length = 0;
@@ -153,6 +155,7 @@ export default class ProjectManager {
     //     manager.projectOutputPorts.length = 0;
     // }
 
+    //没用上？？？
     ReadProjectIO = async (filename) => {
         const response = await fetch('/api/fpga/readxmltojson?filename=' + filename);
         const res = await response.json();
@@ -206,6 +209,7 @@ export default class ProjectManager {
             "layout": mergedLayout,
             "projectPortsMap": this.mapToObj(manager.projectPortsMap),
             "bitfile": this.bitfile,
+            "xml": this.xml,
             "projectName": this.projectName
         }
 

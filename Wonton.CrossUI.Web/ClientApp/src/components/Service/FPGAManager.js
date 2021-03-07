@@ -16,6 +16,7 @@ export default class FPGAManager {
     inputValues = [] //输出到FPGA数据 [0,0,0,0,......0] 64位
 
     projectPortsMap = new Map(); //xml
+    portsIndexMap = new Map(); //引脚名与实际引脚序号的映射  sec_out[2] => 12
 
     projectInputPorts = [];
     projectOutputPorts = [];
@@ -289,7 +290,6 @@ export default class FPGAManager {
 
     WriteReadData2 = async () => {
         this.GenWriteData();
-        this.WriteLog();
         return await this.WriteReadData(this.tempi16WriteData);
     }
 

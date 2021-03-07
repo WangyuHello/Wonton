@@ -1,0 +1,14 @@
+1、为什么要重新安装一个新的驱动Zadig？原来SMIMS旧的驱动不能用嘛？
+--换了usb协议，两个不兼容，旧驱动VLFDDriver因此也用不了了
+
+2、如何判断Zadig已经安装成功？设备管理器的驱动属性没有变化。Wonton既不报错也不Program，VeriInstrument依旧可以运行。
+--已解决，成功的时候会提示，但是驱动安装成功后不会提示检测到fpga板（可改进）
+
+3、为什么要用js做一个自建服务器（网页）作为界面？
+
+4、项目结构从哪一层改比较好？怎么抽出其中一层看输出结果？SharpVLFD和VLFDDriver之间是什么关系？
+--VLFDDriver是c++驱动的动态链接库，SharpVLFD是c#对VLFDDriver的封装
+
+5、构造函数后面加Get()是什么用法？
+
+6、为什么这个VLFD.dll作为32位dll调用时没有@4@8也可以被调用？

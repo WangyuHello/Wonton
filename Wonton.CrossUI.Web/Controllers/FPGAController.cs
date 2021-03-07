@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Wonton.CrossUI.Web.Services;
+using System.Text.RegularExpressions;
 
 namespace Wonton.CrossUI.Web.Controllers
 {
@@ -143,21 +144,28 @@ namespace Wonton.CrossUI.Web.Controllers
                 };
             }
             //_logger.LogInformation("writereadfpga成功");
+            /*
+            var PortsMap = new Dictionary<string, string>();
+            XmlNode design = _xml.SelectSingleNode("design");
+            foreach (XmlElement ele in design)
+            {
+                _logger.LogInformation(ele.Name);
+            }
+            */
 
             ushort[] read = b.ReadBuffer.ToArray();
             var log = new FileStream(@"./WriteReadLog.txt", FileMode.Append, FileAccess.Write);
             var writer = new StreamWriter(log);
             
-            writer.Write("Write: ");
+            writer.WriteAsync("Write: ");
             foreach (ushort i in write)
-                writer.Write(i + " ");
-            writer.Write("\nRead: ");
+                writer.WriteAsync(i + " ");
+            writer.WriteAsync("\nRead: ");
 
             foreach (ushort i in read)
-                writer.Write(i + " ");
-            writer.Write("\n");
+                writer.WriteAsync(i + " ");
+            writer.WriteAsync("\n");
 
-            writer.Flush();
             writer.Close();
             log.Close();
 
@@ -272,11 +280,13 @@ namespace Wonton.CrossUI.Web.Controllers
             };
         }
 
+        //没用上？？？
         [HttpGet("readxmltojson")]
         public FPGAResponse ReadXmlToJson(string filename)
         {
-            XmlDocument xml = new XmlDocument();
+            var xml = new XmlDocument();
             xml.Load(filename);
+            _logger.LogInformation("Read XML");
 
             XmlNode design = xml.SelectSingleNode("design");
             var json = JsonConvert.SerializeXmlNode(design);
@@ -310,7 +320,7 @@ namespace Wonton.CrossUI.Web.Controllers
 
                 jports.Add(name, pos);
             }
-
+            //JObject xml = new JObject(projectiofile);
             JObject pj = new JObject();
             pj.Add("subscribedInstances",new JObject());
             pj.Add("hardwarePortsMap", new JObject());
@@ -318,7 +328,8 @@ namespace Wonton.CrossUI.Web.Controllers
             pj.Add("projectInstancePortsMap", new JObject());
             pj.Add("layout",new JArray());
             pj.Add("projectPortsMap", jports);
-
+            pj.Add("portsIndexMap", new JObject());
+            pj.Add("xml", projectiofile);
             pj.Add("bitfile", "");
             pj.Add("projectName", projectname);
 
@@ -334,5 +345,13 @@ namespace Wonton.CrossUI.Web.Controllers
                 ProjectPath = fullpath
             };
         }
+
+        [HttpGet("waveform")]
+        public async Task<FPGAResponse> Waveform()
+        {
+
+        }
+
+
     }
 }
