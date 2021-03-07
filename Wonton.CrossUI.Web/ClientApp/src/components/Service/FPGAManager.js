@@ -1,5 +1,6 @@
 import { inputPortsMapping, outputPortsMapping } from './FPGAPortsMap';
 
+
 export default class FPGAManager {
     bitfile = ""
     writeCount = 0
@@ -35,8 +36,8 @@ export default class FPGAManager {
 
     // 根据端口映射表将从FPGA输入的64bit数据分发到各个组件上
     Update = () => {
-        this.hardwarePortsMap.forEach((ms, key) => { //key: 第32个数 m: [{instance: "i2", index: 0}, ...]
-            const value = this.hardwareValues[key]; //第32个数的值
+        this.hardwarePortsMap.forEach((ms, key) => { //key: 第32个数 ms: [{instance: "i2", index: 0}, ...]
+            const value = this.hardwareValues[key]; //第32个数的值(0 or 1)
 
             // console.log(ms)
 
@@ -208,7 +209,7 @@ export default class FPGAManager {
         }
         this.prevTime = currentTime; //单位毫秒
 
-        console.log(this.subscribedInstances.get("i1").data)
+        //console.log(this.subscribedInstances.get("i1").data)
 
         this.subscribedInstances.forEach((ins) => {
             ins.refresh(ins.data, deltaTime);
@@ -264,10 +265,12 @@ export default class FPGAManager {
     // 需要将其拆分到一个64位数组里(hardwareValues)
     Split = (i16values) => {
         //遍历所有i16
+        console.log("Read: " + i16values);
         i16values.forEach((i16data, index, arr) => {
             //将i16分为16个数分别存储
             for (let dind = 0; dind < 16; dind++) {
-                this.hardwareValues[index*16 + dind] = (i16data >> dind) & 1;
+                this.hardwareValues[index * 16 + dind] = (i16data >> dind) & 1;
+                //console.log("hardware " + parseInt(index * 16 + dind) + ": " + (this.hardwareValues[index * 16 + dind]));
             }
         });
     }
@@ -286,6 +289,7 @@ export default class FPGAManager {
 
     WriteReadData2 = async () => {
         this.GenWriteData();
+        this.WriteLog();
         return await this.WriteReadData(this.tempi16WriteData);
     }
 
@@ -299,7 +303,7 @@ export default class FPGAManager {
                 body: JSON.stringify(writeData)
             });
         const data = await response.json();
-        
+
         if (!data.status) { //失败
             return false;
         } 

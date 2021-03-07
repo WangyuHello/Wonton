@@ -59,6 +59,10 @@ namespace Wonton.CrossUI.Web.Controllers
                 };
             }
             _logger.LogInformation("Program成功");
+            if (System.IO.File.Exists(@"./WriteReadLog.txt"))
+            {
+                System.IO.File.Delete(@"./WriteReadLog.txt");
+            }
             //Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program成功"));
             return new FPGAResponse()
             {
@@ -138,6 +142,25 @@ namespace Wonton.CrossUI.Web.Controllers
                     Status = false
                 };
             }
+            //_logger.LogInformation("writereadfpga成功");
+
+            ushort[] read = b.ReadBuffer.ToArray();
+            var log = new FileStream(@"./WriteReadLog.txt", FileMode.Append, FileAccess.Write);
+            var writer = new StreamWriter(log);
+            
+            writer.Write("Write: ");
+            foreach (ushort i in write)
+                writer.Write(i + " ");
+            writer.Write("\nRead: ");
+
+            foreach (ushort i in read)
+                writer.Write(i + " ");
+            writer.Write("\n");
+
+            writer.Flush();
+            writer.Close();
+            log.Close();
+
             return new FPGAResponse()
             {
                 Message = "成功",
