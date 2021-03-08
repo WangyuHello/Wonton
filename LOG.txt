@@ -247,3 +247,5 @@ FPGAController.cs有一个readxmltojson是用不上的，估计是写了效果�
 readxmltojson对应PM里的ReadProjectIO也没用上（还煞有其事。。。）
 接下来需要一个引脚名称与实际引脚序号的映射，应该会在FPGAManager里加上，一起存起来
 --3.7
+还有一个问题是现在只能在创建项目时指定xml，不能在项目中更换xml path？
+--3.8

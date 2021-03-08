@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Wonton.CrossUI.Web.Services;
-using System.Text.RegularExpressions;
 
 namespace Wonton.CrossUI.Web.Controllers
 {
@@ -320,7 +319,19 @@ namespace Wonton.CrossUI.Web.Controllers
 
                 jports.Add(name, pos);
             }
-            //JObject xml = new JObject(projectiofile);
+
+            _logger.LogInformation("读取PortsMap");
+            var portsmapfile = @"./Services/FPGAPortsMap.js";
+            var fs = System.IO.File.Open(portsmapfile, FileMode.Open);
+            var sr = new StreamReader(fs);
+            var content = await sr.ReadToEndAsync();
+            JObject portsmapJobj = JObject.Parse(content);
+            var inputportsmap = portsmapJobj["inputPortsMapping"].Value<Dictionary<string, ushort>>();
+            foreach ((string port, ushort index) in inputportsmap)
+                _logger.LogInformation(port + index);
+            sr.Close();
+            fs.Close();
+
             JObject pj = new JObject();
             pj.Add("subscribedInstances",new JObject());
             pj.Add("hardwarePortsMap", new JObject());
@@ -345,13 +356,13 @@ namespace Wonton.CrossUI.Web.Controllers
                 ProjectPath = fullpath
             };
         }
-
+        /*
         [HttpGet("waveform")]
         public async Task<FPGAResponse> Waveform()
         {
 
         }
-
+        */
 
     }
 }
