@@ -1,3 +1,4 @@
+import { resolveModuleName } from 'typescript';
 import { inputPortsMapping, outputPortsMapping } from './FPGAPortsMap';
 
 
@@ -16,7 +17,6 @@ export default class FPGAManager {
     inputValues = [] //输出到FPGA数据 [0,0,0,0,......0] 64位
 
     projectPortsMap = new Map(); //xml
-    portsIndexMap = new Map(); //引脚名与实际引脚序号的映射  sec_out[2] => 12
 
     projectInputPorts = [];
     projectOutputPorts = [];
@@ -97,7 +97,7 @@ export default class FPGAManager {
     }
 
     //更新输出端口映射
-    MapInputPorts = (instance, instancePortIndex ,projectPortName, defaultValue) => { 
+    MapInputPorts = (instance, instancePortIndex, projectPortName, defaultValue) => { 
         let hardwarePortName = this.projectPortsMap.get(projectPortName);
         let inputIndex = inputPortsMapping.get(hardwarePortName); //inputPortsMapping引自PortsMap
         let map = this.inputPortsMap.get(instance);
@@ -313,6 +313,8 @@ export default class FPGAManager {
 
         return true;
     }
+
+    
 }
 
 export const manager = new FPGAManager();

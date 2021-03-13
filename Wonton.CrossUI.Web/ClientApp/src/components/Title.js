@@ -249,6 +249,10 @@ export class Title extends Component {
         }, () => {});
     }
 
+    ClickWaveform = async () => {
+        await pjManager.ShowWaveform();
+    }
+
     ClickClose = () => {
         this.CloseApp();
     }
@@ -584,7 +588,7 @@ export class Title extends Component {
 
                     <div style={{display: "flex"}} className="no-drag">
                         <div>
-                        <Button size="sm">
+                        <Button size="sm" onClick={this.ClickWaveform}>
                             <div style={{display:'flex', alignItems: 'center'}} >
                                 <FontAwesomeIcon icon={faEye}/>
                                 <div style={{marginLeft: '8px'}}>Waveform</div>

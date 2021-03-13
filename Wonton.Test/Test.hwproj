@@ -246,6 +246,6 @@
         "alarm": "P36"
     },
     "bitfile": "H:\\bishe\\Wonton\\Wonton.Test\\AlarmClock_fde_dc.bit",
-    "xml": "",
+    "xml": "H:\\bishe\\Wonton\\Wonton.Test\\AlarmClock.xml",
     "projectName": "Test"
 }

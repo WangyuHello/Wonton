@@ -20,6 +20,8 @@ namespace Wonton.CrossUI.Web.Controllers
     {
         private readonly ILogger<FPGAController> _logger;
         private readonly FPGAManager _manager;
+        private Dictionary<string, ushort> inputDict;
+        private Dictionary<string, ushort> outputDict;
 
         public FPGAController(ILogger<FPGAController> logger, FPGAManager manager)
         {
@@ -123,7 +125,7 @@ namespace Wonton.CrossUI.Web.Controllers
         }
 
         [HttpPost("writereadfpga")]
-        public FPGAResponse WriteReadFPGA([FromBody] ushort[] write)
+        public async Task<FPGAResponse> WriteReadFPGA([FromBody] ushort[] write)
         {
             var b = _manager.Board;
             b.WriteBuffer.Span.Clear();
@@ -142,28 +144,19 @@ namespace Wonton.CrossUI.Web.Controllers
                     Status = false
                 };
             }
-            //_logger.LogInformation("writereadfpga成功");
-            /*
-            var PortsMap = new Dictionary<string, string>();
-            XmlNode design = _xml.SelectSingleNode("design");
-            foreach (XmlElement ele in design)
-            {
-                _logger.LogInformation(ele.Name);
-            }
-            */
 
             ushort[] read = b.ReadBuffer.ToArray();
             var log = new FileStream(@"./WriteReadLog.txt", FileMode.Append, FileAccess.Write);
             var writer = new StreamWriter(log);
             
-            writer.WriteAsync("Write: ");
+            await writer.WriteAsync("Write: ");
             foreach (ushort i in write)
-                writer.WriteAsync(i + " ");
-            writer.WriteAsync("\nRead: ");
+                await writer.WriteAsync(i + " ");
+            await writer.WriteAsync("\nRead: ");
 
             foreach (ushort i in read)
-                writer.WriteAsync(i + " ");
-            writer.WriteAsync("\n");
+                await writer .WriteAsync(i + " ");
+            await writer.WriteAsync("\n");
 
             writer.Close();
             log.Close();
@@ -300,6 +293,8 @@ namespace Wonton.CrossUI.Web.Controllers
         [HttpGet("newproject")]
         public async Task<FPGAResponse> NewProject(string projectdir, string projectname, string projectiofile)
         {
+            this.inputDict = new Dictionary<string, ushort>();
+            this.outputDict = new Dictionary<string, ushort>();
             var fullpath = Path.Combine(projectdir, projectname + ".hwproj");
             _logger.LogInformation("新建项目: "+fullpath);
             XmlDocument xml = new XmlDocument();
@@ -319,19 +314,22 @@ namespace Wonton.CrossUI.Web.Controllers
 
                 jports.Add(name, pos);
             }
-
+            
             _logger.LogInformation("读取PortsMap");
             var portsmapfile = @"./Services/FPGAPortsMap.js";
             var fs = System.IO.File.Open(portsmapfile, FileMode.Open);
             var sr = new StreamReader(fs);
             var content = await sr.ReadToEndAsync();
             JObject portsmapJobj = JObject.Parse(content);
-            var inputportsmap = portsmapJobj["inputPortsMapping"].Value<Dictionary<string, ushort>>();
-            foreach ((string port, ushort index) in inputportsmap)
-                _logger.LogInformation(port + index);
+            var inputportsmap = portsmapJobj["inputPortsMapping"];
+            var outputportsmap = portsmapJobj["outputPortsMapping"];
+            foreach (var i in inputportsmap)
+                inputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
+            foreach (var i in outputportsmap)
+                outputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
             sr.Close();
             fs.Close();
-
+            
             JObject pj = new JObject();
             pj.Add("subscribedInstances",new JObject());
             pj.Add("hardwarePortsMap", new JObject());
@@ -356,13 +354,23 @@ namespace Wonton.CrossUI.Web.Controllers
                 ProjectPath = fullpath
             };
         }
-        /*
+        
         [HttpGet("waveform")]
-        public async Task<FPGAResponse> Waveform()
+        public async Task<FPGAResponse> Waveform(string portsMap)
         {
-
+            var log = new FileStream(@"./WriteReadLog.txt", FileMode.Open, FileAccess.Read);
+            var reader = new StreamReader(log);
+            await reader.ReadToEndAsync();
+            reader.Close();
+            log.Close();
+            
+            return new FPGAResponse()
+            {
+                Message = "成功",
+                Status = true
+            };
         }
-        */
+        
 
     }
 }

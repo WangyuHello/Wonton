@@ -118,7 +118,6 @@ export default class ProjectManager {
         manager.inputPortsMap = this.objToMap(this.projectInfo['inputPortsMap']);
         manager.projectInstancePortsMap = this.objToMap(this.projectInfo['projectInstancePortsMap']);
         manager.projectPortsMap = this.objToMap(this.projectInfo['projectPortsMap']);
-        manager.portsIndexMap = this.objToMap(this.projectInfo['portsIndexMap']);
         //清空
         manager.projectInputPorts.length = 0;
         manager.projectOutputPorts.length = 0;
@@ -231,6 +230,17 @@ export default class ProjectManager {
                 body: '已保存'
             });
         }
+    }
+
+    ShowWaveform = async () => {
+        console.log(JSON.stringify(this.projectInfo["projectPortsMap"]));
+        const response = await fetch('/api/fpga/waveform?portsMap=' + JSON.stringify(this.projectInfo["projectPortsMap"]));
+        const data = await response.json();
+
+        if (!data.status)
+            return false;
+
+        return true;
     }
 
     RegisterRefreshTitle = (titlecallback) => {
