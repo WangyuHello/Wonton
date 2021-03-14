@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Text.RegularExpressions;
 using Wonton.Common;
 using Wonton.CrossUI.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace Wonton.CrossUI.Web.Controllers
         {
             _logger = logger;
             _manager = manager;
+            ReadPortsMap();
         }
 
         [HttpGet("initio")]
@@ -293,8 +295,6 @@ namespace Wonton.CrossUI.Web.Controllers
         [HttpGet("newproject")]
         public async Task<FPGAResponse> NewProject(string projectdir, string projectname, string projectiofile)
         {
-            this.inputDict = new Dictionary<string, ushort>();
-            this.outputDict = new Dictionary<string, ushort>();
             var fullpath = Path.Combine(projectdir, projectname + ".hwproj");
             _logger.LogInformation("新建项目: "+fullpath);
             XmlDocument xml = new XmlDocument();
@@ -314,21 +314,6 @@ namespace Wonton.CrossUI.Web.Controllers
 
                 jports.Add(name, pos);
             }
-            
-            _logger.LogInformation("读取PortsMap");
-            var portsmapfile = @"./Services/FPGAPortsMap.js";
-            var fs = System.IO.File.Open(portsmapfile, FileMode.Open);
-            var sr = new StreamReader(fs);
-            var content = await sr.ReadToEndAsync();
-            JObject portsmapJobj = JObject.Parse(content);
-            var inputportsmap = portsmapJobj["inputPortsMapping"];
-            var outputportsmap = portsmapJobj["outputPortsMapping"];
-            foreach (var i in inputportsmap)
-                inputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
-            foreach (var i in outputportsmap)
-                outputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
-            sr.Close();
-            fs.Close();
             
             JObject pj = new JObject();
             pj.Add("subscribedInstances",new JObject());
@@ -358,9 +343,40 @@ namespace Wonton.CrossUI.Web.Controllers
         [HttpGet("waveform")]
         public async Task<FPGAResponse> Waveform(string portsMap)
         {
+            Dictionary<string, string> ports = JsonConvert.DeserializeObject<Dictionary<string, string>>(portsMap);
+            var inputPortsIndexDict = new Dictionary<string, ushort>();
+            var outputPortsIndexDict = new Dictionary<string, ushort>();
+            foreach (KeyValuePair<string, string> i in ports)
+            {
+                if (inputDict.ContainsKey(i.Value))
+                    inputPortsIndexDict.Add(i.Key, inputDict[i.Value]);
+                else if (outputDict.ContainsKey(i.Value))
+                    outputPortsIndexDict.Add(i.Key, outputDict[i.Value]);
+            }
+            /*
+            Console.WriteLine("input\n");
+            foreach (KeyValuePair<string, ushort> i in inputPortsIndexDict)
+                Console.WriteLine(i.Key + " " + i.Value);
+            Console.WriteLine("output\n");
+            foreach (KeyValuePair<string, ushort> i in outputPortsIndexDict)
+                Console.WriteLine(i.Key + " " + i.Value);
+            */
+                /*
+                int total; //将同一变量的不同位合并
+                Dictionary<string>
+                if (i.Key != "clk")
+                {
+                    Regex reg = new Regex("(\S)[(\d)]");
+                    Match match = reg.Match(i.Key);
+                    if (match.Success)
+                    {
+
+                    }
+                }
+            }*/
             var log = new FileStream(@"./WriteReadLog.txt", FileMode.Open, FileAccess.Read);
             var reader = new StreamReader(log);
-            await reader.ReadToEndAsync();
+            string writereadlog = await reader.ReadToEndAsync();
             reader.Close();
             log.Close();
             
@@ -370,7 +386,26 @@ namespace Wonton.CrossUI.Web.Controllers
                 Status = true
             };
         }
-        
 
+        //读取引脚名和引脚序号的映射
+        public void ReadPortsMap()
+        {
+            this.inputDict = new Dictionary<string, ushort>();
+            this.outputDict = new Dictionary<string, ushort>();
+            _logger.LogInformation("读取PortsMap");
+            var portsmapfile = @"./Services/FPGAPortsMap.js";
+            var fs = System.IO.File.Open(portsmapfile, FileMode.Open);
+            var sr = new StreamReader(fs);
+            var content = sr.ReadToEnd();
+            JObject portsmapJobj = JObject.Parse(content);
+            var inputportsmap = portsmapJobj["inputPortsMapping"];
+            var outputportsmap = portsmapJobj["outputPortsMapping"];
+            foreach (var i in inputportsmap)
+                inputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
+            foreach (var i in outputportsmap)
+                outputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
+            sr.Close();
+            fs.Close();
+        }
     }
 }
