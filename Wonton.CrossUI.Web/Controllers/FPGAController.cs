@@ -63,9 +63,10 @@ namespace Wonton.CrossUI.Web.Controllers
                 };
             }
             _logger.LogInformation("Program成功");
-            if (System.IO.File.Exists(@"./WriteReadLog.txt"))
+            string logpath = Path.Combine(FPGAManager.GetConfigDir(), "WriteReadLog.txt");
+            if (System.IO.File.Exists(logpath))
             {
-                System.IO.File.Delete(@"./WriteReadLog.txt");
+                System.IO.File.Delete(logpath);
             }
             //Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "Program成功"));
             return new FPGAResponse()
@@ -148,13 +149,14 @@ namespace Wonton.CrossUI.Web.Controllers
             }
 
             ushort[] read = b.ReadBuffer.ToArray();
-            var log = new FileStream(@"./WriteReadLog.txt", FileMode.Append, FileAccess.Write);
+            string logpath = Path.Combine(FPGAManager.GetConfigDir(), "WriteReadLog.txt");
+            var log = new FileStream(logpath, FileMode.Append, FileAccess.Write);
             var writer = new StreamWriter(log);
             
-            await writer.WriteAsync("Write: ");
+            await writer.WriteAsync("Write:");
             foreach (ushort i in write)
                 await writer.WriteAsync(i + " ");
-            await writer.WriteAsync("\nRead: ");
+            await writer.WriteAsync("\nRead:");
 
             foreach (ushort i in read)
                 await writer .WriteAsync(i + " ");
@@ -239,7 +241,7 @@ namespace Wonton.CrossUI.Web.Controllers
             sr.Close();
             fs.Close();
 
-            ReadPortsMap();
+            //ReadPortsMap();
 
             //将项目信息添加到RecentProjects
             JObject pjJobj = JObject.Parse(content);
@@ -345,52 +347,124 @@ namespace Wonton.CrossUI.Web.Controllers
         [HttpGet("waveform")]
         public async Task<FPGAResponse> Waveform(string portsMap)
         {
+            ReadPortsMap(); //因为每一次io传输都会新建一个fpgaController对象，所以要即建即用
             Dictionary<string, string> ports = JsonConvert.DeserializeObject<Dictionary<string, string>>(portsMap);
-            var inputPortsIndexDict = new Dictionary<string, ushort>();
-            var outputPortsIndexDict = new Dictionary<string, ushort>();
+            var inputPortsIndexDict = new Dictionary<ushort, string>();
+            var outputPortsIndexDict = new Dictionary<ushort, string>();
             foreach (KeyValuePair<string, string> i in ports)
             {
                 if (inputDict.ContainsKey(i.Value))
-                    inputPortsIndexDict.Add(i.Key, inputDict[i.Value]);
+                    inputPortsIndexDict.Add(inputDict[i.Value], i.Key);
                 else if (outputDict.ContainsKey(i.Value))
-                    outputPortsIndexDict.Add(i.Key, outputDict[i.Value]);
+                    outputPortsIndexDict.Add(outputDict[i.Value], i.Key);
             }
+            string mappath = Path.Combine(FPGAManager.GetConfigDir(), "PortsIndexMap.txt");
+            var maplog = new FileStream(mappath, FileMode.Create, FileAccess.Write);
+            var mapwriter = new StreamWriter(maplog);
+            //调试输出变量名和引脚序号的映射
+            await mapwriter.WriteLineAsync("Input:");
+            foreach (KeyValuePair<ushort, string> i in inputPortsIndexDict)
+                await mapwriter.WriteLineAsync(i.Key + " " + i.Value);
+            await mapwriter.WriteLineAsync("Output:");
+            foreach (KeyValuePair<ushort, string> i in outputPortsIndexDict)
+                await mapwriter.WriteLineAsync(i.Key + " " + i.Value);
+            mapwriter.Close();
+            maplog.Close();
             /*
-            Console.WriteLine("input\n");
-            foreach (KeyValuePair<string, ushort> i in inputPortsIndexDict)
-                Console.WriteLine(i.Key + " " + i.Value);
-            Console.WriteLine("output\n");
-            foreach (KeyValuePair<string, ushort> i in outputPortsIndexDict)
-                Console.WriteLine(i.Key + " " + i.Value);
-            */
-                /*
-                int total; //将同一变量的不同位合并
-                Dictionary<string>
-                if (i.Key != "clk")
+            int total; //将同一变量的不同位合并
+            Dictionary<string>
+            if (i.Key != "clk")
+            {
+                Regex reg = new Regex("(\S)[(\d)]");
+                Match match = reg.Match(i.Key);
+                if (match.Success)
                 {
-                    Regex reg = new Regex("(\S)[(\d)]");
-                    Match match = reg.Match(i.Key);
-                    if (match.Success)
-                    {
 
-                    }
                 }
-            }*/
-            var log = new FileStream(@"./WriteReadLog.txt", FileMode.Open, FileAccess.Read);
+            }
+        }*/
+            string logpath = Path.Combine(FPGAManager.GetConfigDir(), "WriteReadLog.txt");
+            string vcdpath = Path.Combine(FPGAManager.GetConfigDir(), "VCDLog.txt");
+            string waveformpath = Path.Combine(FPGAManager.GetConfigDir(), "Waveform.vcd");
+            var log = new FileStream(logpath, FileMode.Open, FileAccess.Read);
             var reader = new StreamReader(log);
-            string writereadlog = await reader.ReadToEndAsync();
+            var vcdlog = new FileStream(vcdpath, FileMode.Create, FileAccess.Write);
+            var writer = new StreamWriter(vcdlog);
+            string line;
+            int cycle = 0;
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                string writepattern = @"Write:(\d*) (\d*) (\d*) (\d*)"; //4个int16的排列方式是15-0 31-16 47-32 63-48
+                string readpattern = @"Read:(\d*) (\d*) (\d*) (\d*)";
+                Regex writereg = new Regex(writepattern);
+                Regex readreg = new Regex(readpattern);
+                Match writematch = writereg.Match(line);
+                if (writematch.Success)
+                {
+                    List<ushort> tempfornum = new List<ushort>();
+                    for (int i = 1; i < writematch.Groups.Count; i++)
+                        tempfornum.Add(ushort.Parse(writematch.Groups[i].ToString()));
+                    await writer.WriteAsync(SplitLog(inputPortsIndexDict, tempfornum, cycle));
+                }
+                Match readmatch = readreg.Match(line);
+                if (readmatch.Success)
+                {
+                    List<ushort> tempfornum = new List<ushort>();
+                    for (int i = 1; i < readmatch.Groups.Count; i++)
+                        tempfornum.Add(ushort.Parse(readmatch.Groups[i].ToString()));
+                    await writer.WriteAsync(SplitLog(outputPortsIndexDict, tempfornum, cycle));
+                    cycle++;
+                }
+            }
             reader.Close();
             log.Close();
-            
+            writer.Close();
+            vcdlog.Close();
+
+            var t = new RunExeByProcess();
+            t.ProcessName = "vcdmaker";
+            t.ObjectPath = vcdpath;
+            t.TargetPath = waveformpath;
+            t.Argument = "-t us -v -o " + t.TargetPath + " " + t.ObjectPath;
+            Console.WriteLine(t.Argument);
+            Console.WriteLine(t.Execute());
+
+            t.ProcessName = "gtkwave";
+            t.ObjectPath = waveformpath;
+            t.Argument = t.TargetPath;
+            Console.WriteLine(t.Execute());
+
             return new FPGAResponse()
             {
                 Message = "成功",
                 Status = true
             };
         }
-
+        
+        internal string SplitLog(Dictionary<ushort, string> dict, List<ushort> num, int time)
+        {
+            string ans = "";
+            int cycle = dict.Count() / 16; //默认向下取整
+            //Console.WriteLine("Cycle = " + cycle);
+            for (int i = 0; i <= cycle; i++)
+            {
+                ushort tempnum = num[i];
+                for (int j = 0; j < 16; j++)
+                {
+                    ushort index = (ushort)(i * 16 + j);
+                    if (dict.ContainsKey(index))
+                    {
+                        ushort split = (ushort)((tempnum >> j) & 1);
+                        string t = "#" + time + " " + dict[index] + " " + split + " 1\n";
+                        ans += t;
+                    }
+                }
+            }
+            return ans;
+        }
+        
         //读取引脚名和引脚序号的映射
-        public void ReadPortsMap()
+        internal void ReadPortsMap()
         {
             this.inputDict = new Dictionary<string, ushort>();
             this.outputDict = new Dictionary<string, ushort>();
@@ -408,6 +482,52 @@ namespace Wonton.CrossUI.Web.Controllers
                 outputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
             sr.Close();
             fs.Close();
+        }
+    }
+
+    class RunExeByProcess
+    {
+        public string ProcessName { get; set; }
+        public string ObjectPath { get; set; }
+        public string TargetPath { get; set; }
+        public string Argument { get; set; }
+        public string Result { get; set; }
+        public string Execute()
+        {
+            var process = new System.Diagnostics.Process();
+            process.StartInfo.FileName = ProcessName;
+            process.StartInfo.Arguments = Argument;
+            process.StartInfo.UseShellExecute = false;
+            //不显示exe的界面
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            //process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+            //向cmd窗口发送输入信息
+            //process.StandardInput.WriteLine(argument + "&exit");
+
+            //process.StandardInput.AutoFlush = true;
+            Result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+            {
+                throw new VCDException(process.StandardError.ReadToEnd());
+            }
+            process.Close();
+            return Result;
+        }
+    }
+    class VCDException : Exception
+    {
+        public VCDException(string message) : base(message) { }
+
+        public VCDException()
+        {
+        }
+
+        public VCDException(string message, Exception innerException) : base(message, innerException)
+        {
         }
     }
 }

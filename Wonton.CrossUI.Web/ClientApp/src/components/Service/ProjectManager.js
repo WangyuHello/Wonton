@@ -233,7 +233,7 @@ export default class ProjectManager {
     }
 
     ShowWaveform = async () => {
-        console.log(JSON.stringify(this.projectInfo["projectPortsMap"]));
+        //console.log(JSON.stringify(this.projectInfo["projectPortsMap"]));
         const response = await fetch('/api/fpga/waveform?portsMap=' + JSON.stringify(this.projectInfo["projectPortsMap"]));
         const data = await response.json();
 
