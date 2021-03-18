@@ -28,7 +28,7 @@ namespace Wonton.CrossUI.Web.Controllers
         {
             _logger = logger;
             _manager = manager;
-            ReadPortsMap();
+            //ReadPortsMap();
         }
 
         [HttpGet("initio")]
@@ -238,6 +238,8 @@ namespace Wonton.CrossUI.Web.Controllers
 
             sr.Close();
             fs.Close();
+
+            ReadPortsMap();
 
             //将项目信息添加到RecentProjects
             JObject pjJobj = JObject.Parse(content);
