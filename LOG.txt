@@ -255,7 +255,7 @@ readxmltojson对应PM里的ReadProjectIO也没用上（还煞有其事。。。�
 --3.17
 把基本功能都做出来了，意外地没有碰到什么大问题
 剩下要做的：
-1. log文件的存储方式要改成能用安装包安装的形式
+1. log文件的存储方式要改成能用安装包安装的形式--大部分可以用FPGAManager.GetConfigDir解决，但不知道怎么access FPGAPortsMap
 2. 测试linux和macos(大问题)，可能弃用vcdmaker
 3. 增加器件
 --3.18
