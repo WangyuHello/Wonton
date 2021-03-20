@@ -435,22 +435,13 @@ namespace Wonton.CrossUI.Web.Controllers
             log.Close();
             writer.Close();
             vcdlog.Close();
-            /*
-            var t = new RunExeByProcess();
-            t.ProcessName = "vcdmaker";
-            t.ObjectPath = vcdpath;
-            t.TargetPath = waveformpath;
-            t.Argument = "-t us -v -o " + t.TargetPath + " " + t.ObjectPath;
-            Console.WriteLine(t.Argument);
-            Console.WriteLine(t.Execute());
-            */
-            /*
+
             var t = new RunExeByProcess();
             t.ProcessName = "gtkwave";
-            t.ObjectPath = waveformpath;
-            t.Argument = t.TargetPath;
+            //t.ObjectPath = waveformpath;
+            t.Argument = waveformpath;
             Console.WriteLine(t.Execute());
-            */
+
             return new FPGAResponse()
             {
                 Message = "成功",
@@ -486,16 +477,16 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             for (int i = 0; i < 64; i++)
             {
-                Console.WriteLine(prev[i] + " " + now[i]);
+                //Console.WriteLine(prev[i] + " " + now[i]);
                 if (prev[i] != now[i])
                 {
                     ans.Add(i, now[i]);
-                    Console.WriteLine("Success!");
+                    //Console.WriteLine("Success!");
                 }
             }
-            Console.WriteLine("new dict");
-            foreach (KeyValuePair<int, int> i in ans)
-                Console.WriteLine(i.Key + " " + i.Value);
+            //Console.WriteLine("new dict");
+            //foreach (KeyValuePair<int, int> i in ans)
+                //Console.WriteLine(i.Key + " " + i.Value);
             return ans;
         }
 
