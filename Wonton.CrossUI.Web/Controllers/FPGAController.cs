@@ -152,14 +152,14 @@ namespace Wonton.CrossUI.Web.Controllers
             string logpath = Path.Combine(FPGAManager.GetConfigDir(), "WriteReadLog.txt");
             var log = new FileStream(logpath, FileMode.Append, FileAccess.Write);
             var writer = new StreamWriter(log);
-            
+
             await writer.WriteAsync("Write:");
             foreach (ushort i in write)
                 await writer.WriteAsync(i + " ");
             await writer.WriteAsync("\nRead:");
 
             foreach (ushort i in read)
-                await writer .WriteAsync(i + " ");
+                await writer.WriteAsync(i + " ");
             await writer.WriteAsync("\n");
 
             writer.Close();
@@ -218,7 +218,7 @@ namespace Wonton.CrossUI.Web.Controllers
                 //已经指定打开文件
                 filename = _manager.CurrentProjectFile;
             }
-            
+
             if (string.IsNullOrEmpty(filename))
             {
                 //没有项目文件
@@ -233,7 +233,7 @@ namespace Wonton.CrossUI.Web.Controllers
                     Status = false
                 };
             }
-            _logger.LogInformation("打开项目文件: "+ filename);
+            _logger.LogInformation("打开项目文件: " + filename);
             var fs = System.IO.File.Open(filename, FileMode.OpenOrCreate);
             var sr = new StreamReader(fs);
             var content = await sr.ReadToEndAsync();
@@ -265,10 +265,10 @@ namespace Wonton.CrossUI.Web.Controllers
         }
 
         [HttpPost("writejson")]
-        public async Task<FPGAResponse> WriteJson([FromQuery]string filename, [FromBody]ProjectInfo data)
+        public async Task<FPGAResponse> WriteJson([FromQuery] string filename, [FromBody] ProjectInfo data)
         {
             await System.IO.File.WriteAllTextAsync(filename, data.data);
-            _logger.LogInformation("已保存项目: "+ filename);
+            _logger.LogInformation("已保存项目: " + filename);
             //Electron.Notification.Show(new NotificationOptions("馄饨FPGA", "已保存"));
 
             return new FPGAResponse()
@@ -300,7 +300,7 @@ namespace Wonton.CrossUI.Web.Controllers
         public async Task<FPGAResponse> NewProject(string projectdir, string projectname, string projectiofile)
         {
             var fullpath = Path.Combine(projectdir, projectname + ".hwproj");
-            _logger.LogInformation("新建项目: "+fullpath);
+            _logger.LogInformation("新建项目: " + fullpath);
             XmlDocument xml = new XmlDocument();
             xml.Load(projectiofile);
 
@@ -318,13 +318,13 @@ namespace Wonton.CrossUI.Web.Controllers
 
                 jports.Add(name, pos);
             }
-            
+
             JObject pj = new JObject();
-            pj.Add("subscribedInstances",new JObject());
+            pj.Add("subscribedInstances", new JObject());
             pj.Add("hardwarePortsMap", new JObject());
             pj.Add("inputPortsMap", new JObject());
             pj.Add("projectInstancePortsMap", new JObject());
-            pj.Add("layout",new JArray());
+            pj.Add("layout", new JArray());
             pj.Add("projectPortsMap", jports);
             pj.Add("portsIndexMap", new JObject());
             pj.Add("xml", projectiofile);
@@ -343,14 +343,15 @@ namespace Wonton.CrossUI.Web.Controllers
                 ProjectPath = fullpath
             };
         }
-        
+
         [HttpGet("waveform")]
         public async Task<FPGAResponse> Waveform(string portsMap)
         {
             ReadPortsMap(); //因为每一次io传输都会新建一个fpgaController对象，所以要即建即用
+
             Dictionary<string, string> ports = JsonConvert.DeserializeObject<Dictionary<string, string>>(portsMap);
-            var inputPortsIndexDict = new Dictionary<ushort, string>();
-            var outputPortsIndexDict = new Dictionary<ushort, string>();
+            var inputPortsIndexDict = new Dictionary<int, string>();
+            var outputPortsIndexDict = new Dictionary<int, string>();
             foreach (KeyValuePair<string, string> i in ports)
             {
                 if (inputDict.ContainsKey(i.Value))
@@ -358,53 +359,63 @@ namespace Wonton.CrossUI.Web.Controllers
                 else if (outputDict.ContainsKey(i.Value))
                     outputPortsIndexDict.Add(outputDict[i.Value], i.Key);
             }
+
             string mappath = Path.Combine(FPGAManager.GetConfigDir(), "PortsIndexMap.txt");
             var maplog = new FileStream(mappath, FileMode.Create, FileAccess.Write);
             var mapwriter = new StreamWriter(maplog);
             //调试输出变量名和引脚序号的映射
             await mapwriter.WriteLineAsync("Input:");
-            foreach (KeyValuePair<ushort, string> i in inputPortsIndexDict)
+            foreach (KeyValuePair<int, string> i in inputPortsIndexDict)
                 await mapwriter.WriteLineAsync(i.Key + " " + i.Value);
             await mapwriter.WriteLineAsync("Output:");
-            foreach (KeyValuePair<ushort, string> i in outputPortsIndexDict)
+            foreach (KeyValuePair<int, string> i in outputPortsIndexDict)
                 await mapwriter.WriteLineAsync(i.Key + " " + i.Value);
             mapwriter.Close();
             maplog.Close();
-            /*
-            int total; //将同一变量的不同位合并
-            Dictionary<string>
-            if (i.Key != "clk")
-            {
-                Regex reg = new Regex("(\S)[(\d)]");
-                Match match = reg.Match(i.Key);
-                if (match.Success)
-                {
 
-                }
-            }
-        }*/
+            //变成vcd
             string logpath = Path.Combine(FPGAManager.GetConfigDir(), "WriteReadLog.txt");
-            string vcdpath = Path.Combine(FPGAManager.GetConfigDir(), "VCDLog.txt");
+            //string vcdpath = Path.Combine(FPGAManager.GetConfigDir(), "VCDLog.txt");
             string waveformpath = Path.Combine(FPGAManager.GetConfigDir(), "Waveform.vcd");
             var log = new FileStream(logpath, FileMode.Open, FileAccess.Read);
             var reader = new StreamReader(log);
-            var vcdlog = new FileStream(vcdpath, FileMode.Create, FileAccess.Write);
+            var vcdlog = new FileStream(waveformpath, FileMode.Create, FileAccess.Write);
             var writer = new StreamWriter(vcdlog);
+
+            await writer.WriteAsync("$timescale 1 us\n$end\n");
+            foreach (KeyValuePair<int, string> i in inputPortsIndexDict)
+                await writer.WriteLineAsync("$var wire 1 " + i.Value + " " + i.Value + " $end");
+            foreach (KeyValuePair<int, string> i in outputPortsIndexDict)
+                await writer.WriteLineAsync("$var wire 1 " + i.Value + " " + i.Value + " $end");
+            await writer.WriteAsync("$enddefinitions $end\n$dumpvars\n");
+            foreach (KeyValuePair<int, string> i in inputPortsIndexDict)
+                await writer.WriteLineAsync("b0 " + i.Value);
+            foreach (KeyValuePair<int, string> i in outputPortsIndexDict)
+                await writer.WriteLineAsync("b0 " + i.Value);
+            await writer.WriteLineAsync("$end");
+
             string line;
             int cycle = 0;
+            string writepattern = @"Write:(\d*) (\d*) (\d*) (\d*)"; //4个int16的排列方式是15-0 31-16 47-32 63-48
+            string readpattern = @"Read:(\d*) (\d*) (\d*) (\d*)";
+            Regex writereg = new Regex(writepattern);
+            Regex readreg = new Regex(readpattern);
+            List<int> writehist = new List<int>(new int[64]);
+            List<int> readhist = new List<int>(new int[64]);
             while ((line = await reader.ReadLineAsync()) != null)
             {
-                string writepattern = @"Write:(\d*) (\d*) (\d*) (\d*)"; //4个int16的排列方式是15-0 31-16 47-32 63-48
-                string readpattern = @"Read:(\d*) (\d*) (\d*) (\d*)";
-                Regex writereg = new Regex(writepattern);
-                Regex readreg = new Regex(readpattern);
                 Match writematch = writereg.Match(line);
                 if (writematch.Success)
                 {
-                    List<ushort> tempfornum = new List<ushort>();
+                    await writer.WriteLineAsync("#" + cycle);
+                    List<ushort> tempfornum = new List<ushort>(); //4个int16
                     for (int i = 1; i < writematch.Groups.Count; i++)
                         tempfornum.Add(ushort.Parse(writematch.Groups[i].ToString()));
-                    await writer.WriteAsync(SplitLog(inputPortsIndexDict, tempfornum, cycle));
+                    List<int> splitdata = SplitRawData(tempfornum); //64位
+                    var dataforprint = new Dictionary<int, int>();
+                    dataforprint = FilterRepetition(writehist, splitdata);
+                    await writer.WriteAsync(PrintVcd(inputPortsIndexDict, dataforprint, cycle));
+                    writehist = splitdata;
                 }
                 Match readmatch = readreg.Match(line);
                 if (readmatch.Success)
@@ -412,7 +423,11 @@ namespace Wonton.CrossUI.Web.Controllers
                     List<ushort> tempfornum = new List<ushort>();
                     for (int i = 1; i < readmatch.Groups.Count; i++)
                         tempfornum.Add(ushort.Parse(readmatch.Groups[i].ToString()));
-                    await writer.WriteAsync(SplitLog(outputPortsIndexDict, tempfornum, cycle));
+                    List<int> splitdata = SplitRawData(tempfornum); //64位
+                    var dataforprint = FilterRepetition(readhist, splitdata);
+                    await writer.WriteAsync(PrintVcd(outputPortsIndexDict, dataforprint, cycle));
+                    readhist = splitdata;
+
                     cycle++;
                 }
             }
@@ -420,7 +435,7 @@ namespace Wonton.CrossUI.Web.Controllers
             log.Close();
             writer.Close();
             vcdlog.Close();
-
+            /*
             var t = new RunExeByProcess();
             t.ProcessName = "vcdmaker";
             t.ObjectPath = vcdpath;
@@ -428,25 +443,77 @@ namespace Wonton.CrossUI.Web.Controllers
             t.Argument = "-t us -v -o " + t.TargetPath + " " + t.ObjectPath;
             Console.WriteLine(t.Argument);
             Console.WriteLine(t.Execute());
-
+            */
+            /*
+            var t = new RunExeByProcess();
             t.ProcessName = "gtkwave";
             t.ObjectPath = waveformpath;
             t.Argument = t.TargetPath;
             Console.WriteLine(t.Execute());
-
+            */
             return new FPGAResponse()
             {
                 Message = "成功",
                 Status = true
             };
         }
-        
-        internal string SplitLog(Dictionary<ushort, string> dict, List<ushort> num, int time)
+
+        internal List<int> SplitRawData(List<ushort> rawdata) //rawdata是4个uint16
+        {
+            var ans = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                ushort tempnum = rawdata[i];
+                for (int j = 0; j < 16; j++)
+                {
+                    //int index = i * 16 + j;
+                    int split = (tempnum >> j) & 1;
+                    ans.Add(split);
+                }
+            }
+            //foreach (int i in ans)
+                //Console.Write(i + " ");
+            return ans;
+        }
+
+        internal Dictionary<int, int> FilterRepetition(List<int> prev, List<int> now)
+        {
+            var ans = new Dictionary<int, int>();
+            if (prev.Count != 64 || now.Count != 64)
+            {
+                _logger.LogError("Wrong split for data!");
+                return null;
+            }
+            for (int i = 0; i < 64; i++)
+            {
+                Console.WriteLine(prev[i] + " " + now[i]);
+                if (prev[i] != now[i])
+                {
+                    ans.Add(i, now[i]);
+                    Console.WriteLine("Success!");
+                }
+            }
+            Console.WriteLine("new dict");
+            foreach (KeyValuePair<int, int> i in ans)
+                Console.WriteLine(i.Key + " " + i.Value);
+            return ans;
+        }
+
+        internal string PrintVcd(Dictionary<int, string> dict, Dictionary<int, int> data, int time)
         {
             string ans = "";
+            foreach (KeyValuePair<int, int> i in data)
+            {
+                if (dict.ContainsKey(i.Key))
+                {
+                    string t = "b" + i.Value + " " + dict[i.Key] + "\n";
+                    ans += t;
+                }
+            }
+            /*
             int cycle = dict.Count() / 16; //默认向下取整
             //Console.WriteLine("Cycle = " + cycle);
-            for (int i = 0; i <= cycle; i++)
+            for (int i = 0; i < 4; i++)
             {
                 ushort tempnum = num[i];
                 for (int j = 0; j < 16; j++)
@@ -455,11 +522,15 @@ namespace Wonton.CrossUI.Web.Controllers
                     if (dict.ContainsKey(index))
                     {
                         ushort split = (ushort)((tempnum >> j) & 1);
-                        string t = "#" + time + " " + dict[index] + " " + split + " 1\n";
-                        ans += t;
+                        if (split != prev[index])
+                        {
+                            string t = "$var wire 1 " + dict[index] + " " + dict[index] + " $end\n";
+                            ans += t;
+                        }
                     }
                 }
             }
+            */
             return ans;
         }
         
