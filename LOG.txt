@@ -259,3 +259,11 @@ readxmltojson对应PM里的ReadProjectIO也没用上（还煞有其事。。。�
 2. 测试linux和macos(大问题)，可能弃用vcdmaker
 3. 增加器件
 --3.18
+vcd改了一下，可以不用vcdmaker自己写了，也可以支持根据赫兹数定时间节点了
+readPortsMap也改了，不读了，直接写在程序里
+接下来几个问题：
+1. release的时候返回response.json()报错，发现返回的response是网页，还不知道为啥
+2. 增加器件
+3. pre
+4. 加一个键修改xml
+--3.21

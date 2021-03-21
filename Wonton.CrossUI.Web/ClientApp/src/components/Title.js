@@ -250,7 +250,7 @@ export class Title extends Component {
     }
 
     ClickWaveform = async () => {
-        await pjManager.ShowWaveform();
+        await pjManager.ShowWaveform(this.state.runHz);
     }
 
     ClickClose = () => {

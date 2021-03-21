@@ -458,7 +458,7 @@ namespace Wonton.CrossUI.Web.Controllers
         }
 
         [HttpGet("waveform")]
-        public async Task<FPGAResponse> Waveform(string portsmap)
+        public async Task<FPGAResponse> Waveform(int runhz, string portsmap)
         {
             //ReadPortsMap(); //因为每一次io传输都会新建一个fpgaController对象，所以要即建即用
 
@@ -495,7 +495,7 @@ namespace Wonton.CrossUI.Web.Controllers
             var vcdlog = new FileStream(waveformpath, FileMode.Create, FileAccess.Write);
             var writer = new StreamWriter(vcdlog);
 
-            await writer.WriteAsync("$timescale 1 us\n$end\n");
+            await writer.WriteAsync("$timescale " + 1000/(double)runhz + " ms\n$end\n");
             foreach (KeyValuePair<int, string> i in inputPortsIndexDict)
                 await writer.WriteLineAsync("$var wire 1 " + i.Value + " " + i.Value + " $end");
             foreach (KeyValuePair<int, string> i in outputPortsIndexDict)
@@ -520,14 +520,17 @@ namespace Wonton.CrossUI.Web.Controllers
                 Match writematch = writereg.Match(line);
                 if (writematch.Success)
                 {
-                    await writer.WriteLineAsync("#" + cycle);
                     List<ushort> tempfornum = new List<ushort>(); //4个int16
                     for (int i = 1; i < writematch.Groups.Count; i++)
                         tempfornum.Add(ushort.Parse(writematch.Groups[i].ToString()));
                     List<int> splitdata = SplitRawData(tempfornum); //64位
                     var dataforprint = new Dictionary<int, int>();
                     dataforprint = FilterRepetition(writehist, splitdata);
-                    await writer.WriteAsync(PrintVcd(inputPortsIndexDict, dataforprint, cycle));
+                    if (dataforprint.Count != 0)
+                    {
+                        await writer.WriteLineAsync("#" + cycle);
+                        await writer.WriteAsync(PrintVcd(inputPortsIndexDict, dataforprint, cycle));
+                    }
                     writehist = splitdata;
                 }
                 Match readmatch = readreg.Match(line);
@@ -538,7 +541,11 @@ namespace Wonton.CrossUI.Web.Controllers
                         tempfornum.Add(ushort.Parse(readmatch.Groups[i].ToString()));
                     List<int> splitdata = SplitRawData(tempfornum); //64位
                     var dataforprint = FilterRepetition(readhist, splitdata);
-                    await writer.WriteAsync(PrintVcd(outputPortsIndexDict, dataforprint, cycle));
+                    if (dataforprint.Count != 0)
+                    {
+                        await writer.WriteLineAsync("#" + cycle);
+                        await writer.WriteAsync(PrintVcd(outputPortsIndexDict, dataforprint, cycle));
+                    }
                     readhist = splitdata;
 
                     cycle++;
