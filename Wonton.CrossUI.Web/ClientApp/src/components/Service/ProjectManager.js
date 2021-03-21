@@ -225,6 +225,7 @@ export default class ProjectManager {
             body: JSON.stringify(transmit, null, 4)
         });
         const data = await response.json();
+        console.log(data);
         if (data.status === true) {
             new Notification('馄饨FPGA', {
                 body: '已保存'
@@ -234,8 +235,11 @@ export default class ProjectManager {
 
     ShowWaveform = async () => {
         //console.log(JSON.stringify(this.projectInfo["projectPortsMap"]));
-        const response = await fetch('/api/fpga/waveform?portsMap=' + JSON.stringify(this.projectInfo["projectPortsMap"]));
-        const data = await response.json();
+        console.log(JSON.stringify(this.projectInfo["projectPortsMap"]));
+        const response = await fetch('/api/fpga/waveform?portsmap=' + JSON.stringify(this.projectInfo["projectPortsMap"]));
+        //await console.log("text: " + response.text());
+        const data = await response.text();
+        console.log(data);
 
         if (!data.status)
             return false;
