@@ -555,13 +555,13 @@ namespace Wonton.CrossUI.Web.Controllers
             log.Close();
             writer.Close();
             vcdlog.Close();
-
+            
             var t = new RunExeByProcess();
             t.ProcessName = "gtkwave";
             //t.ObjectPath = waveformpath;
             t.Argument = waveformpath;
             Console.WriteLine(t.Execute());
-
+            
             return new FPGAResponse()
             {
                 Message = "成功",
