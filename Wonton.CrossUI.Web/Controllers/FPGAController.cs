@@ -558,9 +558,11 @@ namespace Wonton.CrossUI.Web.Controllers
             
             var t = new RunExeByProcess();
             t.ProcessName = "gtkwave";
-            //t.ObjectPath = waveformpath;
             t.Argument = waveformpath;
-            Console.WriteLine(t.Execute());
+            //Console.WriteLine(t.Execute());
+            int code = t.Execute();
+            if (code != 0)
+                _logger.LogError("gtkwave error!");
             
             return new FPGAResponse()
             {
@@ -670,11 +672,9 @@ namespace Wonton.CrossUI.Web.Controllers
     class RunExeByProcess
     {
         public string ProcessName { get; set; }
-        public string ObjectPath { get; set; }
-        public string TargetPath { get; set; }
+        //public string ObjectPath { get; set; }
         public string Argument { get; set; }
-        public string Result { get; set; }
-        public string Execute()
+        public int Execute()
         {
             var process = new System.Diagnostics.Process();
             process.StartInfo.FileName = ProcessName;
@@ -682,25 +682,13 @@ namespace Wonton.CrossUI.Web.Controllers
             process.StartInfo.UseShellExecute = false;
             //不显示exe的界面
             process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            //process.StartInfo.RedirectStandardInput = true;
-            process.StartInfo.RedirectStandardError = true;
             process.Start();
-            //向cmd窗口发送输入信息
-            //process.StandardInput.WriteLine(argument + "&exit");
-
-            //process.StandardInput.AutoFlush = true;
-            Result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                throw new VCDException(process.StandardError.ReadToEnd());
-            }
             process.Close();
-            return Result;
+            return process.ExitCode;
         }
     }
-
+    /*
     class VCDException : Exception
     {
         public VCDException(string message) : base(message) { }
@@ -713,4 +701,5 @@ namespace Wonton.CrossUI.Web.Controllers
         {
         }
     }
+    */
 }
