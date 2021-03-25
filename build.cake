@@ -287,9 +287,18 @@ Task("InstallPrepackageHostApp")
     NpmInstallElectronWithRegistry(pre_package_path, true);
 });
 
+Task("PackageDependency")
+    .Does(() => 
+{
+    var gtkWaveDir = "Denpendency/gtkwave/"+elec_target_os3;
+    //copy gtkWaveDir -> backend_bin_path/gtkwave
+
+});
+
 Task("PackageApp")
     .IsDependentOn("BuildHostApp")
     .IsDependentOn("PublishBackendApp")
+    .IsDependentOn("PackageDependency")
     .IsDependentOn("CopyHostApp")
     .IsDependentOn("InstallPrepackageHostApp")
     .Does(() => 
