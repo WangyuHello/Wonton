@@ -495,7 +495,7 @@ namespace Wonton.CrossUI.Web.Controllers
             var vcdlog = new FileStream(waveformpath, FileMode.Create, FileAccess.Write);
             var writer = new StreamWriter(vcdlog);
 
-            await writer.WriteAsync("$timescale " + 1000/(double)runhz + " ms\n$end\n");
+            await writer.WriteAsync("$timescale " + 1000 / (double)runhz + " ms\n$end\n");
             foreach (KeyValuePair<int, string> i in inputPortsIndexDict)
                 await writer.WriteLineAsync("$var wire 1 " + i.Value + " " + i.Value + " $end");
             foreach (KeyValuePair<int, string> i in outputPortsIndexDict)
@@ -555,15 +555,24 @@ namespace Wonton.CrossUI.Web.Controllers
             log.Close();
             writer.Close();
             vcdlog.Close();
-            
+#if DEBUG
             var t = new RunExeByProcess();
             t.ProcessName = "gtkwave";
             t.Argument = waveformpath;
+            t.Execute();
+            //if (code != 0)
+                //_logger.LogError("gtkwave error!");
+#else
+            var t = new RunExeByProcess();
+            var path = Path.Combine(System.Environment.CurrentDirectory, "gtkwave", "bin", "gtkwave");
+            t.ProcessName = path;
+            t.Argument = waveformpath;
             //Console.WriteLine(t.Execute());
-            int code = t.Execute();
+            int code = await t.Execute();
             if (code != 0)
                 _logger.LogError("gtkwave error!");
-            
+#endif
+
             return new FPGAResponse()
             {
                 Message = "成功",
@@ -585,7 +594,7 @@ namespace Wonton.CrossUI.Web.Controllers
                 }
             }
             //foreach (int i in ans)
-                //Console.Write(i + " ");
+            //Console.Write(i + " ");
             return ans;
         }
 
@@ -608,7 +617,7 @@ namespace Wonton.CrossUI.Web.Controllers
             }
             //Console.WriteLine("new dict");
             //foreach (KeyValuePair<int, int> i in ans)
-                //Console.WriteLine(i.Key + " " + i.Value);
+            //Console.WriteLine(i.Key + " " + i.Value);
             return ans;
         }
 
@@ -624,49 +633,7 @@ namespace Wonton.CrossUI.Web.Controllers
                 }
             }
             return ans;
-            /*
-            int cycle = dict.Count() / 16; //默认向下取整
-            //Console.WriteLine("Cycle = " + cycle);
-            for (int i = 0; i < 4; i++)
-            {
-                ushort tempnum = num[i];
-                for (int j = 0; j < 16; j++)
-                {
-                    ushort index = (ushort)(i * 16 + j);
-                    if (dict.ContainsKey(index))
-                    {
-                        ushort split = (ushort)((tempnum >> j) & 1);
-                        if (split != prev[index])
-                        {
-                            string t = "$var wire 1 " + dict[index] + " " + dict[index] + " $end\n";
-                            ans += t;
-                        }
-                    }
-                }
-            }
-            */
         }
-        /*
-        //读取引脚名和引脚序号的映射
-        internal void ReadPortsMap()
-        {
-            this.inputDict = new Dictionary<string, ushort>();
-            this.outputDict = new Dictionary<string, ushort>();
-            _logger.LogInformation("读取PortsMap");
-            var portsmapfile = @"./Services/FPGAPortsMap.js";
-            var fs = System.IO.File.Open(portsmapfile, FileMode.Open);
-            var sr = new StreamReader(fs);
-            var content = sr.ReadToEnd();
-            JObject portsmapJobj = JObject.Parse(content);
-            var inputportsmap = portsmapJobj["inputPortsMapping"];
-            var outputportsmap = portsmapJobj["outputPortsMapping"];
-            foreach (var i in inputportsmap)
-                inputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
-            foreach (var i in outputportsmap)
-                outputDict.Add(i[0].ToString(), i[1].ToObject<ushort>());
-            sr.Close();
-            fs.Close();
-        }*/
     }
 
     class RunExeByProcess
@@ -674,32 +641,28 @@ namespace Wonton.CrossUI.Web.Controllers
         public string ProcessName { get; set; }
         //public string ObjectPath { get; set; }
         public string Argument { get; set; }
-        public int Execute()
+        internal void Execute()
         {
+            //var tcs = new TaskCompletionSource<int>();
             var process = new System.Diagnostics.Process();
             process.StartInfo.FileName = ProcessName;
             process.StartInfo.Arguments = Argument;
             process.StartInfo.UseShellExecute = false;
             //不显示exe的界面
             process.StartInfo.CreateNoWindow = true;
+            //process.EnableRaisingEvents = true;
+            /*
+            process.Exited += (sender, args) =>
+            {
+                tcs.SetResult(process.ExitCode);
+                process.Dispose();
+            };
+            await Task.Run(() => process.Start());
+            return tcs.Task.Result;
+            */
             process.Start();
-            process.WaitForExit();
-            process.Close();
-            return process.ExitCode;
+            //await Task.Run(() => process.Start());
+            //return process.ExitCode;
         }
     }
-    /*
-    class VCDException : Exception
-    {
-        public VCDException(string message) : base(message) { }
-
-        public VCDException()
-        {
-        }
-
-        public VCDException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-    }
-    */
 }

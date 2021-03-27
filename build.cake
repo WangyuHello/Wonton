@@ -114,7 +114,7 @@ Task("BuildNative")
             PlatformTarget = p
         });
     }
-    else 
+    else
     {
         DoInDirectory("./VLFDDriver/VLFDLibUSBDriver", () => {
             var shs = GetFiles("../**/*.sh");
@@ -138,12 +138,12 @@ Task("BuildNative")
                 BinaryPath = "."
             });
         });
-        
+
     }
 });
 
 Task("InstallClientApp")
-    .Does(()=> 
+    .Does(()=>
 {
     NpmInstallElectronWithRegistry("Wonton.CrossUI.Web/ClientApp");
 });
@@ -180,7 +180,7 @@ void DelDir(string dir)
 
 void DelFile(string file)
 {
-    if(FileExists(file)) 
+    if(FileExists(file))
     {
         DeleteFile(file);
         Information("删除文件: "+ file);
@@ -222,7 +222,7 @@ Task("Clean")
 
 void NpmInstallElectronWithRegistry(string dir, bool production = false)
 {
-    var settings = new NpmInstallSettings 
+    var settings = new NpmInstallSettings
     {
         Production = production,
         EnvironmentVariables = env_dict
@@ -243,7 +243,7 @@ Task("BuildHostApp")
     .IsDependentOn("InstallHostApp")
     .Does(() =>
 {
-    var settings = new NpmRunScriptSettings 
+    var settings = new NpmRunScriptSettings
     {
         ScriptName = "build"
     };
@@ -257,8 +257,8 @@ Task("PublishBackendApp")
     .Does(() =>
 {
     DelDir(backend_bin_path);
-    var config = new DotNetCorePublishSettings 
-    { 
+    var config = new DotNetCorePublishSettings
+    {
         Configuration = "Release",
         OutputDirectory = backend_bin_path
     };
@@ -271,7 +271,7 @@ Task("PublishBackendApp")
 });
 
 Task("CopyHostApp")
-    .Does(()=> 
+    .Does(()=>
 {
     var electron_files = GetFiles("Wonton.CrossUI.Web.HostApp/*.js");
     var electron_files2 = GetFiles("Wonton.CrossUI.Web.HostApp/*.json");
@@ -282,16 +282,26 @@ Task("CopyHostApp")
 });
 
 Task("InstallPrepackageHostApp")
-    .Does(()=> 
+    .Does(()=>
 {
     NpmInstallElectronWithRegistry(pre_package_path, true);
 });
 
 Task("PackageDependency")
-    .Does(() => 
+    .Does(() =>
 {
-    var gtkWaveDir = "Denpendency/gtkwave/"+elec_target_os3;
-    //copy gtkWaveDir -> backend_bin_path/gtkwave
+    var gtkWaveDir = "Dependency/gtkwave/"+elec_target_os3;
+    var gtkWaveZip = GetFiles(gtkWaveDir+"/*");
+    //var gtkWaveTargetDir = backend_bin_path+"/gtkwave";
+    foreach (var i in gtkWaveZip)
+        Information("Copy: "+i);
+    //CreateDirectory(gtkWaveTargetDir);
+    CopyFiles(gtkWaveZip, backend_bin_path);
+    DoInDirectory(backend_bin_path, ()=>
+    {
+        Unzip("gtkwave.zip", ".");
+        DeleteFile("gtkwave.zip");
+    });
 
 });
 
@@ -301,7 +311,7 @@ Task("PackageApp")
     .IsDependentOn("PackageDependency")
     .IsDependentOn("CopyHostApp")
     .IsDependentOn("InstallPrepackageHostApp")
-    .Does(() => 
+    .Does(() =>
 {
     var args = new ProcessArgumentBuilder()
         .Append("--"+elec_target_os)
@@ -316,7 +326,7 @@ Task("PackageApp")
         env_dict["FXDEPS"] = "-fxdependent";
     }
 
-    DoInDirectory(pre_package_path, () => 
+    DoInDirectory(pre_package_path, () =>
     {
         var electron_builder = Context.Tools.Resolve(electron_builder_bin);
         StartProcess(electron_builder, new ProcessSettings { Arguments = args, EnvironmentVariables = env_dict});
