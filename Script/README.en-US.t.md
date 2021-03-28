@@ -192,6 +192,10 @@ You can download Wonton installation package for any platform below
 
 4.  Put the downloaded zip package into **Electron Cache Directory**
 
+# License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B21790%2Fgithub.com%2FWangyuHello%2FWonton.svg?type=large)](https://app.fossa.com/projects/custom%2B21790%2Fgithub.com%2FWangyuHello%2FWonton?ref=badge_large)
+
 # Contributors ✨
 
 <table>

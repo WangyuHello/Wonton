@@ -195,6 +195,10 @@
 
 4. 将上述下载的zip包存放在Electron缓存目录中即可
 
+# 许可证
+
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B21790%2Fgithub.com%2FWangyuHello%2FWonton.svg?type=large)](https://app.fossa.com/projects/custom%2B21790%2Fgithub.com%2FWangyuHello%2FWonton?ref=badge_large)
+
 # 贡献 ✨
 
 <table>

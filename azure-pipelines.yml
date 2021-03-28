@@ -27,7 +27,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="ubuntu-20.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake --useMagic=false --AdditionalName="ubuntu-20.04" --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
   - task: PublishPipelineArtifact@1
@@ -52,7 +52,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="ubuntu-18.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake --useMagic=false --AdditionalName="ubuntu-18.04" --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
   - task: PublishPipelineArtifact@1
@@ -77,7 +77,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="ubuntu-16.04" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake --useMagic=false --AdditionalName="ubuntu-16.04" --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
   - task: PublishPipelineArtifact@1
@@ -102,7 +102,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic=false -targetArch=arm -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake --useMagic=false --targetArch=arm --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
   - task: PublishPipelineArtifact@1
@@ -127,7 +127,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic=false -targetArch=arm64 -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake --useMagic=false --targetArch=arm64 --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Linux'
 
   - task: PublishPipelineArtifact@1
@@ -157,7 +157,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="10.15" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake --useMagic=false --AdditionalName="10.15" --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on macOS'
 
   - task: PublishPipelineArtifact@1
@@ -187,7 +187,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - bash: ./tools/dotnet-cake -useMagic=false -AdditionalName="10.14" -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - bash: ./tools/dotnet-cake --useMagic=false --AdditionalName="10.14" --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on macOS'
 
   - task: PublishPipelineArtifact@1
@@ -212,7 +212,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - pwsh: ./tools/dotnet-cake -useMagic=false -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - pwsh: ./tools/dotnet-cake --useMagic=false --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Windows'
 
   - task: PublishPipelineArtifact@1
@@ -237,7 +237,7 @@ jobs:
   - script: dotnet tool install --tool-path tools Cake.Tool
     displayName: 'Install Cake'
   
-  - pwsh: ./tools/dotnet-cake -useMagic=false -FxDeps=true -releaseDir="$(Build.ArtifactStagingDirectory)"
+  - pwsh: ./tools/dotnet-cake --useMagic=false --FxDeps=true --releaseDir="$(Build.ArtifactStagingDirectory)"
     displayName: 'Build on Windows'
 
   - task: PublishPipelineArtifact@1
@@ -308,5 +308,5 @@ jobs:
   - pwsh: ./PackageManager/chocolatey/CreateChocoPackage.ps1 -ReleasePath $(Build.ArtifactStagingDirectory)
     displayName: 'Create Chocolatey Package'
   
-  - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1 -CommitSHA $(Build.SourceVersion)
+  - pwsh: ./PackageManager/chocolatey/UploadChocoPackage.ps1 -API_KEY $(CHOCOLATEY_API_KEY) -CommitSHA $(Build.SourceVersion)
     displayName: 'Upload Chocolatey Package'
