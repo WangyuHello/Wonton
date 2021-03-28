@@ -568,9 +568,9 @@ namespace Wonton.CrossUI.Web.Controllers
             t.ProcessName = path;
             t.Argument = waveformpath;
             //Console.WriteLine(t.Execute());
-            int code = await t.Execute();
-            if (code != 0)
-                _logger.LogError("gtkwave error!");
+            t.Execute();
+            //if (code != 0)
+                //_logger.LogError("gtkwave error!");
 #endif
 
             return new FPGAResponse()

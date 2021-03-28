@@ -288,6 +288,7 @@ Task("InstallPrepackageHostApp")
 });
 
 Task("PackageDependency")
+    .WithCriteria(!isHostLinux)
     .Does(() =>
 {
     var gtkWaveDir = "Dependency/gtkwave/"+elec_target_os3;
