@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faMicrochip, faPlay, faStop, faSave, faFolderOpen, faPlus, faFile, faStore, faCalculator } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faMicrochip, faPlay, faStop, faSave, faFolderOpen, faPlus, faFile, faStore, faCalculator, faEye } from '@fortawesome/free-solid-svg-icons'
 import Switch from "react-switch";
 import { CSSTransition } from "react-transition-group";
 import './Title.css'
@@ -249,6 +249,10 @@ export class Title extends Component {
         }, () => {});
     }
 
+    ClickWaveform = async () => {
+        await pjManager.ShowWaveform(this.state.runHz);
+    }
+
     ClickClose = () => {
         this.CloseApp();
     }
@@ -438,7 +442,8 @@ export class Title extends Component {
         }
         else if (this.state.modified) {
             ipcRenderer.send('show-unsave-prompt');
-        } else {
+        }
+        else {
             window.close();
         }
     }
@@ -582,6 +587,16 @@ export class Title extends Component {
                     </div>
 
                     <div style={{display: "flex"}} className="no-drag">
+                        <div>
+                        <Button size="sm" onClick={this.ClickWaveform}>
+                            <div style={{display:'flex', alignItems: 'center'}} >
+                                <FontAwesomeIcon icon={faEye}/>
+                                <div style={{marginLeft: '8px'}}>Waveform</div>
+                            </div>
+                        </Button>
+                        </div>
+                        <div style={{ width: "20px" }} />
+
                         <div>
                             <ButtonGroup size="sm">
                                 <Button onClick={this.ClickProgram}>

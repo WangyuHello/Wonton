@@ -53,20 +53,17 @@ namespace Wonton.Common
                 var msg = VLFDInterop.VLFD_GetLastErrorMsg(NOW_USE_BOARD);
                 throw new FPGAException(msg);
             }
-
             return true;
         }
 
         public bool WriteReadData()
         {
             var r = VLFDInterop.VLFD_IO_WriteReadData(NOW_USE_BOARD, WriteBuffer.Span, ReadBuffer.Span);
-
             if (r == false)
             {
                 var msg = VLFDInterop.VLFD_GetLastErrorMsg(NOW_USE_BOARD);
                 throw new FPGAException(msg);
             }
-
             return true;
         }
 

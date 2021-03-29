@@ -17,6 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wonton.Test", "Wonton.Test\
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Wonton.CrossUI.Web.HostApp", "Wonton.CrossUI.Web.HostApp\Wonton.CrossUI.Web.HostApp.njsproj", "{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wonton.Waveform", "Wonton.Waveform\Wonton.Waveform.csproj", "{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B9C3F45-D566-4967-BEFB-74B6DCA4EF9C} = {4B9C3F45-D566-4967-BEFB-74B6DCA4EF9C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +182,26 @@ Global
 		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|x64.Build.0 = Release|Any CPU
 		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|x86.ActiveCfg = Release|Any CPU
 		{C1D2ADDA-5537-4E0A-AB75-3696A74F2D95}.Release|x86.Build.0 = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|x64.Build.0 = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Debug|x86.Build.0 = Debug|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|ARM.Build.0 = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|ARM64.Build.0 = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|x64.ActiveCfg = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|x64.Build.0 = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|x86.ActiveCfg = Release|Any CPU
+		{9F871878-0B25-48F5-9ACB-BCFB9C001D6E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

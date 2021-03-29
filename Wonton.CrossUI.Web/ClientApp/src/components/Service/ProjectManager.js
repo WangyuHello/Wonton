@@ -101,8 +101,9 @@ export default class ProjectManager {
             this.recentProjects = JSON.parse(res.message);
             return;
         }
-        // console.log(res);
+        console.log(res);
         this.projectInfo = JSON.parse(res.message);
+        console.log(this.projectInfo);
         this.projectFile = res.projectPath;
         
         console.log(`Project Path: ${this.projectFile}`);
@@ -110,6 +111,7 @@ export default class ProjectManager {
         
         this.layout = this.projectInfo['layout'];
         this.bitfile = this.projectInfo['bitfile'];
+        this.xml = this.projectInfo['xml'];
         this.projectName = this.projectInfo['projectName'];
         manager.subscribedInstances = this.objToMap(this.projectInfo['subscribedInstances']);
         manager.hardwarePortsMap = this.objToMap(this.projectInfo['hardwarePortsMap']);
@@ -152,6 +154,7 @@ export default class ProjectManager {
     //     manager.projectOutputPorts.length = 0;
     // }
 
+    //没用上？？？
     ReadProjectIO = async (filename) => {
         const response = await fetch('/api/fpga/readxmltojson?filename=' + filename);
         const res = await response.json();
@@ -205,6 +208,7 @@ export default class ProjectManager {
             "layout": mergedLayout,
             "projectPortsMap": this.mapToObj(manager.projectPortsMap),
             "bitfile": this.bitfile,
+            "xml": this.xml,
             "projectName": this.projectName
         }
 
@@ -221,11 +225,26 @@ export default class ProjectManager {
             body: JSON.stringify(transmit, null, 4)
         });
         const data = await response.json();
+        console.log(data);
         if (data.status === true) {
             new Notification('馄饨FPGA', {
                 body: '已保存'
             });
         }
+    }
+
+    ShowWaveform = async (runHz) => {
+        //console.log(JSON.stringify(this.projectInfo["projectPortsMap"]));
+        console.log(JSON.stringify(this.projectInfo["projectPortsMap"]));
+        const response = await fetch('/api/fpga/waveform?runhz=' + runHz + '&portsmap=' + JSON.stringify(this.projectInfo["projectPortsMap"]));
+        //await console.log("text: " + response.text());
+        const data = await response.json();
+        console.log(data);
+
+        if (!data.status)
+            return false;
+
+        return true;
     }
 
     RegisterRefreshTitle = (titlecallback) => {
